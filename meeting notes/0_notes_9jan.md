@@ -21,7 +21,7 @@ scriptie (of depressieset er doorheen trekken, of simulatiestudie van verschille
 - leuk paper:
 -  systematic review repliceren (met inclusiecriteria) met asreview, vind je dezelfde papers (en dezelfde resultaten van de review?)
 
-- FETC toestemming
+- FETC toestemming?
 
 overzicht van parameters
 - 4 (5-clusterstrategieën) querystrategieen zijn klaar
@@ -29,5 +29,6 @@ overzicht van parameters
 - wijs cellen aan waar we onze hoop op hebben omdat...
 
 todo:
-- github project voor scriptie maken.
-- toegang tot moet hebben 
+- [x] github project voor scriptie maken.
+- [] overzichtstabel van parameters maken
+- [] toegang tot moet hebben 
