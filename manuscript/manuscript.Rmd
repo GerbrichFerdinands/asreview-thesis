@@ -1,0 +1,37 @@
+---
+title: "parameters"
+author: "Gerbrich Ferdinands"
+date: "1/14/2020"
+output: pdf_document
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(knitr)
+library(xtable)
+library(kableExtra)
+# load model parameters 
+source("asr-parameters.R")
+```
+
+The ASReview software knows the following parameters: 
+```{r}
+# configurations table 
+tab <- lapply(params, FUN = function(x) paste(x, collapse = ", "))
+tab <- do.call(rbind, tab)
+colnames(tab) <- c("configurations")
+
+# combinations table
+combins <- expand.grid(params)
+
+kable(tab, format  = "pandoc")
+```
+
+
+\
+This leads to  `r nrow(combins)` combinations of configurations:
+
+```{r}
+kable(combins, row.names = TRUE, format = "pandoc")
+```
+
