@@ -14,7 +14,7 @@ library(kableExtra)
 source("asr-parameters.R")
 ```
 
-The ASReview software knows the following parameters: 
+
 ```{r}
 # configurations table 
 tab <- lapply(params, FUN = function(x) paste(x, collapse = ", "))
@@ -24,11 +24,19 @@ colnames(tab) <- c("configurations")
 # combinations table
 combins <- expand.grid(params)
 
+``` 
+
+ASReview takes the following parameters/arguments: 
+
+- a model
+- a query strategy
+- a balance strategy
+- feature extraction 
+
+```{r}
 kable(tab, format  = "pandoc")
 ```
 
-
-\
 This leads to  `r nrow(combins)` combinations of configurations:
 
 ```{r}
