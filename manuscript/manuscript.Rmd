@@ -21,29 +21,35 @@ source("asr-parameters.R")
 tab <- lapply(params, FUN = function(x) paste(x, collapse = ", "))
 tab <- do.call(rbind, tab)
 colnames(tab) <- c("configurations")
+```
+
+```{r}
 
 # combinations table
 combins <- expand.grid(params)
+
 #combins$model %in% c("lstm_base", "lstm_pool") & combins$feature_extraction != "embeddingLSTM" 
 
 combins <- combins %>%
   #filter(combins$model %in% c("lstm_base", "lstm_pool") & feature_extraction != "embeddingLSTM") %>%
-  arrange(model)
+  arrange(model, feature_extraction )
+
+# rows to drop
+droprows <- combins$model == "nb" & combins$feature_extraction != "tfidf"
+combins <- combins[droprows, ]
 ``` 
 
 ASReview takes the following parameters/arguments: 
 
+- number of training data (included/excluded)
 - a model
 - a query strategy
-- a balance strategy
+- a balance strategy (fixed)
 - feature extraction 
 
 ```{r}
 kable(tab, format  = "pandoc")
 ```
-
-
-
 
 This leads to  `r nrow(combins)` combinations of configurations:
 

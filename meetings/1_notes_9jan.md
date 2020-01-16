@@ -30,5 +30,5 @@ overzicht van parameters
 
 todo:
 - [x] github project voor scriptie maken.
-- [] overzichtstabel van parameters maken
-- [] toegang tot moet hebben 
+- [x] overzichtstabel van parameters maken
+- [?] toegang tot moet hebben 

@@ -19,18 +19,19 @@
   params <- list(
     model = c("lstm_base",
               "lstm_pool", 
+              "dense_nn",
               "nb", # naive bayes
               "rf", # random forest 
               "svm",
-              "dense_nn"),
+              "lr"),
     
     query_strategy = c("cluster",
                        "max",
-                       "max * cluster",
-                       "max * uncertainty",
-                       "max * random",
-                       "cluster * uncertainty",
-                       "cluster * random"
+                       "max*cluster",
+                       "max*uncertainty",
+                       "max*random",
+                       "cluster*uncertainty",
+                       "cluster*random"
                        #"uncertainty",
                        #"random",
                        #"mixed"
@@ -49,6 +50,13 @@
                            "embeddingLSTM") # only for lstm
   )
   
+  # but for the current simulation study we only use nb, svm, and rf, and logistic regression.
+  # and do not vary the balance strategy. 
+  params$model <- params[["model"]][4:7]
+  params$balance_strategy <- NULL
+  params$feature_extraction <- params[["feature_extraction"]][1:4]
+  params$training_data <- c("10/10", "5/5", "5/10")
+    
   # numerical variables --------------------------------------------------------
   n_instances <- 1 # number of papers queried each query 
   n_prior_included <- 10 
