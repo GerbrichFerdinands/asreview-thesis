@@ -7,6 +7,7 @@ output: pdf_document
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
+library(tidyverse)
 library(knitr)
 library(xtable)
 library(kableExtra)
@@ -23,7 +24,11 @@ colnames(tab) <- c("configurations")
 
 # combinations table
 combins <- expand.grid(params)
+combins$model %in% c("lstm_base", "lstm_pool") & combins$feature_extraction != "embeddingLSTM" 
 
+combins <- combins %>%
+  filter(combins$model %in% c("lstm_base", "lstm_pool") & feature_extraction != "embeddingLSTM") %>%
+  arrange(model)
 ``` 
 
 ASReview takes the following parameters/arguments: 

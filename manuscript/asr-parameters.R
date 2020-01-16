@@ -26,20 +26,27 @@
     
     query_strategy = c("cluster",
                        "max",
-                       "uncertainty",
-                       "random",
-                       "mixed"), # is not implemented
+                       "max * cluster",
+                       "max * uncertainty",
+                       "max * random",
+                       "cluster * uncertainty",
+                       "cluster * random"
+                       #"uncertainty",
+                       #"random",
+                       #"mixed"
+                       ), # is not implemented
     
-    balance_strategy = c("simple",
-                         "double",
-                         "triple", 
-                         "undersample"),
+    balance_strategy = c(#"simple",
+                         #"double",
+                         "triple"
+                         #"undersample"s
+                         ),
     
     feature_extraction = c("doc2vec",
                            "tfidf", 
                            "sbert", 
-                           "embeddingIdf",
-                           "embeddingLSTM")
+                           "embeddingIdf", # ?
+                           "embeddingLSTM") # only for lstm
   )
   
   # numerical variables --------------------------------------------------------
