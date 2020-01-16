@@ -24,10 +24,10 @@ colnames(tab) <- c("configurations")
 
 # combinations table
 combins <- expand.grid(params)
-combins$model %in% c("lstm_base", "lstm_pool") & combins$feature_extraction != "embeddingLSTM" 
+#combins$model %in% c("lstm_base", "lstm_pool") & combins$feature_extraction != "embeddingLSTM" 
 
 combins <- combins %>%
-  filter(combins$model %in% c("lstm_base", "lstm_pool") & feature_extraction != "embeddingLSTM") %>%
+  #filter(combins$model %in% c("lstm_base", "lstm_pool") & feature_extraction != "embeddingLSTM") %>%
   arrange(model)
 ``` 
 
@@ -41,6 +41,9 @@ ASReview takes the following parameters/arguments:
 ```{r}
 kable(tab, format  = "pandoc")
 ```
+
+
+
 
 This leads to  `r nrow(combins)` combinations of configurations:
 
