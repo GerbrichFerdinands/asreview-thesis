@@ -27,11 +27,11 @@
     
     query_strategy = c("cluster",
                        "max",
-                       "max*cluster",
-                       "max*uncertainty",
-                       "max*random",
-                       "cluster*uncertainty",
-                       "cluster*random"
+                       "max * cluster",
+                       "max * uncertainty",
+                       "max * random",
+                       "cluster * uncertainty",
+                       "cluster * random"
                        #"uncertainty",
                        #"random",
                        #"mixed"

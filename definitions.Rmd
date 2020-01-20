@@ -1,0 +1,19 @@
+---
+title: "Definition list"
+author: "Gerbrich Ferdinands"
+date: "1/20/2020"
+output: pdf_document
+---
+Term 1
+
+~   Definition 1a
+~   definition 1b
+~ definition
+
+Term 2 with *inline markup*
+
+:   Definition 2
+
+        { some code, part of Definition 2 }
+
+    Third paragraph of definition 2.
