@@ -50,6 +50,7 @@
                            "embeddingLSTM") # only for lstm
   )
   
+  
   # but for the current simulation study we only use nb, svm, and rf, and logistic regression.
   # and do not vary the balance strategy. 
   params$model <- params[["model"]][4:7]
@@ -62,6 +63,29 @@
   n_prior_included <- 10 
   n_prior_excluded <- 10 
 
-# hyperparameters --------------------------------------------------------------
-
   
+  names(params$model) <- params$model
+  names(params$query_strategy) <- params$query_strategy
+  names(params$feature_extraction) <- params$feature_extraction
+  names(params$training_data) <- params$training_data
+  words <- params 
+
+  words$model <- c("Naive Bayes", "Random Forest", "Support Vector Machine", "Logistic Regression")
+  words$query_strategy <- c("Cluster Sampling", "Maximum Sampling",
+                            "Cluster * Maximum  Sampling", 
+                            "Maximum * Uncertainty Sampling", 
+                            "Maximum * Random Sampling", 
+                            "Cluster * Uncertainty Sampling", 
+                            "Cluster * Random Sampling")
+  
+  words$feature_extraction <- c("Doc2Vec", "tf-idf", "sbert", "embeddingIdf")
+  
+  # words$training_data <- c("10 included, 10 excluded",
+  #                          "5 included, 5 excluded",
+  #                          "5 included, 10 excluded")
+  # 
+  names(words) <- c("Models", "Query Strategies", 
+                    "Feature extraction strategies", 
+                    "Training data [included/excluded]")
+ # hyperparameters --------------------------------------------------------------
+ 
