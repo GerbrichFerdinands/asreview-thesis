@@ -1,0 +1,18 @@
+# Simulation pipeline {#pipeline}
+
+<!-- Required to number equations in HTML files -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+
+# Base parameters 
+- number of runs 
+- ` prior_included`
+- ` prior_excluded`
+- ` n_queries`
+- ` n_instances` 
+
+# Configuration specific parameters 
