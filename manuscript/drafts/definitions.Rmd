@@ -1,0 +1,51 @@
+---
+title: "Definition list"
+author: "Gerbrich Ferdinands"
+date: "1/20/2020"
+output: pdf_document
+---
+
+# List of definitions
+
+
+Model. 
+
+:   The prediction model for Active learning 
+
+        some code, part of Definition 2
+
+    Third paragraph of definition 2.
+    
+Query Strategy 
+:   The way papers are queried to the researcher 
+
+        query_strategy
+        
+
+    Uncertainty sampling
+    :  Selects the least sure instances for labelling. 
+    
+    Maximum sampling
+    :  Selects the samples with the highest prediction probability.
+    
+    Random and maximum sampling. 
+    :  Combination of random and maximum sampling. By default samples the 95% of the instances with max sampling, and 5% of the samples with random sampling.
+    
+
+Feature Extraction Strategy
+:   Feature Extraction Strategy
+
+        feature_extraction
+
+    Third paragraph of definition x.
+    
+    Doc2Vec
+    :  
+    
+    
+    Term frequency-inverse document frequency (tf-idf)
+    :   
+    
+    sbert
+    
+    
