@@ -6,45 +6,25 @@
 If you feel it necessary to include an appendix, it goes here.
 -->
 
-
-# The First Appendix
-
-This first appendix includes all of the R chunks of code that were hidden throughout the document (using the `include = FALSE` chunk tag) to help with readibility and/or setup.
-
-**In the main Rmd file**
-
-```{r ref.label='include_packages', results='hide', echo = TRUE}
-```
-
-**In Chapter \@ref(ref-labels):**
-
-```{r ref.label='include_packages_2', results='hide', echo = TRUE}
-```
-
-# List of definitions
-
-Epoch
-:  A particular 
-
+# List of Definitions
 Model. 
 
 :   The prediction model for Active learning 
 
-        { some code, part of Definition 2 }
+        some code, part of Definition 2
 
     Third paragraph of definition 2.
     
-Query Strategy
-:   def
+Query Strategy 
+:   The way papers are queried to the researcher 
 
-        { some code, part of Definition 2 }
+        query_strategy
         
-        add paragraph here
 
-    Uncertainty sampling.
+    Uncertainty sampling
     :  Selects the least sure instances for labelling. 
     
-    Maximum sampling.
+    Maximum sampling
     :  Selects the samples with the highest prediction probability.
     
     Random and maximum sampling. 
@@ -54,7 +34,7 @@ Query Strategy
 Feature Extraction Strategy
 :   Feature Extraction Strategy
 
-        { some code, part of Definition x }
+        feature_extraction
 
     Third paragraph of definition x.
     
@@ -67,3 +47,19 @@ Feature Extraction Strategy
     
     sbert
     
+
+<!-- # The Last Appendix -->
+
+<!-- This first appendix includes all of the R chunks of code that were hidden throughout the document (using the `include = FALSE` chunk tag) to help with readibility and/or setup. -->
+
+<!-- **In the main Rmd file** -->
+
+<!-- ```{r ref.label='include_packages', results='hide', echo = TRUE} -->
+<!-- ``` -->
+
+<!-- **In Chapter \@ref(ref-labels):** -->
+
+<!-- ```{r ref.label='include_packages_2', results='hide', echo = TRUE} -->
+<!-- ``` -->
+
+

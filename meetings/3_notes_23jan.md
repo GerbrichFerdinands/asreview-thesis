@@ -28,7 +28,6 @@ N.B. Just as an FYI: please note that Cartesius nodes have 24 cores and are excl
     - stay as close to the original data set as possible. 
   - student assistant can do this. 
   
-  
 ## documentation
  - hours 4-8 
  - finish documentation pull request 
@@ -46,7 +45,6 @@ eerst inactive learning, daarna active learning. (they are expected to be correl
               - hoe lang duurt het om relevante papers te vinden?
               - gemiddelde positie van alle inclusies / totaal aantal papers.
               - nu linear kan ook kwadratisch etc.
-
 
 # To do
 - [x] literatuurlijst zotero

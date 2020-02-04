@@ -5,25 +5,27 @@ date: "1/20/2020"
 output: pdf_document
 ---
 
+# List of definitions
+
+
 Model. 
 
 :   The prediction model for Active learning 
 
-        { some code, part of Definition 2 }
+        some code, part of Definition 2
 
     Third paragraph of definition 2.
     
-Query Strategy
-:   def
+Query Strategy 
+:   The way papers are queried to the researcher 
 
-        { some code, part of Definition 2 }
+        query_strategy
         
-        add paragraph here
 
-    Uncertainty sampling.
+    Uncertainty sampling
     :  Selects the least sure instances for labelling. 
     
-    Maximum sampling.
+    Maximum sampling
     :  Selects the samples with the highest prediction probability.
     
     Random and maximum sampling. 
@@ -33,7 +35,7 @@ Query Strategy
 Feature Extraction Strategy
 :   Feature Extraction Strategy
 
-        { some code, part of Definition x }
+        feature_extraction
 
     Third paragraph of definition x.
     
@@ -45,4 +47,5 @@ Feature Extraction Strategy
     :   
     
     sbert
+    
     

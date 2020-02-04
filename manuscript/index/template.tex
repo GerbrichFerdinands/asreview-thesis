@@ -52,6 +52,17 @@
 %\usepackage{biblatex-chicago}
 %\bibliography{thesis}
 
+% Gerbrich: try tro solve clsreferences. 
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
+  {\par}
+$endif$
+
+
 
 % Added by CII (Thanks, Hadley!)
 % Use ref for internal links
