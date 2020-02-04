@@ -84,15 +84,3 @@ on chapters.
 -->
 
 # Introduction {.unnumbered}
-ASReview takes the following parameters/arguments: 
-
-- a model
-- a query strategy
-- a balance strategy (fixed)
-- a feature extraction strategy
-- number of training data 
-
-The model is typically a learning algorithm used to predict the relevance of text. The following models will be compared: 
-
-* Naive Bayes (*nb*) [@Zhang2004]. 
-* 

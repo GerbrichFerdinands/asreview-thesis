@@ -3,6 +3,7 @@ title: "parameters"
 author: "Gerbrich Ferdinands"
 date: "1/14/2020"
 output: pdf_document
+bibliography: asreview.bib
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -36,11 +37,45 @@ combins <- combins[!droprows, ]
 
 ASReview takes the following parameters/arguments: 
 
-- number of training data (included/excluded)
 - a model
 - a query strategy
 - a balance strategy (fixed)
-- feature extraction 
+- a feature extraction strategy
+- number of training data 
+
+The goal: 
+Use these inputs to predict relevance of papers. 
+
+
+Numerical representation of texts
+To perform a learning algorithm on the abstract, the content of the abstracts needs to be represented numerical.
+To perform learning algorithms on the abstracts, their content has to be represented in a numerical way. 
+This is done by transforming the textual content of the abstracts into numerical feature vectors. 
+A classical example representation of texts is by 'bag of words' features, where for each text the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
+
+ASReview implements several feature extraction strategies. The following will be compared: 
+
+* Doc2Vec [@Le2014]
+* Tfidf 
+* SBERT
+* embeddingIdf
+
+The model is typically a learning algorithm used to predict the relevance of text.
+The following models will be compared: 
+
+* Naive Bayes 
+* Random Forests
+* Support Vector Machine 
+* Logistic Regression 
+* **Dense Neural Network** 
+
+Active learning = 
+increasing classification performance with every query. 
+The query strategy determines the way unlabeled papers are queried to the researcher. 
+
+[@modAL2018]
+
+The balance strategy 
 
 
 ```{r}
@@ -48,6 +83,47 @@ kable(tab, "latex", booktabs = TRUE) %>%
   kable_styling(full_width = FALSE) %>%
   column_spec(2, width = "30em") 
 ```
+
+## Models 
+### Naive Bayes 
+Naive Bayes assumes all features are independent given the class value. [@Zhang2004] 
+
+ASReview uses the ` MultinomialNB` from the scikit-learn package [@scikit-learn], that implements the naive Bayes algorithm for multinomially distributed data. 
+` nb`
+
+Hyperparameters
+  * alpha - accounts for features not present in learning samples and prevents zero probabilities in further computations. ?
+
+### Random Forests
+
+### Support Vector Machine
+
+### Logistic Regression 
+
+### *Dense Neural Network*
+
+## Query Strategies 
+* Max - Choose the most likely samples to be included according to the model
+* Uncertainty - choose the most uncertain samples according to the model (i.e. closest to 0.5 probability) [@Lewis1994] 
+* Random - randomly selects abstracts with no regard to model assigned probabilities. 
+* Cluster - Use clustering after feature extraction on the dataset. Then the highest probabilities within random clusters are sampled
+
+The following combinations are simulated: 
+
+* cluster
+* max
+* cluster * random 
+* cluster * uncertainty
+* max * cluster
+* max * random
+* max * uncertainty
+
+## Balance Strategies 
+
+## Feature Extraction Strategies 
+
+
+# Combinations 
 
 This leads to  `r nrow(combins)` combinations of configurations. 
 
@@ -62,3 +138,5 @@ combins %>%
   kable_styling(latex_options = c("repeat_header")) 
 ```
 
+
+# References 
