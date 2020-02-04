@@ -12,7 +12,7 @@ title: 'My thesis'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 output: 
-  thesisdown::thesis_pdf: default # yet fails to compile 
+#  thesisdown::thesis_pdf: default  
   thesisdown::thesis_gitbook: default # creates html book in _book folder.  
 #  thesisdown::thesis_word: default
 #  thesisdown::thesis_epub: default
@@ -84,15 +84,15 @@ on chapters.
 -->
 
 # Introduction {.unnumbered}
+ASReview takes the following parameters/arguments: 
 
-- Importance of sound systematic reviews (meta)
-- Why it was built
-- Advantages over other types
+- a model
+- a query strategy
+- a balance strategy (fixed)
+- a feature extraction strategy
+- number of training data 
 
-- Whereas first results look promising, there hasn’t been conducted a full proof of concept 
+The model is typically a learning algorithm used to predict the relevance of text. The following models will be compared: 
 
-Goals: 
-- Save time 
-- But also more systematic..? 
-
-? Misses
+* Naive Bayes (*nb*) [@Zhang2004]. 
+* 

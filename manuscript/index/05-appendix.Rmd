@@ -10,6 +10,7 @@ If you feel it necessary to include an appendix, it goes here.
 ```{r}
 # load model parameters 
 source("R/asr-parameters.R")
+source("R/packages.R")
 ```
 
 
@@ -31,13 +32,22 @@ droprows <- combins$model == "nb" & combins$feature_extraction != "tfidf"
 combins <- combins[!droprows, ]
 ``` 
 
-ASReview takes the following parameters/arguments: 
 
-- number of training data (included/excluded)
-- a model
-- a query strategy
-- a balance strategy (fixed)
-- feature extraction 
+
+model: nb
+query_strategy: max
+balance_strategy: double
+feature_extraction: tfidf
+n_instances: 1
+n_queries: 10
+n_prior_included: 5
+n_prior_excluded: 5
+mode: simulate
+model_param: {}
+query_param: {}
+feature_param: {}
+balance_param: {}
+abstract_only: False
 
 ```{r}
 kable(tab, "latex", booktabs = TRUE) %>%
@@ -61,8 +71,6 @@ combins %>%
 
 # List of Definitions
 
-Balance Strategy
-
 
 Model. 
 
@@ -73,7 +81,7 @@ Model.
     Third paragraph of definition 2.
     
 Query Strategy 
-:   The way papers are queried to the researcher 
+:   Type of active learning, determining the way papers are queried to the researcher. 
 
         query_strategy
         
@@ -82,27 +90,26 @@ Query Strategy
     :  Selects the least sure instances for labelling. 
     
     Maximum sampling
-    :  Selects the samples with the highest prediction probability.
+    :  Selects the samples with the highest prediction probability. The references who are most likely to be included are presented first. 
     
     Random and maximum sampling. 
     :  Combination of random and maximum sampling. By default samples the 95% of the instances with max sampling, and 5% of the samples with random sampling.
     
 
 Feature Extraction Strategy
-:   Feature Extraction Strategy
+:   The way the words in the abstracts are represented in the statistical model.  
 
         feature_extraction
 
-    Third paragraph of definition x.
-    
     Doc2Vec
-    :  
+    :   
     
+        doc2vec
     
     Term frequency-inverse document frequency (tf-idf)
     :   
     
-    sbert
+        sbert
 
 
 
