@@ -7,3 +7,14 @@ The {#rmd-basics} text after the chapter declaration will allow us to link throu
 -->
 
 # ASReview {#ASReview}
+- Importance of sound systematic reviews (meta)
+- Why it was built
+- Advantages over other types
+
+- Whereas first results look promising, there hasn’t been conducted a full proof of concept 
+
+Goals: 
+- Save time 
+- But also more systematic..? 
+
+? Misses

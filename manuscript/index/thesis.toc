@@ -1,19 +1,4 @@
-\contentsline {chapter}{Introduction}{1}{chapter*.8}%
-\contentsline {chapter}{Chapter 1: ASReview}{3}{chapter.1}%
-\contentsline {chapter}{Chapter 2: Mathematics and Science}{5}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Math}{5}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Chemistry 101: Symbols}{5}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Typesetting reactions}{6}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Other examples of reactions}{6}{subsection.2.2.2}%
-\contentsline {section}{\numberline {2.3}Physics}{6}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Biology}{6}{section.2.4}%
-\contentsline {chapter}{Chapter 3: Tables, Graphics, References, and Labels}{7}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Tables}{7}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Figures}{8}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Footnotes and Endnotes}{10}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Bibliographies}{10}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Anything else?}{12}{section.3.5}%
-\contentsline {chapter}{Conclusion}{13}{chapter*.13}%
-\contentsline {chapter}{Appendix A: The First Appendix}{15}{appendix.A}%
-\contentsline {chapter}{Appendix B: The Second Appendix, for Fun}{17}{appendix.B}%
-\contentsline {chapter}{References}{19}{appendix*.14}%
+\contentsline {chapter}{Chapter 1: If you have more two advisors, un-silence line 7}{1}{chapter.1}%
+\contentsline {chapter}{Appendix A: Parameter Configurations}{3}{appendix.A}%
+\contentsline {chapter}{Appendix B: List of Definitions}{13}{appendix.B}%
+\contentsline {chapter}{References}{15}{appendix*.6}%
