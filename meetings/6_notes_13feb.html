@@ -368,65 +368,10 @@ summary {
 <div id="notes---core-team-meeting---core-team-meeting" class="section level1">
 <h1>Notes - core team meeting - core team meeting</h1>
 </div>
-<div id="recapdecisions-last-week" class="section level1">
-<h1>recap/decisions last week</h1>
-</div>
-<div id="meeting" class="section level1">
-<h1>Meeting</h1>
-</div>
-<div id="to-do" class="section level1">
-<h1>To do</h1>
-<ul>
-<li><p><input type="checkbox" disabled></input>
-prodigy project opzoeken</p></li>
-<li><p><input type="checkbox" disabled></input>
-beginnen met simulatiepipeline (1tje runnen)</p></li>
-<li><p><input type="checkbox" disabled></input>
-hoe meten we performance?</p></li>
-<li><p><input type="checkbox" disabled></input>
-pride?</p></li>
-<li><p><input type="checkbox" disabled checked></input>
-hand in before friday - S4 presentation - active learning n=1 (alle auteurs jezelf).</p></li>
-<li><p><input type="checkbox" disabled checked></input>
-aanmelden congres.</p></li>
-<li><p><input type="checkbox" disabled></input>
-write about metrics raoul</p><ul>
-<li><input type="checkbox" disabled></input>
-hoe lang het (gemiddeld) duurt voordat je alle inclusies gevonden hebt</li>
-<li></li>
-</ul></li>
-<li><p><input type="checkbox" disabled></input>
-plannetje met Raoul over hyperparameters optimaliseren.</p></li>
-<li><p>Begrippenlijst</p>
-<ul class="task-list">
-<li><input type="checkbox" disabled></input>
-Models<ul>
-<li><input type="checkbox" disabled></input>
-nb</li>
-<li>[ ]</li>
-</ul></li>
-<li><input type="checkbox" disabled></input>
-Balance Strategy<ul class="task-list">
-<li><input type="checkbox" disabled></input>
-double</li>
-</ul></li>
-<li><input type="checkbox" disabled></input>
-Query Strategy</li>
-</ul>
-<p>Other:</p></li>
-<li><p><input type="checkbox" disabled></input>
-offerte voor stickers</p></li>
-<li><p><input type="checkbox" disabled></input>
-active learning verder uitwerken</p><ul class="task-list">
-<li><input type="checkbox" disabled></input>
-abstrackr</li>
-<li><input type="checkbox" disabled></input>
-colandr</li>
-<li><input type="checkbox" disabled></input>
-welke statistische modellen</li>
-</ul></li>
-</ul>
-<p>Pipeline:</p>
+<div id="recap-last-week" class="section level1">
+<h1>Recap last week</h1>
+<div id="pipeline" class="section level2">
+<h2>Pipeline</h2>
 <ol style="list-style-type: decimal">
 <li>hyperparameter optimization (cross-validate over datasets?)</li>
 </ol>
@@ -438,20 +383,115 @@ welke statistische modellen</li>
 <li>select “best” configurations to perform simulation study with</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>Simulation</li>
+<li>Simulation study</li>
 </ol>
-<p>First steps:</p>
 <ul>
-<li>for a nb configuration:</li>
-<li>run supervised learning hyperopt
-<ul>
-<li>on the nagtegaal dataset</li>
-<li>repeat this configuration for all 5 datasets</li>
-</ul></li>
-<li>run active learning hyperopt</li>
-<li>perform simulation study</li>
 <li><strong>future: maybe repeat with LOOCV?</strong></li>
 <li>then we can repeat this for all configurations.</li>
+</ul>
+<div id="questions" class="section level3">
+<h3>Questions</h3>
+<ul>
+<li>For which models were hyperparameters already optimized?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="meeting" class="section level1">
+<h1>Meeting</h1>
+</div>
+<div id="to-do" class="section level1">
+<h1>To do</h1>
+<p>simulation pipeline:</p>
+<ul>
+<li><p><input type="checkbox" disabled checked></input>
+for a nb configuration, run supervised learning hyperopt on the nagtegaal dataset</p></li>
+<li><p><input type="checkbox" disabled></input>
+repeat this configuration for all 5 datasets</p></li>
+<li><p><input type="checkbox" disabled></input>
+run active learning hyperopt</p></li>
+<li><p><input type="checkbox" disabled></input>
+perform simulation study</p></li>
+<li><p><input type="checkbox" disabled></input>
+run default params simulation study on every nb configuration? –&gt; simulate results.</p></li>
+<li><p><input type="checkbox" disabled></input>
+prodigy project opzoeken</p></li>
+<li><p><input type="checkbox" disabled></input>
+hoe meten we performance?</p></li>
+<li><p><input type="checkbox" disabled></input>
+pride tool</p><ul>
+<li></li>
+</ul></li>
+<li><p><input type="checkbox" disabled checked></input>
+plannetje met Raoul over hyperparameters optimaliseren.</p></li>
+<li><p>Begrippenlijst</p>
+<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+Models<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+nb</li>
+<li><input type="checkbox" disabled></input>
+Random Forests</li>
+<li><input type="checkbox" disabled></input>
+SVM</li>
+<li><input type="checkbox" disabled></input>
+lr</li>
+<li><input type="checkbox" disabled></input>
+dnn</li>
+</ul></li>
+<li><input type="checkbox" disabled></input>
+Feature extraction Strategy<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+tfidf</li>
+<li><input type="checkbox" disabled></input>
+doc2vec</li>
+</ul></li>
+<li><input type="checkbox" disabled></input>
+Balance Strategy<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+double</li>
+</ul></li>
+<li><input type="checkbox" disabled></input>
+Query Strategy<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+cluster</li>
+<li><input type="checkbox" disabled></input>
+max</li>
+<li><input type="checkbox" disabled></input>
+cluster * random</li>
+<li><input type="checkbox" disabled></input>
+cluster * uncertainty</li>
+<li><input type="checkbox" disabled></input>
+max * cluster</li>
+<li><input type="checkbox" disabled></input>
+max * random</li>
+<li><input type="checkbox" disabled></input>
+max * uncertainty</li>
+</ul></li>
+<li><input type="checkbox" disabled></input>
+Metrics<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+RRF5</li>
+<li><input type="checkbox" disabled></input>
+RRF10</li>
+<li><input type="checkbox" disabled></input>
+WSS 95</li>
+<li><input type="checkbox" disabled></input>
+Raoul: hoe lang het (gemiddeld) duurt voordat je alle inclusies gevonden hebt</li>
+</ul></li>
+</ul>
+<p>Other:</p></li>
+<li><p><input type="checkbox" disabled></input>
+offerte voor stickers</p></li>
+<li><p><input type="checkbox" disabled></input>
+active learning table verder uitwerken</p><ul class="task-list">
+<li><input type="checkbox" disabled></input>
+abstrackr</li>
+<li><input type="checkbox" disabled></input>
+colandr</li>
+<li><input type="checkbox" disabled></input>
+welke statistische modellen</li>
+</ul></li>
 </ul>
 </div>
 

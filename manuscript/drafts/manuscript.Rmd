@@ -100,7 +100,7 @@ Hyperparameters
 
 ### Logistic Regression 
 
-### *Dense Neural Network*
+### __Dense Neural Network__
 
 ## Query Strategies 
 * Max - Choose the most likely samples to be included according to the model
