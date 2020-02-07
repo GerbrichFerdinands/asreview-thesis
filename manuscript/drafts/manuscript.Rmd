@@ -46,7 +46,6 @@ ASReview takes the following parameters/arguments:
 The goal: 
 Use these inputs to predict relevance of papers. 
 
-
 Numerical representation of texts
 To perform a learning algorithm on the abstract, the content of the abstracts needs to be represented numerical.
 To perform learning algorithms on the abstracts, their content has to be represented in a numerical way. 
@@ -92,7 +91,8 @@ ASReview uses the ` MultinomialNB` from the scikit-learn package [@scikit-learn]
 ` nb`
 
 Hyperparameters
-  * alpha - accounts for features not present in learning samples and prevents zero probabilities in further computations. ?
+
+  * alpha - accounts for features not present in learning samples and prevents zero probabilities in further computations. 
 
 ### Random Forests
 
@@ -122,6 +122,11 @@ The following combinations are simulated:
 
 ## Feature Extraction Strategies 
 
+## amount of training data
+n_instances = number of papers queried each query
+n_queries = number of queries
+n_prior_included: 5
+n_prior_excluded: 
 
 # Combinations 
 
