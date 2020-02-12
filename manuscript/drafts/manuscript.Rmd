@@ -46,27 +46,19 @@ ASReview takes the following parameters/arguments:
 The goal: 
 Use these inputs to predict relevance of papers. 
 
-Numerical representation of texts
-To perform a learning algorithm on the abstract, the content of the abstracts needs to be represented numerical.
-To perform learning algorithms on the abstracts, their content has to be represented in a numerical way. 
-This is done by transforming the textual content of the abstracts into numerical feature vectors. 
-A classical example representation of texts is by 'bag of words' features, where for each text the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
+Machine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
+The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
+
+A classical example of word embeddings is 'bag of words'. For each each text, the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
+
+Word embeddings allows ASReview to predict relevance of abstracts from the features of abstracts of which relevance is known. 
+
+corpus = all the text: 
 
 ASReview implements several feature extraction strategies. The following will be compared: 
 
-* Doc2Vec [@Le2014]
-* Tfidf 
-* SBERT
-* embeddingIdf
-
 The model is typically a learning algorithm used to predict the relevance of text.
-The following models will be compared: 
 
-* Naive Bayes 
-* Random Forests
-* Support Vector Machine 
-* Logistic Regression 
-* **Dense Neural Network** 
 
 Active learning = 
 increasing classification performance with every query. 
@@ -82,6 +74,64 @@ kable(tab, "latex", booktabs = TRUE) %>%
   kable_styling(full_width = FALSE) %>%
   column_spec(2, width = "30em") 
 ```
+### Feature Extraction Strategies 
+split_ta = overall hyperparameter 
+
+#### TF-IDF
+The bag-of-words method is simplistic and will highly value often occuring but otherwise meaningless words such as "and". 
+
+Term-frequency Inverse Document Frequency [@Ramos2003] circumvents this problem by adjusting a term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire corpus.
+
+##### hyperparameters 
+    ngram_max: int
+            Can use up to ngrams up to ngram_max. For example in the case of
+            ngram_max=2, monograms and bigrams could be used.
+
+
+#### Doc2Vec
+Predicts words from context. 
+Aims at capturing the relations between word (man-woman, king-queen).
+[@Le2014]. Using a neural network. 
+
+using Continuous Bag-of-Words (CBOW), Skip-Gram model, ....
+Word vector _W_ and extra: document vector _D_, trained to predict words in the text.
+
+
+From gensim [@Rehurek2010].
+
+        Arguments
+        ---------
+        vector_size: int
+            Output size of the vector.
+        epochs: int
+            Number of epochs to train the doc2vec model.
+        min_count: int
+            Minimum number of occurences for a word in the corpus for it to
+            be included in the model.
+        workers: int
+            Number of threads to train the model with.
+        window: int
+            Maximum distance over which word vectors influence each other.
+        dm_concat: int
+            Whether to concatenate word vectors or not.
+            See paper for more detail.
+        dm: int
+            Model to use.
+            0: Use distribute bag of words (DBOW).
+            1: Use distributed memory (DM).
+            2: Use both of the above with half the vector size and concatenate
+            them.
+        dbow_words: int
+            Whether to train the word vectors using the skipgram metho
+            
+            
+#### SBERT
+
+BERT-base model with mean-tokens pooling [@Reimers2019]
+
+#### embeddingIdf 
+This model averages the weighted word vectors of all the words in the text,
+in order to get a single feature vector for each text. The weights are provided by the inverse document frequencies
 
 ## Models 
 ### Naive Bayes 
@@ -95,6 +145,21 @@ Hyperparameters
   * alpha - accounts for features not present in learning samples and prevents zero probabilities in further computations. 
 
 ### Random Forests
+A number of decision trees are fit on bootstrapped samples of the original data, 
+[@Breiman2001]
+RandomForestClassifier from sklearn 
+
+Arguments
+        ---------
+        n_estimators: int
+            Number of estimators.
+        max_features: int
+            Number of features in the model.
+        class_weight: float
+            Class weight of the inclusions.
+        random_state: int, RandomState
+            Set the random state of the RNG.
+        """
 
 ### Support Vector Machine
 
@@ -120,13 +185,12 @@ The following combinations are simulated:
 
 ## Balance Strategies 
 
-## Feature Extraction Strategies 
-
 ## amount of training data
-n_instances = number of papers queried each query
-n_queries = number of queries
-n_prior_included: 5
-n_prior_excluded: 
+
+* n_instances = number of papers queried each query
+* n_queries = number of queries
+* n_prior_included: 5
+* n_prior_excluded:
 
 # Combinations 
 

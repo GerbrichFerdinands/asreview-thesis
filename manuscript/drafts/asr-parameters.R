@@ -78,7 +78,7 @@
                             "Cluster * Uncertainty Sampling", 
                             "Cluster * Random Sampling")
   
-  words$feature_extraction <- c("Doc2Vec", "tf-idf", "sbert", "embeddingIdf")
+  words$feature_extraction <- c("Doc2Vec", "TF-IDF", "sbert", "embeddingIdf")
   
   # words$training_data <- c("10 included, 10 excluded",
   #                          "5 included, 5 excluded",

@@ -47,8 +47,10 @@ simulation pipeline:
     - [ ] lr 
     - [ ] dnn
   - [ ] Feature extraction Strategy
-    - [ ] tfidf
+    - [x] tfidf
     - [ ] doc2vec
+    - [ ] sbert
+    - [ ] embeddingIdf
   - [ ] Balance Strategy
     - [ ] double
   - [ ] Query Strategy
