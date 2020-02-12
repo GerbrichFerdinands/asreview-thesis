@@ -41,7 +41,7 @@ simulation pipeline:
 
 - Begrippenlijst
   - [ ] Models
-    - [ ] nb
+    - [x] nb
     - [ ] Random Forests
     - [ ] SVM
     - [ ] lr 

@@ -34,7 +34,15 @@ combins <- expand.grid(params) %>%
 droprows <- combins$model == "nb" & combins$feature_extraction != "tfidf"
 combins <- combins[!droprows, ]
 ``` 
+# Introduction
 
+
+## The problem
+## Current solutions
+Workload savings 30-70 percent, at a loss of 5% of relevant studies [@Omara-Eves2015]. 
+
+
+# The software 
 ASReview takes the following parameters/arguments: 
 
 - a model
@@ -133,8 +141,8 @@ BERT-base model with mean-tokens pooling [@Reimers2019]
 This model averages the weighted word vectors of all the words in the text,
 in order to get a single feature vector for each text. The weights are provided by the inverse document frequencies
 
-## Models 
-### Naive Bayes 
+### Models 
+#### Naive Bayes 
 Naive Bayes assumes all features are independent given the class value. [@Zhang2004] 
 
 ASReview uses the ` MultinomialNB` from the scikit-learn package [@scikit-learn], that implements the naive Bayes algorithm for multinomially distributed data. 
@@ -144,7 +152,7 @@ Hyperparameters
 
   * alpha - accounts for features not present in learning samples and prevents zero probabilities in further computations. 
 
-### Random Forests
+#### Random Forests
 A number of decision trees are fit on bootstrapped samples of the original data, 
 [@Breiman2001]
 RandomForestClassifier from sklearn 
@@ -161,13 +169,13 @@ Arguments
             Set the random state of the RNG.
         """
 
-### Support Vector Machine
+#### Support Vector Machine
 
-### Logistic Regression 
+#### Logistic Regression 
 
-### __Dense Neural Network__
+#### __Dense Neural Network__
 
-## Query Strategies 
+### Query Strategies 
 * Max - Choose the most likely samples to be included according to the model
 * Uncertainty - choose the most uncertain samples according to the model (i.e. closest to 0.5 probability) [@Lewis1994] 
 * Random - randomly selects abstracts with no regard to model assigned probabilities. 
@@ -183,9 +191,9 @@ The following combinations are simulated:
 * max * random
 * max * uncertainty
 
-## Balance Strategies 
+### Balance Strategies 
 
-## amount of training data
+### amount of training data
 
 * n_instances = number of papers queried each query
 * n_queries = number of queries
@@ -200,12 +208,45 @@ This leads to  `r nrow(combins)` combinations of configurations.
 - For the feature extraction strategies we will focus on doc2vec and tfidf. (but will compute all 4)
 - This leads to 3 * 7  * 4 * 3 + 1 * 7 * 1 * 3 =  273 combinations. 
 
+See appendix A for a table containing all 273 combinations. 
+
+# Performance metrics
+Tradeoff: identifying all relevant papers and reducing workload. 
+
+What is more important: recall or precision? 
+
+Recall more highly valued than precision. 
+
+What about class imbalance? 
+
+
+#### RRF
+Amount of relevant references found after having screened a certain percentage of the total number of abstracts.
+
+
+#### Work saved over sampling (WSS)
+Indicates how much time can be saved, at a given level of recall.
+WSS is in terms of the percentage of abstracts that don't have to be screened by the researcher. 
+Typically, WSS is measured at a recall of 0.95. 
+
+$$\texttt{WSS} = \frac{TN + FN}{N} - (1- recall ) $$ 
+
+#### Raoul
+#### Utility? 
+#### F-measure 
+#### ROC/AUC
+
+
+
+# Appendix A - combinations
+
 ```{r}
 names(combins) <- c("Model", "Query Strategy", "Feature extraction strategy", "Training data [included/excluded]")
 combins %>%
   kable(row.names = FALSE, format = "latex", longtable = TRUE, booktabs = TRUE) %>%
   kable_styling(latex_options = c("repeat_header")) 
 ```
+
 
 
 # References 
