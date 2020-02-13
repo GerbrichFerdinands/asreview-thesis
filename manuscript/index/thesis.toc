@@ -1,4 +1,0 @@
-\contentsline {chapter}{Chapter 1: If you have more two advisors, un-silence line 7}{1}{chapter.1}%
-\contentsline {chapter}{Appendix A: Parameter Configurations}{3}{appendix.A}%
-\contentsline {chapter}{Appendix B: List of Definitions}{13}{appendix.B}%
-\contentsline {chapter}{References}{15}{appendix*.6}%

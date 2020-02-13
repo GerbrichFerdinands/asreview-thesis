@@ -1,12 +1,6 @@
----
-title: "My first simulation"
-author: "Gerbrich Ferdinands"
-date: "2/7/2020"
-output: pdf_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# My first simulation
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Methods
@@ -66,7 +60,9 @@ each inclusion. Not every paper is equally hard to find.
 
 The closer to the left, the better.
 
-![]("figs/myfirstsim/Figure_2.png")
+```{r}
+knitr::include_graphics("figs/myfirstsim/Figure_2.png")
+```
 
 \pagebreak
 #### Limits
@@ -79,17 +75,22 @@ _z_ are 0.1, 0.5 and 2.0.
 
 The quicker the lines touch the black (`y=x`) line, the better.
 
-![when _z_ goes up, optimized parameters perform better.]("figs/myfirstsim/Figure_3.png")
+```{r}
+knitr::include_graphics("figs/myfirstsim/Figure_3.png")
+```
 
 \pagebreak
 ## Console output
 3120 iterations ran overnight. 
 
-![]("figs/myfirstsim/computation.png")
-
+```{r}
+knitr::include_graphics("figs/myfirstsim/computation.png")
+```
 2191 was best performing with a loss of 0.1124
 
-![]("figs/myfirstsim/optmizationresult.png")
+```{r}
+knitr::include_graphics("figs/myfirstsim/optmizationresult.png")
+```
 
 
 ## Notes
