@@ -41,46 +41,6 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -107,16 +67,10 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {\setlength{\parindent}{0pt}%
-  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
-  {\par}
 
 \title{A Minimal Book Example}
 \author{Yihui Xie}
-\date{2020-02-12}
+\date{2020-02-18}
 
 \begin{document}
 \maketitle
@@ -125,97 +79,116 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{frontpage}{%
-\chapter{Frontpage}\label{frontpage}}
+\hypertarget{thesis-ferdinands}{%
+\chapter{thesis Ferdinands}\label{thesis-ferdinands}}
 
-This is my thesis project.
+Goal: evaluate performance of different models of the ASReview tool.
 
-\hypertarget{intro}{%
-\chapter{Introduction}\label{intro}}
+\hypertarget{stage-1-hyperparameter-optimization}{%
+\subsection{Stage 1: hyperparameter optimization}\label{stage-1-hyperparameter-optimization}}
 
-You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
+We are testing 5 models on 5 different datasets.
 
-Figures and tables with captions will be placed in \texttt{figure} and \texttt{table} environments, respectively.
+Every model has its own set of hyperparameters.
+The hyperparameters are optimized on the 5 datasets in three different ways:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\FloatTok{.1}\NormalTok{, }\FloatTok{.1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(pressure, }\DataTypeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{19}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{itemize}
+\tightlist
+\item
+  1 on 1: maximum performance
+\item
+  4 on 1: cross-validation
+\item
+  5 on 1: more data = more better?
+\end{itemize}
 
-\begin{figure}
+This results \((5+5+1)*5\) sets of hyperparameters.
 
-{\centering \includegraphics[width=0.8\linewidth]{bookdown-demo_files/figure-latex/nice-fig-1} 
+\hypertarget{stage-2-simulation}{%
+\subsection{Stage 2: simulation}\label{stage-2-simulation}}
 
-}
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these \(5*5*3=75\) simulation studies, performance of the different models is evaluated.
 
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
+\hypertarget{scripts}{%
+\section{Scripts}\label{scripts}}
 
-Reference a figure by its code chunk label with the \texttt{fig:} prefix, e.g., see Figure \ref{fig:nice-fig}. Similarly, you can reference tables generated from \texttt{knitr::kable()}, e.g., see Table \ref{tab:nice-tab}.
+\begin{itemize}
+\tightlist
+\item
+  simulatie:
+\item[$\square$]
+  script die optimalisatie genereert (config files.)
+\item[$\square$]
+  script die \texttt{.ini}'s voor simulatie genereert.
+\end{itemize}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
-  \KeywordTok{head}\NormalTok{(iris, }\DecValTok{20}\NormalTok{), }\DataTypeTok{caption =} \StringTok{\textquotesingle{}Here is a nice table!\textquotesingle{}}\NormalTok{,}
-  \DataTypeTok{booktabs =} \OtherTok{TRUE}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\hypertarget{strategy}{%
+\chapter{Analysis strategy}\label{strategy}}
 
-\begin{table}
+\hypertarget{datasets}{%
+\section{Datasets}\label{datasets}}
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-5.1 & 3.5 & 1.4 & 0.2 & setosa\\
-4.9 & 3.0 & 1.4 & 0.2 & setosa\\
-4.7 & 3.2 & 1.3 & 0.2 & setosa\\
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
-5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-4.6 & 3.4 & 1.4 & 0.3 & setosa\\
-5.0 & 3.4 & 1.5 & 0.2 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.9 & 3.1 & 1.5 & 0.1 & setosa\\
-\addlinespace
-5.4 & 3.7 & 1.5 & 0.2 & setosa\\
-4.8 & 3.4 & 1.6 & 0.2 & setosa\\
-4.8 & 3.0 & 1.4 & 0.1 & setosa\\
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-5.8 & 4.0 & 1.2 & 0.2 & setosa\\
-\addlinespace
-5.7 & 4.4 & 1.5 & 0.4 & setosa\\
-5.4 & 3.9 & 1.3 & 0.4 & setosa\\
-5.1 & 3.5 & 1.4 & 0.3 & setosa\\
-5.7 & 3.8 & 1.7 & 0.3 & setosa\\
-5.1 & 3.8 & 1.5 & 0.3 & setosa\\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{itemize}
+\tightlist
+\item
+  ptsd
+\item
+  ace
+\item
+  hall
+\item
+  nagtegaal - van PhD van Lars
+\item
+  medische van Jan
+\end{itemize}
 
-You can write citations, too. For example, we are using the \textbf{bookdown} package (Xie \protect\hyperlink{ref-R-bookdown}{2020}) in this sample book, which was built on top of R Markdown and \textbf{knitr} (Xie \protect\hyperlink{ref-xie2015}{2015}).
+\hypertarget{models}{%
+\section{Models}\label{models}}
 
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
+(input table here?)
 
-Here is a review of existing methods.
+\begin{itemize}
+\tightlist
+\item
+  Naive Bayes
+\item
+  Random Forests
+\item
+  Support Vecor Machine (doc2vec)
+\item
+  Logistic Regression
+\item
+  Dense Neural Network (doc2vec)
+\end{itemize}
 
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
+The other parameters remain fixed over the 5 models:
 
-We describe our methods in this chapter.
+\begin{itemize}
+\tightlist
+\item
+  Feature extraction = tf-idf
+\item
+  Query Strategy = max
+\item
+  Balance Strategy = triple
+\item
+  n\_instances=10 (number of papers each query)
+\item
+  n\_prior\_included = 5
+\item
+  n\_prior\_excluded = 5
+\item
+  mix\_ratio = 0.95 (95\% max, 5\% random)
+\end{itemize}
+
+\hypertarget{hyperparameters}{%
+\section{Hyperparameters}\label{hyperparameters}}
 
 \hypertarget{my-first-simulation}{%
 \chapter{My first simulation}\label{my-first-simulation}}
 
-\hypertarget{methods-1}{%
-\section{Methods}\label{methods-1}}
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
 
 A simulation study was performed on the Nagtegaal dataset, using a model with the following configurations:
 
@@ -384,18 +357,7 @@ The quicker the lines touch the black (\texttt{y=x}) line, the better.
 \appendix}
 
 
-\hypertarget{appendix-a}{%
-\chapter{Appendix A}\label{appendix-a}}
-
-We have finished a nice book.
-
-\hypertarget{refs}{}
-\begin{cslreferences}
-\leavevmode\hypertarget{ref-xie2015}{}%
-Xie, Yihui. 2015. \emph{Dynamic Documents with R and Knitr}. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. \url{http://yihui.name/knitr/}.
-
-\leavevmode\hypertarget{ref-R-bookdown}{}%
----------. 2020. \emph{Bookdown: Authoring Books and Technical Documents with R Markdown}. \url{https://github.com/rstudio/bookdown}.
-\end{cslreferences}
+\hypertarget{list-of-definitions}{%
+\chapter{List of definitions}\label{list-of-definitions}}
 
 \end{document}

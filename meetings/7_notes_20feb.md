@@ -1,5 +1,4 @@
-# Notes - core team meeting - core team meeting
-
+# Notes - core team meeting - 20 februari
 # Recap last week
 
 ## Pipeline
@@ -44,26 +43,18 @@ Data sets:
 - min 2000, <10%
 
 # To do
-
-- [ ] analyseplan schrijven.
-- [ ] script die `.ini`'s voor simulatie genereert.
+- [ ] e-mail Lars Tummers/Rosanna Nagtegaal about dataset
+- [ ] dataset from Jan de Boer (medical one)
+- [ ] read paper burt settles 
+- [x] analyseplan schrijven.
+- [x] script die `.ini`'s voor simulatie genereert.
 - [ ] script die optimalisatie genereert. 
 
 - [ ] FETC amendement indienen
 
 simulation pipeline:
-
-- [x] for a nb configuration, run supervised learning hyperopt on the nagtegaal dataset
-- [x] repeat this configuration for all 5 datasets
-- [ ] run active learning hyperopt
-- [x] perform simulation study
-- [ ] run default params simulation study on every nb configuration? --> simulate results.
 - [ ] prodigy project opzoeken
 - [ ] hoe meten we performance?
-- [ ] pride tool
-
-- [x] plannetje met Raoul over hyperparameters optimaliseren.
-
 - Begrippenlijst
   - [ ] Models
     - [x] nb
@@ -93,12 +84,8 @@ simulation pipeline:
     - [ ] Raoul: hoe lang het (gemiddeld) duurt voordat je alle inclusies gevonden hebt
 
   Other:
-- [x] offerte voor stickers
-- [x] active learning table verder uitwerken
-  - [x] abstrackr
-  - [x] colandr
-  - [x] welke statistische modellen
-- [ ] contributors GitHub update 
+- [ ] contributors GitHub update (kijk naar tensorflow)
+  - [ ] alles kaal --> aparte contributing guidelines.
 - [ ] tabel omzetten naar word
 - [ ] appendix voorbereiden met 4 kolommen. 
         - naam; website; citation; 
@@ -107,3 +94,6 @@ simulation pipeline:
   - [ ] type of machine learning
   - [ ] type of active learning 
   - [ ] what happens with your data
+- [ ] catchy sentences with Joukje
+
+- [ ] colandr: differences codes and site: what is up? 

@@ -1,5 +1,5 @@
 ---
-title: "parameters"
+title: "Manuscxript drafts"
 author: "Gerbrich Ferdinands"
 date: "1/14/2020"
 output: pdf_document
@@ -21,12 +21,14 @@ source("asr-parameters.R")
 # configurations table 
 tab <- lapply(words, FUN = function(x) paste(x, collapse = ", "))
 tab <- do.call(rbind, tab)
+# remove row training data (28.02)
 colnames(tab) <- c("Configurations")
-
+tab <- tab[-4,]
 ```
 
 ```{r}
 # combinations table
+params[[4]] <- NULL # remove training data
 combins <- expand.grid(params) %>%
   arrange(model, feature_extraction)
 
@@ -34,26 +36,101 @@ combins <- expand.grid(params) %>%
 droprows <- combins$model == "nb" & combins$feature_extraction != "tfidf"
 combins <- combins[!droprows, ]
 ``` 
-# Introduction
+# Analysis strategy
+Goal: evaluate performance of different models of the ASReview tool. 
 
-
-## The problem
-## Current solutions
-Workload savings 30-70 percent, at a loss of 5% of relevant studies [@Omara-Eves2015]. 
 
 
 # The software 
 ASReview takes the following parameters/arguments: 
 
-- a model
-- a query strategy
-- a balance strategy (fixed)
-- a feature extraction strategy
-- number of training data 
+<!-- - a model -->
+<!-- - a query strategy -->
+<!-- - a balance strategy -->
+<!-- - a feature extraction strategy -->
 
-The goal: 
+```{r}
+kable(tab, "latex", booktabs = TRUE, col.names = "Configurations") %>%
+  kable_styling(full_width = FALSE) %>%
+  column_spec(2, width = "30em") 
+```
+
 Use these inputs to predict relevance of papers. 
 
+## Stage 1: hyperparameter optimization
+We are going to test 5 models on 5 different datasets. 
+
+### Datasets
+
+#### ptsd
+#### ace
+#### hall 
+#### nagtegaal - van PhD van Lars
+#### medische van Jan
+
+### Models
+- Naive Bayes 
+- Random Forests
+- Support Vecor Machine 
+- Logistic Regression
+- Dense Neural Network
+
+Or, more specific: 
+
+```{r}
+tabbie <-
+  combins %>%
+  filter(query_strategy == "max",
+         feature_extraction %in% c("doc2vec", "tfidf") & model %in% c("dense_nn","svm", "nb", "rf", "lr")) %>%
+  select(-query_strategy)
+
+tabbie <- tabbie[c(1,3,5,6,9),]
+row.names(tabbie) <- NULL
+tabbie %>%
+  kable(col.names = names(words)[1:3], format = "latex")
+```
+
+The other parameters remain fixed over the 5 models:
+
+- Query Strategy = max
+- Balance Strategy = triple
+- n_instances=10 (number of papers each query)
+- n_prior_included = 5
+- n_prior_excluded = 5
+
+### Hyperparameters
+Every model has its own set of hyperparameters:
+
+
+### Optimization
+The hyperparameters are optimized on the 5 datasets in three different ways: 
+
+- 1 on 1: maximum performance 
+- 4 on 1: cross-validation 
+- 5 on 1: more data = more better? 
+
+This results $(5+5+1)*5$ sets of hyperparameters. 
+
+## Stage 2: simulation
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
+
+
+### Outcomes 
+Several metrics are used to compare performance of different models over datasets, 
+
+| Dataset   |   | Naive Bayes | Random Forests | Support Vector Machine | Logistic Regression | Dense Neural Network |  
+| --------- | - | --- | --- | --- | --- | ---|
+| ptsd      |   | ?   |     |     |    |     | 
+| ace       |   | ?   |     |     |    |     | 
+| hall      |   | ?   |     |     |    |     | 
+| nagtegaal |   | ?   |     |     |    |     | 
+| ....      |   | ?   |     |     |    |     | 
+
+
+? How to compare outcomes of 3 different optimization strategies? 
+
+
+# Appendix A - list of definitions
 Machine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
 The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
 
@@ -74,14 +151,7 @@ The query strategy determines the way unlabeled papers are queried to the resear
 
 [@modAL2018]
 
-The balance strategy 
 
-
-```{r}
-kable(tab, "latex", booktabs = TRUE) %>%
-  kable_styling(full_width = FALSE) %>%
-  column_spec(2, width = "30em") 
-```
 ### Feature Extraction Strategies 
 split_ta = overall hyperparameter 
 
@@ -238,15 +308,14 @@ $$\texttt{WSS} = \frac{TN + FN}{N} - (1- recall ) $$
 
 
 
-# Appendix A - combinations
+# Appendix B - combinations
 
 ```{r}
-names(combins) <- c("Model", "Query Strategy", "Feature extraction strategy", "Training data [included/excluded]")
+names(combins) <- c("Model", "Query Strategy", "Feature extraction strategy") #, "Training data [included/excluded]")
 combins %>%
   kable(row.names = FALSE, format = "latex", longtable = TRUE, booktabs = TRUE) %>%
   kable_styling(latex_options = c("repeat_header")) 
 ```
-
 
 
 # References 

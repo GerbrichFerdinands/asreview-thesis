@@ -24,7 +24,7 @@
 <meta name="author" content="Yihui Xie" />
 
 
-<meta name="date" content="2020-02-12" />
+<meta name="date" content="2020-02-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,7 +135,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Frontpage</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
 <li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="methods.html"><a href="methods.html#stage-1-hyperparameter-optimization"><i class="fa fa-check"></i><b>4.0.1</b> Stage 1: hyperparameter optimization</a></li>
+<li class="chapter" data-level="4.0.2" data-path="methods.html"><a href="methods.html#stage-2-simulation"><i class="fa fa-check"></i><b>4.0.2</b> Stage 2: simulation</a></li>
+<li class="chapter" data-level="4.0.3" data-path="methods.html"><a href="methods.html#datasets"><i class="fa fa-check"></i><b>4.0.3</b> Datasets</a></li>
+<li class="chapter" data-level="4.0.4" data-path="methods.html"><a href="methods.html#models"><i class="fa fa-check"></i><b>4.0.4</b> Models</a></li>
+<li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#hyperparameters"><i class="fa fa-check"></i><b>4.1</b> Hyperparameters</a></li>
+<li class="chapter" data-level="4.2" data-path="methods.html"><a href="methods.html#scripts"><i class="fa fa-check"></i><b>4.2</b> Scripts</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="my-first-simulation.html"><a href="my-first-simulation.html"><i class="fa fa-check"></i><b>5</b> My first simulation</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="my-first-simulation.html"><a href="my-first-simulation.html#methods-1"><i class="fa fa-check"></i><b>5.1</b> Methods</a></li>
@@ -152,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="appendix-a.html"><a href="appendix-a.html"><i class="fa fa-check"></i><b>A</b> Appendix A</a></li>
+<li class="chapter" data-level="A" data-path="list-of-definitions.html"><a href="list-of-definitions.html"><i class="fa fa-check"></i><b>A</b> List of definitions</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -176,8 +184,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="methods" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Methods</h1>
-<p>We describe our methods in this chapter.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="methods.html#cb3-1"></a><span class="co"># configurations table </span></span>
+<span id="cb3-2"><a href="methods.html#cb3-2"></a>tab &lt;-<span class="st"> </span><span class="kw">lapply</span>(words, <span class="dt">FUN =</span> <span class="cf">function</span>(x) <span class="kw">paste</span>(x, <span class="dt">collapse =</span> <span class="st">&quot;, &quot;</span>))</span>
+<span id="cb3-3"><a href="methods.html#cb3-3"></a>tab &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, tab)</span>
+<span id="cb3-4"><a href="methods.html#cb3-4"></a><span class="kw">colnames</span>(tab) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Configurations&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="methods.html#cb4-1"></a><span class="co"># combinations table</span></span>
+<span id="cb4-2"><a href="methods.html#cb4-2"></a>combins &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(params) <span class="op">%&gt;%</span></span>
+<span id="cb4-3"><a href="methods.html#cb4-3"></a><span class="st">  </span><span class="kw">arrange</span>(model, feature_extraction)</span>
+<span id="cb4-4"><a href="methods.html#cb4-4"></a></span>
+<span id="cb4-5"><a href="methods.html#cb4-5"></a><span class="co"># rows to drop</span></span>
+<span id="cb4-6"><a href="methods.html#cb4-6"></a>droprows &lt;-<span class="st"> </span>combins<span class="op">$</span>model <span class="op">==</span><span class="st"> &quot;nb&quot;</span> <span class="op">&amp;</span><span class="st"> </span>combins<span class="op">$</span>feature_extraction <span class="op">!=</span><span class="st"> &quot;tfidf&quot;</span></span>
+<span id="cb4-7"><a href="methods.html#cb4-7"></a>combins &lt;-<span class="st"> </span>combins[<span class="op">!</span>droprows, ]</span></code></pre></div>
+<p>Goal: evaluate performance of different models of the ASReview tool.</p>
+<div id="stage-1-hyperparameter-optimization" class="section level3">
+<h3><span class="header-section-number">4.0.1</span> Stage 1: hyperparameter optimization</h3>
+<p>We are testing 5 models on 5 different datasets.</p>
+<p>Every model has its own set of hyperparameters.
+The hyperparameters are optimized on the 5 datasets in three different ways:</p>
+<ul>
+<li>1 on 1: maximum performance</li>
+<li>4 on 1: cross-validation</li>
+<li>5 on 1: more data = more better?</li>
+</ul>
+<p>This results <span class="math inline">\((5+5+1)*5\)</span> sets of hyperparameters.</p>
+</div>
+<div id="stage-2-simulation" class="section level3">
+<h3><span class="header-section-number">4.0.2</span> Stage 2: simulation</h3>
+<p>for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these <span class="math inline">\(5*5*3=75\)</span> simulation studies, performance of the different models is evaluated.</p>
+</div>
+<div id="datasets" class="section level3">
+<h3><span class="header-section-number">4.0.3</span> Datasets</h3>
+<ul>
+<li>ptsd</li>
+<li>ace</li>
+<li>hall</li>
+<li>medische van Jan</li>
+<li>van PhD van Lars</li>
+</ul>
+</div>
+<div id="models" class="section level3">
+<h3><span class="header-section-number">4.0.4</span> Models</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="methods.html#cb5-1"></a><span class="kw">kable</span>(tab, <span class="st">&quot;latex&quot;</span>, <span class="dt">booktabs =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb5-2"><a href="methods.html#cb5-2"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb5-3"><a href="methods.html#cb5-3"></a><span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">2</span>, <span class="dt">width =</span> <span class="st">&quot;30em&quot;</span>) </span></code></pre></div>
+<ul>
+<li>Naive Bayes (fe = tf-idf, q = max)</li>
+<li>Random Forests</li>
+<li>Support Vecor Machine</li>
+<li>Logistic Regression</li>
+<li>Dense Neural Network</li>
+</ul>
+<p>The other parameters remain fixed over the 5 models:</p>
+<ul>
+<li>Feature extraction = tf-idf</li>
+<li>Query Strategy = max</li>
+<li>Balance Strategy = triple</li>
+<li>n_instances=10 (number of papers each query)</li>
+<li>n_prior_included = 5</li>
+<li>n_prior_excluded = 5</li>
+<li>mix_ratio = 0.95 (95% max, 5% random)</li>
+</ul>
+</div>
+<div id="hyperparameters" class="section level2">
+<h2><span class="header-section-number">4.1</span> Hyperparameters</h2>
+</div>
+<div id="scripts" class="section level2">
+<h2><span class="header-section-number">4.2</span> Scripts</h2>
+<ul>
+<li>simulatie:</li>
+<li><input type="checkbox" disabled="" />
+script die optimalisatie genereert (eerst alleen linear?)</li>
+<li><input type="checkbox" disabled="" />
+script die <code>.ini</code>’s voor simulatie genereert.</li>
+</ul>
 
+</div>
 </div>
             </section>
 
@@ -235,6 +316,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

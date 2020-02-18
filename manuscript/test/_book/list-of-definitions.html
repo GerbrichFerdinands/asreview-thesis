@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A Minimal Book Example</title>
+  <title>A List of definitions | A Minimal Book Example</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.17.2 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A Minimal Book Example" />
+  <meta property="og:title" content="A List of definitions | A Minimal Book Example" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Minimal Book Example" />
+  <meta name="twitter:title" content="A List of definitions | A Minimal Book Example" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="strategy.html"/>
+<link rel="prev" href="my-first-simulation.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -119,49 +119,17 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">A Minimal Book Example</h1>
-<p class="author"><em>Yihui Xie</em></p>
-<p class="date"><em>2020-02-18</em></p>
-</div>
-<div id="thesis-ferdinands" class="section level1">
-<h1><span class="header-section-number">1</span> thesis Ferdinands</h1>
-<p>Goal: evaluate performance of different models of the ASReview tool.</p>
-<div id="stage-1-hyperparameter-optimization" class="section level3">
-<h3><span class="header-section-number">1.0.1</span> Stage 1: hyperparameter optimization</h3>
-<p>We are testing 5 models on 5 different datasets.</p>
-<p>Every model has its own set of hyperparameters.
-The hyperparameters are optimized on the 5 datasets in three different ways:</p>
-<ul>
-<li>1 on 1: maximum performance</li>
-<li>4 on 1: cross-validation</li>
-<li>5 on 1: more data = more better?</li>
-</ul>
-<p>This results <span class="math inline">\((5+5+1)*5\)</span> sets of hyperparameters.</p>
-</div>
-<div id="stage-2-simulation" class="section level3">
-<h3><span class="header-section-number">1.0.2</span> Stage 2: simulation</h3>
-<p>for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these <span class="math inline">\(5*5*3=75\)</span> simulation studies, performance of the different models is evaluated.</p>
-</div>
-<div id="scripts" class="section level2">
-<h2><span class="header-section-number">1.1</span> Scripts</h2>
-<ul>
-<li>simulatie:</li>
-<li><input type="checkbox" disabled="" />
-script die optimalisatie genereert (config files.)</li>
-<li><input type="checkbox" disabled="" />
-script die <code>.ini</code>’s voor simulatie genereert.</li>
-</ul>
+<div id="list-of-definitions" class="section level1">
+<h1><span class="header-section-number">A</span> List of definitions</h1>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="strategy.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="my-first-simulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -192,7 +160,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-appendix.Rmd",
 "text": "Edit"
 },
 "history": {

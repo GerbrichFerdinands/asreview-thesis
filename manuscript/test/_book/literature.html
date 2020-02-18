@@ -24,7 +24,7 @@
 <meta name="author" content="Yihui Xie" />
 
 
-<meta name="date" content="2020-02-12" />
+<meta name="date" content="2020-02-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,7 +135,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Frontpage</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
 <li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="methods.html"><a href="methods.html#stage-1-hyperparameter-optimization"><i class="fa fa-check"></i><b>4.0.1</b> Stage 1: hyperparameter optimization</a></li>
+<li class="chapter" data-level="4.0.2" data-path="methods.html"><a href="methods.html#stage-2-simulation"><i class="fa fa-check"></i><b>4.0.2</b> Stage 2: simulation</a></li>
+<li class="chapter" data-level="4.0.3" data-path="methods.html"><a href="methods.html#datasets"><i class="fa fa-check"></i><b>4.0.3</b> Datasets</a></li>
+<li class="chapter" data-level="4.0.4" data-path="methods.html"><a href="methods.html#models"><i class="fa fa-check"></i><b>4.0.4</b> Models</a></li>
+<li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#hyperparameters"><i class="fa fa-check"></i><b>4.1</b> Hyperparameters</a></li>
+<li class="chapter" data-level="4.2" data-path="methods.html"><a href="methods.html#scripts"><i class="fa fa-check"></i><b>4.2</b> Scripts</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="my-first-simulation.html"><a href="my-first-simulation.html"><i class="fa fa-check"></i><b>5</b> My first simulation</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="my-first-simulation.html"><a href="my-first-simulation.html#methods-1"><i class="fa fa-check"></i><b>5.1</b> Methods</a></li>
@@ -152,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="appendix-a.html"><a href="appendix-a.html"><i class="fa fa-check"></i><b>A</b> Appendix A</a></li>
+<li class="chapter" data-level="A" data-path="list-of-definitions.html"><a href="list-of-definitions.html"><i class="fa fa-check"></i><b>A</b> List of definitions</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -235,6 +243,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

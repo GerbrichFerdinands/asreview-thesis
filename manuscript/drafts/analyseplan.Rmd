@@ -1,0 +1,80 @@
+---
+title: "analyseplan"
+author: "Gerbrich Ferdinands"
+date: "2/13/2020"
+output: pdf_document
+---
+Goal: evaluate performance of different models of the ASReview tool. 
+
+
+### Stage 1: hyperparameter optimization
+We are testing 5 models on 5 different datasets. 
+
+Every model has its own set of hyperparameters.
+The hyperparameters are optimized on the 5 datasets in three different ways: 
+
+- 1 on 1: maximum performance 
+- 4 on 1: cross-validation 
+- 5 on 1: more data = more better? 
+
+This results $(5+5+1)*5$ sets of hyperparameters. 
+
+### Stage 2: simulation
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
+
+### Datasets
+
+#### ptsd
+#### ace
+#### hall 
+
+#### nagtegaal - van PhD van Lars
+#### medische van Jan
+
+### Models
+(input table here?)
+
+- Naive Bayes 
+- Random Forests
+- Support Vecor Machine (doc2vec)
+- Logistic Regression
+- Dense Neural Network (doc2vec)
+
+The other parameters remain fixed over the 5 models:
+
+- Feature extraction = tf-idf
+- Query Strategy = max
+- Balance Strategy = triple
+- n_instances=10 (number of papers each query)
+- n_prior_included = 5
+- n_prior_excluded = 5
+- mix_ratio = 0.95 (95% max, 5% random)
+
+## Hyperparameters
+
+
+## Scripts 
+  - simulatie:
+- [ ] script die optimalisatie genereert (config files.)
+- [ ] script die `.ini`'s voor simulatie genereert.
+
+```{bash}
+output/
+├── active_learning
+│   ├── nb_max_double_tfidf
+│   │   └── depression_hall_ace_ptsd_nagtegaal
+│   │       ├── best
+│   │       │   ├── ace
+│   │       │   ├── depression
+│   │       │   ├── hall
+│   │       │   ├── nagtegaal
+│   │       │   └── ptsd
+│   │       ├── current
+│   │       │   ├── ace
+│   │       │   ├── depression
+│   │       │   ├── hall
+│   │       │   ├── nagtegaal
+│   │       │   └── ptsd
+│   │       └── trials.pkl
+```
+

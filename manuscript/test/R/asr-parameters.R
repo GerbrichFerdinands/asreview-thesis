@@ -53,7 +53,7 @@
   
   # but for the current simulation study we only use nb, svm, and rf, and logistic regression.
   # and do not vary the balance strategy. 
-  params$model <- params[["model"]][3:7]
+  params$model <- params[["model"]][4:7]
   params$balance_strategy <- NULL
   params$feature_extraction <- params[["feature_extraction"]][1:4]
   params$training_data <- c("10/10", "5/5", "5/10")
@@ -70,7 +70,7 @@
   names(params$training_data) <- params$training_data
   words <- params 
 
-  words$model <- c("2-Layer Neural Network", "Naive Bayes", "Random Forest", "Support Vector Machine", "Logistic Regression")
+  words$model <- c("Naive Bayes", "Random Forest", "Support Vector Machine", "Logistic Regression")
   words$query_strategy <- c("Cluster Sampling", "Maximum Sampling",
                             "Cluster * Maximum  Sampling", 
                             "Maximum * Uncertainty Sampling", 
