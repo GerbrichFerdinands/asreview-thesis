@@ -89,7 +89,7 @@ simulation pipeline:
 - [ ] tabel omzetten naar word
 - [ ] appendix voorbereiden met 4 kolommen. 
         - naam; website; citation; 
-        - open source; link source code; machine learning; active learning 
+        - name; open source; link source code; machine learning; active learning 
 - [ ] most interesting competitors:
   - [ ] type of machine learning
   - [ ] type of active learning 
