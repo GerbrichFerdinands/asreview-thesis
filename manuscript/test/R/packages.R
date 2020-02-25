@@ -1,0 +1,6 @@
+library(tidyverse)
+library(knitr)
+library(xtable)
+library(kableExtra)
+library(captioner)
+library(glue)

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A List of definitions | A Minimal Book Example</title>
+  <title>4 The software | A Minimal Book Example</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.17.2 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A List of definitions | A Minimal Book Example" />
+  <meta property="og:title" content="4 The software | A Minimal Book Example" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A List of definitions | A Minimal Book Example" />
+  <meta name="twitter:title" content="4 The software | A Minimal Book Example" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="my-first-simulation.html"/>
-<link rel="next" href="references.html"/>
+<link rel="prev" href="methods-methods.html"/>
+<link rel="next" href="my-first-simulation.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -137,17 +137,192 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="list-of-definitions" class="section level1">
-<h1><span class="header-section-number">A</span> List of definitions</h1>
+<div id="the-software" class="section level1">
+<h1><span class="header-section-number">4</span> The software</h1>
+<p>ASReview takes the following parameters/arguments:</p>
+<!-- - a model -->
+<!-- - a query strategy -->
+<!-- - a balance strategy -->
+<!-- - a feature extraction strategy -->
+<p>Use these inputs to predict relevance of papers.</p>
+<div id="stage-1-hyperparameter-optimization-1" class="section level3">
+<h3><span class="header-section-number">4.0.1</span> Stage 1: hyperparameter optimization</h3>
+<p>We are going to test 5 models on 5 different datasets.</p>
+<div id="ace" class="section level4">
+<h4><span class="header-section-number">4.0.1.1</span> ACE</h4>
+<p>The ACEInhibitors dataset from the study by <span class="citation">(<span class="citeproc-not-found" data-reference-id="Cohen2006"><strong>???</strong></span>)</span>. a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy.</p>
+<p><a href="mailto:WSS@95" class="email">WSS@95</a>% = 56.61 in <span class="citation">(<span class="citeproc-not-found" data-reference-id="Cohen2006"><strong>???</strong></span>)</span>. (5x2 crossvalidation). Can we beat this?
+The data</p>
+</div>
+<div id="ptsd" class="section level4">
+<h4><span class="header-section-number">4.0.1.2</span> ptsd</h4>
+<p>The review<br />
+The data</p>
+</div>
+<div id="hall" class="section level4">
+<h4><span class="header-section-number">4.0.1.3</span> hall</h4>
+<p>The review <span class="citation">(<span class="citeproc-not-found" data-reference-id="Hall2012"><strong>???</strong></span>)</span>, is reviewed in <span class="citation">(<span class="citeproc-not-found" data-reference-id="Yu2016"><strong>???</strong></span>)</span>.</p>
+</div>
+<div id="nudging" class="section level4">
+<h4><span class="header-section-number">4.0.1.4</span> nudging</h4>
+<p>The review <span class="citation">(<span class="citeproc-not-found" data-reference-id="Nagtegaal2019"><strong>???</strong></span>)</span>
+The data <span class="citation">(<span class="citeproc-not-found" data-reference-id="Nagtegaal2019a"><strong>???</strong></span>)</span></p>
+<p>Paper says:
+- systematic search n = 2006
+- full text screening n = 377
+- included in synthesis n = 100</p>
+<p>Open data online says:</p>
+<ul>
+<li>systematic search n =</li>
+<li>full text screening n =</li>
+<li>included in synthesis n = 101 (18?)</li>
+</ul>
+<p>abstract excel sheet private says:
+- systematic search n = 2018
+- full text screening n =
+- included in synthesis n = 118</p>
+<p>Difference in 18 inclusions = systematic reviews. to exclude/include?</p>
+</div>
+<div id="wilson" class="section level4">
+<h4><span class="header-section-number">4.0.1.5</span> Wilson</h4>
+<p>The review <span class="citation">(<span class="citeproc-not-found" data-reference-id="Appenzeller-Herzog2019"><strong>???</strong></span>)</span>
+The dataset <span class="citation">(<span class="citeproc-not-found" data-reference-id="Appenzeller-Herzog2020"><strong>???</strong></span>)</span></p>
+<ul>
+<li>systematic search n = 3453</li>
+<li>full text screening n = 174</li>
+<li>included in synthesis n = 26</li>
+</ul>
+</div>
+</div>
+<div id="models-1" class="section level3">
+<h3><span class="header-section-number">4.0.2</span> Models</h3>
+<ul>
+<li>Naive Bayes</li>
+<li>Random Forests</li>
+<li>Support Vecor Machine</li>
+<li>Logistic Regression</li>
+<li>Dense Neural Network</li>
+</ul>
+<p>Or, more specific:</p>
+<p>The other parameters remain fixed over the 5 models:</p>
+<ul>
+<li>Query Strategy = max</li>
+<li>Balance Strategy = triple</li>
+<li>n_instances=10 (number of papers each query)</li>
+<li>n_prior_included = 5</li>
+<li>n_prior_excluded = 5</li>
+</ul>
+</div>
+<div id="hyperparameters" class="section level3">
+<h3><span class="header-section-number">4.0.3</span> Hyperparameters</h3>
+<p>Every model has its own set of hyperparameters:</p>
+</div>
+<div id="optimization" class="section level3">
+<h3><span class="header-section-number">4.0.4</span> Optimization</h3>
+<p>The hyperparameters are optimized on the 5 datasets in three different ways:</p>
+<ul>
+<li>1 on 1: maximum performance</li>
+</ul>
+<p><span class="math display">\[ d = D \]</span>
+- 4 on 1: cross-validation
+<span class="math display">\[ d \notin D\]</span></p>
+<p><span class="math display">\[ D = {1, 2, 3, 4}\]</span></p>
+<ul>
+<li>5 on 1: more data = more better?</li>
+</ul>
+<p><span class="math display">\[ d \in D \]</span></p>
+<p>This results <span class="math inline">\((5+5+1)*5\)</span> sets of hyperparameters.</p>
+</div>
+<div id="stage-2-simulation-1" class="section level2">
+<h2><span class="header-section-number">4.1</span> Stage 2: simulation</h2>
+<p>for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these <span class="math inline">\(5*5*3=75\)</span> simulation studies, performance of the different models is evaluated.</p>
+<div id="outcomes" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Outcomes</h3>
+<p>Several metrics are used to compare performance of different models over datasets,</p>
+<table>
+<colgroup>
+<col width="36%" />
+<col width="4%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th></th>
+<th>Naive Bayes</th>
+<th>Random Forests</th>
+<th>Support Vector Machine</th>
+<th>Logistic Regression</th>
+<th>Dense Neural Network</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ptsd</td>
+<td></td>
+<td>?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>ace</td>
+<td></td>
+<td>?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>hall</td>
+<td></td>
+<td>?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>nagtegaal</td>
+<td></td>
+<td>?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>….</td>
+<td></td>
+<td>?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>? How to compare outcomes of 3 different optimization strategies?</p>
+</div>
+</div>
+<div id="evaluation" class="section level2">
+<h2><span class="header-section-number">4.2</span> Evaluation</h2>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="my-first-simulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="methods-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="my-first-simulation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -178,7 +353,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-appendix.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-methods.Rmd",
 "text": "Edit"
 },
 "history": {

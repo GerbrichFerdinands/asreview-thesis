@@ -1,5 +1,0 @@
-# Analysis strategy {#strategy}
-
-
-## Current solutions
-Workload savings 30-70 percent, at a loss of 5% of relevant studies [@Omara-Eves2015]. 

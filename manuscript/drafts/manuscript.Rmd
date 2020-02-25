@@ -18,8 +18,8 @@ library(glue)
 # load model parameters 
 source("asr-parameters.R")
 
-# path to all R folder
 pathRdata <- "../../R/data/"
+
 ```
 
 
@@ -71,7 +71,7 @@ The raw files were preprocessed. Duplicate entries were removed.
 Entries with missing abstracts were removed. 
 Preprocessing scripts can be found on the GitHub repository
 
-Descriptive statistics on the five systematic reviews can be found in Table `r table_nums("datasets", display = "cite")`. 
+Descriptive statistics on the five systematic reviews can be found in `r table_nums("datasets", display = "cite")`. 
 
 ```{r}
 # datasets table
@@ -106,9 +106,30 @@ Note that we assume the oracle/original user to hold the truth.
 This is of course not always the case. 
 
 ## Models 
-Five different models were applied on the data.
+Five different models were applied on the data. 
+
+Machine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
+The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
+
+A classical example of word embeddings is 'bag of words'. For each each text, the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
+
+Word embeddings allows ASReview to predict relevance of abstracts from the features of abstracts of which relevance is known. 
+
+corpus = all the text: 
+
+ASReview implements several feature extraction strategies. The following will be compared: 
+
+The model is typically a learning algorithm used to predict the relevance of text.
 
 
+Active learning = 
+increasing classification performance with every query. 
+The query strategy determines the way unlabeled papers are queried to the researcher. 
+
+[@modAL2018]
+
+
+#### 
 
 ### Optimizing Hyperparameters 
 Every model has its own hyperparameters. 
@@ -150,7 +171,7 @@ The review
 The data
 
 #### hall 
-The review [@Hall2012], is reviewed in [@Yu2016]. 
+The review [@Hall2012], is reviewed in [@Yu2018a]. 
 
 #### nudging
 The review [@Nagtegaal2019]
@@ -263,25 +284,6 @@ Several metrics are used to compare performance of different models over dataset
 ## Evaluation
 
 # Appendix A - list of definitions
-Machine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
-The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
-
-A classical example of word embeddings is 'bag of words'. For each each text, the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
-
-Word embeddings allows ASReview to predict relevance of abstracts from the features of abstracts of which relevance is known. 
-
-corpus = all the text: 
-
-ASReview implements several feature extraction strategies. The following will be compared: 
-
-The model is typically a learning algorithm used to predict the relevance of text.
-
-
-Active learning = 
-increasing classification performance with every query. 
-The query strategy determines the way unlabeled papers are queried to the researcher. 
-
-[@modAL2018]
 
 
 ### Feature Extraction Strategies 

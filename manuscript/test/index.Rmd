@@ -43,4 +43,14 @@ for every for every model (5), for every dataset (5) and for every set of optimi
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
+
+# load all necessary packages
+source("R/packages.R")
+
+# path to all R folder
+pathRdata <- "../../R/data/"
+
+# set chunk default options knitr
+knitr::opts_chunk$set(echo = FALSE)
+
 ```
