@@ -42,8 +42,13 @@ Data sets:
 - Sanne? nog niet af.
 - min 2000, <10%
 
+
+- geen duplicates in inclusies. duplicates in exclusies is wat minder boeiend (vertekent grafieken minder)
+
 # To do
-- [ ] e-mail Lars Tummers/Rosanna Nagtegaal about dataset
+- [ ] e-mail Lars Tummers/Rosanna Nagtegaal about dataset (118 vs 100) --> what is wrong? 
+- [ ] alle 5 datasets op dataset repository?? check! 
+
 - [ ] dataset from Jan de Boer (medical one)
 - [ ] read paper burt settles 
 - [x] analyseplan schrijven.
@@ -64,7 +69,7 @@ simulation pipeline:
     - [ ] dnn
   - [ ] Feature extraction Strategy
     - [x] tfidf
-    - [ ] doc2vec
+    - [x] doc2vec
     - [ ] sbert
     - [ ] embeddingIdf
   - [ ] Balance Strategy
@@ -78,22 +83,22 @@ simulation pipeline:
     - [ ] max * random
     - [ ] max * uncertainty
   - [ ] Metrics
-    - [ ] RRF5
-    - [ ] RRF10
-    - [ ] WSS 95
+    - [x] RRF5
+    - [x] RRF10
+    - [x] WSS 95
     - [ ] Raoul: hoe lang het (gemiddeld) duurt voordat je alle inclusies gevonden hebt
 
   Other:
 - [ ] contributors GitHub update (kijk naar tensorflow)
   - [ ] alles kaal --> aparte contributing guidelines.
-- [ ] tabel omzetten naar word
-- [ ] appendix voorbereiden met 4 kolommen. 
+- [x] tabel omzetten naar word
+- [x] appendix voorbereiden met 4 kolommen. 
         - naam; website; citation; 
         - name; open source; link source code; machine learning; active learning 
 - [ ] most interesting competitors:
   - [ ] type of machine learning
   - [ ] type of active learning 
   - [ ] what happens with your data
-- [ ] catchy sentences with Joukje
+- [x] catchy sentences with Joukje
 
 - [ ] colandr: differences codes and site: what is up? 

@@ -1,5 +1,5 @@
 ---
-title: "Manuscxript drafts"
+title: "Manuscript drafts"
 author: "Gerbrich Ferdinands"
 date: "1/14/2020"
 output: pdf_document
@@ -12,8 +12,14 @@ library(tidyverse)
 library(knitr)
 library(xtable)
 library(kableExtra)
+library(captioner)
+library(glue)
+
 # load model parameters 
 source("asr-parameters.R")
+
+# path to all R folder
+pathRdata <- "../../R/data/"
 ```
 
 
@@ -36,9 +42,77 @@ combins <- expand.grid(params) %>%
 droprows <- combins$model == "nb" & combins$feature_extraction != "tfidf"
 combins <- combins[!droprows, ]
 ``` 
-# Analysis strategy
-Goal: evaluate performance of different models of the ASReview tool. 
 
+
+```{r all tables, results = 'hide'}
+table_nums <- captioner(prefix = "Table")
+table_nums(name = "datasets", caption = "Descriptive statistics on articles and resulting datasets for each original systematic review.")
+```
+
+# Introduction
+SR are booming
+ML tools as well 
+
+[@PRISMA-PGroup2015]
+
+What must be the objective of our tool? 
+
+Selecting papers is a two-step process: abstract & fulltext screening
+
+# Methods
+Goal: evaluate performance of different models of the ASReview tool. 
+The screening process is simulated using ASReview, seeing if the original inclusions replicate. 
+annotated include/exclude
+
+## Datasets
+The data consists of five open datasets on systematic reviews from various research areas. 
+All datasets are openly available.
+The raw files were preprocessed. Duplicate entries were removed.
+Entries with missing abstracts were removed. 
+Preprocessing scripts can be found on the GitHub repository
+
+Descriptive statistics on the five systematic reviews can be found in Table `r table_nums("datasets", display = "cite")`. 
+
+```{r}
+# datasets table
+load(paste0(pathRdata, "datasets_table.Rdata"))
+
+tibble(Dataset = names(all), 
+       #Citation = NA, # maybe add footnote citation with kableExtra i.o. this.
+       `No. studies` = sapply(all, function(x) x[1,1]), 
+       `No. selected for fulltext screening` = sapply(all, function(x) x[1,2]),
+       `No. final inclusions` = sapply(all, function(x) x[1,3]),
+       `Inclusion rate (%)` = sapply(all, function(x) round(x[1,3]/x[1,1]*100,2)),
+       `No. studies in test collection` = sapply(all, function(x) x[3,1]),
+       `No. selected for fulltext screening test collection` = sapply(all, function(x) x[3,2]),
+       `No. final inclusions in test collection` = sapply(all, function(x) x[3,3]),
+       `Inclusion rate in test collection (%)` = sapply(all, function(x) round(x[3,3]/x[3,1]*100,2))
+       ) %>%
+  # knitr kable
+  kable(format = "latex",
+        booktabs = TRUE,
+        caption = table_nums("datasets")) %>%
+  kable_styling(full_width = TRUE) %>%
+  add_header_above(c("", "Original study" = 4, "Test collection" = 4))
+  
+  # add citations
+```
+
+The inclusion rate is ... data is imbalanced. 
+what is the philosophy
+False negatives must be avoided ... 
+The cost of a false negative outweighs the cost of a false positive. 
+Note that we assume the oracle/original user to hold the truth. 
+This is of course not always the case. 
+
+## Models 
+Five different models were applied on the data.
+
+
+
+### Optimizing Hyperparameters 
+Every model has its own hyperparameters. 
+For every model, the hyperparameters are optimized three times, arriving at three versions of the model: 
 
 
 # The software 
@@ -50,23 +124,65 @@ ASReview takes the following parameters/arguments:
 <!-- - a feature extraction strategy -->
 
 ```{r}
-kable(tab, "latex", booktabs = TRUE, col.names = "Configurations") %>%
-  kable_styling(full_width = FALSE) %>%
-  column_spec(2, width = "30em") 
+tab %>%
+kable(format = "latex", 
+      booktabs = TRUE, 
+      col.names = "Configurations") %>%
+  kable_styling(full_width = TRUE)
 ```
 
 Use these inputs to predict relevance of papers. 
 
-## Stage 1: hyperparameter optimization
+### Stage 1: hyperparameter optimization
 We are going to test 5 models on 5 different datasets. 
 
-### Datasets
+
+#### ACE
+The ACEInhibitors dataset from the study by [@Cohen2006]. a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
+
+
+WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
+The data
+
 
 #### ptsd
-#### ace
+The review  
+The data
+
 #### hall 
-#### nagtegaal - van PhD van Lars
-#### medische van Jan
+The review [@Hall2012], is reviewed in [@Yu2016]. 
+
+#### nudging
+The review [@Nagtegaal2019]
+The data [@Nagtegaal2019a]
+
+Paper says: 
+- systematic search n = 2006
+- full text screening n = 377
+- included in synthesis n = 100
+
+Open data online says: 
+
+- systematic search n = 
+- full text screening n = 
+- included in synthesis n = 101 (18?)
+
+abstract excel sheet private says: 
+- systematic search n = 2018
+- full text screening n = 
+- included in synthesis n = 118
+
+Difference in 18 inclusions = systematic reviews. to exclude/include? 
+
+
+#### Wilson
+The review [@Appenzeller-Herzog2019]
+The dataset [@Appenzeller-Herzog2020]
+
+- systematic search n = 3453
+- full text screening n = 174
+- included in synthesis n = 26
+
 
 ### Models
 - Naive Bayes 
@@ -86,8 +202,11 @@ tabbie <-
 
 tabbie <- tabbie[c(1,3,5,6,9),]
 row.names(tabbie) <- NULL
+
 tabbie %>%
-  kable(col.names = names(words)[c(1,3)], format = "latex")
+  kable(col.names = names(words)[c(1,3)], 
+        format = "latex",
+        booktabs = TRUE)
 ```
 
 The other parameters remain fixed over the 5 models:
@@ -105,9 +224,21 @@ Every model has its own set of hyperparameters:
 ### Optimization
 The hyperparameters are optimized on the 5 datasets in three different ways: 
 
+
+
+
+
 - 1 on 1: maximum performance 
+
+$$ d = D $$
 - 4 on 1: cross-validation 
+$$ d \notin D$$ 
+
+$$ D = {1, 2, 3, 4}$$
+
 - 5 on 1: more data = more better? 
+
+$$ d \in D $$
 
 This results $(5+5+1)*5$ sets of hyperparameters. 
 
@@ -129,6 +260,7 @@ Several metrics are used to compare performance of different models over dataset
 
 ? How to compare outcomes of 3 different optimization strategies? 
 
+## Evaluation
 
 # Appendix A - list of definitions
 Machine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
@@ -297,15 +429,19 @@ Amount of relevant references found after having screened a certain percentage o
 #### Work saved over sampling (WSS)
 Indicates how much time can be saved, at a given level of recall.
 WSS is in terms of the percentage of abstracts that don't have to be screened by the researcher. 
-Typically, WSS is measured at a recall of 0.95. 
+Typically, WSS is measured at a recall of 0.95. Reasonable because..
 
-$$\texttt{WSS} = \frac{TN + FN}{N} - (1- recall ) $$ 
+$$\texttt{WSS} = \frac{TN + FN}{N} - (1- recall) $$ 
 
 #### Raoul
 #### Utility? 
 #### F-measure 
 #### ROC/AUC
 
+Is performance related to some characteristic (n, inclusion rate, ...)
+
+## Cross-validation
+Should give an accurate estimate of maximum performance / future systematic reviews to be performed. 
 
 
 # Appendix B - combinations
