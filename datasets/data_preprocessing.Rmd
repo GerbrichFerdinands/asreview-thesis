@@ -1,0 +1,94 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(tidyverse)
+template <- data.frame(search = rep(0,4), # papers obtained in systematic search
+                       ftext = rep(0, 4), # number of abstract inclusions
+                       incl = rep(0,4), # papers included in systematic review
+                       row.names = c("paper", # numbers reported in the publication
+                                     "raw", # numbers published on raw dataset
+                                     "asreview",
+                                     "test")) # numbers in test dataset asreview
+
+# function to compute descriptives from dataset
+data_descr <- function(data){
+  return(c(nrow(data), # all papers obtained in the systematic search
+           sum(data$inclusion_code > 0), # number of abstract inclusions
+           sum(data$included))) # papers included in systematic review
+}
+```
+
+This notebook processes all five systematic review datasets into datasets that can be used for testing asreview. 
+
+## nudging dataset 
+```{r}
+# by Rosanna Nagtegaal
+nudging <- template
+nudging["paper", ] <- c(2006, 377, 100) 
+```
+
+
+## PTSD dataset
+```{r}
+ptsd <- template 
+ptsd["paper", ] <- c(6185, 363, 34) # from flowchart 
+
+# raw --------------------------------------------------------------------------
+ptsd["raw", ] 
+
+```
+
+```{r}
+# asreview ---------------------------------------------------------------------
+ptsd_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Van_de_Schoot_PTSD/output/PTSD_VandeSchoot_18.csv",
+                     header=T)
+
+ptsd["asreview", ] <- data_descr(ptsd_asr)
+```
+
+Now, remove duplicate entries and empty abstracts to arrive at test set. 
+```{r}
+ptsd_test <- ptsd_asr %>%
+  drop_na(abstract) %>% # drop entries with missing abstracts
+  distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+``` 
+
+There are 38 inclusions in this dataset, should be 34. 
+Een vraag! De 'bayesian PTSD-trajectory analysis' kent 34 final inclusions. 
+Voor (het quALITS paper dan, denk ik?) 38 inclusies waren. 
+```{r}
+# get rid of 4 extra inclusions (see log book)
+drop_id <- 
+  ptsd_test %>%
+  filter(included == 1, 
+         str_detect(authors, "Sterling, M., Hendrikz, J., Kenardy, J.") |
+         str_detect(authors, "Hou") |
+         str_detect(authors, "Mason") |
+         str_detect(authors, "Pérez")) %>%
+  select(id)
+drop_id <- drop_id$id
+
+ptsd_test <- ptsd_test[!(ptsd_test$id %in% drop_id), ] 
+
+```
+
+Save the test dataset.
+```{r}
+# save test file
+write.csv(ptsd_test %>%
+            select(authors, title, abstract, included, inclusion_code), # select relevant columns
+          "test_datasets/ptsd.csv")
+```
+
+Derive statistics in final test set.
+```{r}
+ptsd["test", ] <- data_descr(ptsd_test)
+```
+
+## software
+
