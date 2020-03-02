@@ -49,9 +49,27 @@ table_nums <- captioner(prefix = "Table")
 table_nums(name = "datasets", caption = "Descriptive statistics on articles and resulting datasets for each original systematic review.")
 ```
 
+#### Introduction 
+#### Methods
+A convenience sample of 5 existing systematic reviews on varying topics was collected.
+
+#### Results
+#### Discussion
+
+
+\newpage
 # Introduction
 SR are booming
-ML tools as well 
+ML tools as well
+Literature reviews 
+machine learning algorithms have been proposed to reduce workload in abstract screening. 
+
+- objectives - to demonstrate effectiveness of ml algorithm in reducing abstract classification for systematic reviews 
+- justification - 
+- background 
+- guidance to reader 
+- summary/conclusion
+
 
 [@PRISMA-PGroup2015]
 
@@ -59,19 +77,51 @@ What must be the objective of our tool?
 
 Selecting papers is a two-step process: abstract & fulltext screening
 
+\newpage
 # Methods
 Goal: evaluate performance of different models of the ASReview tool. 
 The screening process is simulated using ASReview, seeing if the original inclusions replicate. 
-annotated include/exclude
 
 ## Datasets
-The data consists of five open datasets on systematic reviews from various research areas. 
-All datasets are openly available.
-The raw files were preprocessed. Duplicate entries were removed.
+The algorithm will be tested on five systematic reviews from various research areas. 
+test datasets serve as systematic search results, then perform active learning to detect inclusions. 
+
+#### software 
+A review on fault prediction in software engineering by [@Hall2012]. 
+The dataset is reviewed from [@Yu2018a] who collected datasets on literature reviews from the software engineering field. 
+
+#### nudging
+review [@Nagtegaal2019]
+The data [@Nagtegaal2019a]
+
+Difference in 18 inclusions = systematic reviews. to exclude/include? 
+
+#### ptsd
+The review [@vandeSchoot2018]
+The data [@Winter2020]
+
+#### Wilson
+The review [@Appenzeller-Herzog2019]
+The dataset [@Appenzeller-Herzog2020]
+
+- systematic search n = 3453
+- full text screening n = 174
+- included in synthesis n = 26
+
+... dataset is ...
+
+Descriptive statistics on the reviews can be found in `r table_nums("datasets", display = "cite")`. 
+All datasets accompanying the systematic reviews are openly published. 
+The datasets contain information on all citations obtained in the search strategy and which citations were included in the systematic review. 
+
+For every SR, the raw datafiles were preprocessed into a test dataset.
+
+These test datasets contain authors, title, abstract and annotation of whether the entry was included in the final review or not (0/1). 
+
 Entries with missing abstracts were removed. 
+Duplicate entries were removed. 
 Preprocessing scripts can be found on the GitHub repository
 
-Descriptive statistics on the five systematic reviews can be found in `r table_nums("datasets", display = "cite")`. 
 
 ```{r}
 # datasets table
@@ -156,53 +206,12 @@ Use these inputs to predict relevance of papers.
 
 ### Stage 1: hyperparameter optimization
 We are going to test 5 models on 5 different datasets. 
-
-
 #### ACE
 The ACEInhibitors dataset from the study by [@Cohen2006]. a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
 
 
 WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
 The data
-
-
-#### ptsd
-The review  
-The data
-
-#### hall 
-The review [@Hall2012], is reviewed in [@Yu2018a]. 
-
-#### nudging
-The review [@Nagtegaal2019]
-The data [@Nagtegaal2019a]
-
-Paper says: 
-- systematic search n = 2006
-- full text screening n = 377
-- included in synthesis n = 100
-
-Open data online says: 
-
-- systematic search n = 
-- full text screening n = 
-- included in synthesis n = 101 (18?)
-
-abstract excel sheet private says: 
-- systematic search n = 2018
-- full text screening n = 
-- included in synthesis n = 118
-
-Difference in 18 inclusions = systematic reviews. to exclude/include? 
-
-
-#### Wilson
-The review [@Appenzeller-Herzog2019]
-The dataset [@Appenzeller-Herzog2020]
-
-- systematic search n = 3453
-- full text screening n = 174
-- included in synthesis n = 26
 
 
 ### Models
@@ -264,10 +273,11 @@ $$ d \in D $$
 This results $(5+5+1)*5$ sets of hyperparameters. 
 
 ## Stage 2: simulation
-for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
-
+Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions. Results are aggregated (?)
 ### Outcomes 
+For each model, 
 Several metrics are used to compare performance of different models over datasets, 
 
 | Dataset   |   | Naive Bayes | Random Forests | Support Vector Machine | Logistic Regression | Dense Neural Network |  
@@ -283,6 +293,15 @@ Several metrics are used to compare performance of different models over dataset
 
 ## Evaluation
 
+\newpage
+
+# Results
+
+\newpage
+# Discussion
+
+
+\newpage
 # Appendix A - list of definitions
 
 
