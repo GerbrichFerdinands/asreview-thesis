@@ -60,10 +60,8 @@ A convenience sample of 5 existing systematic reviews on varying topics was coll
 
 \newpage
 # Introduction
-SR are booming
-ML tools as well
-Literature reviews 
-machine learning algorithms have been proposed to reduce workload in abstract screening. 
+Systematic Reviews (SR's) are booming - but they are a lot of work
+Various machien learning tools have been proposed to reduce workload in abstract screening. 
 
 - objectives - to demonstrate effectiveness of ml algorithm in reducing abstract classification for systematic reviews 
 - justification - 
@@ -71,10 +69,16 @@ machine learning algorithms have been proposed to reduce workload in abstract sc
 - guidance to reader 
 - summary/conclusion
 
-
+A SR can be divided into phases. 
+Everything starts with a **systematic search**, leading to
+then citation screening is performed, then full-text screening
 [@PRISMA-PGroup2015]
 
-What must be the objective of our tool? 
+
+What must be the objective of our tool?:
+It is the tedious task citation screening part where loads of time can be saved. 
+
+models are designed in a 'realistic' way (you have some inclusions)
 
 Selecting papers is a two-step process: abstract & fulltext screening
 
@@ -97,6 +101,13 @@ increasing classification performance with every query.
 The query strategy determines the way unlabeled papers are queried to the researcher. 
 
 [@modAL2018]
+
+## Background
+[@Yu2018a, @Yu2019] simulated 32 svm classifiers, on software engineering. 
+
+In terms of Yu et al, we adopt .CT. 
+
+Our extensions is that we try different classifiers, on more datasets. 
 
 \newpage
 # Methods
@@ -189,14 +200,19 @@ This is of course not always the case.
 ## Simulations
 The original systematic review is reproduced using five different models.
 
-A simulation consists of the following elements:
-we have a model $M$ with (hyper)parameters $h$, performing an automated systematic review on SR dataset $d$. 
+A simulation is of one model on one dataset. 
+we have a model $M$ using a classifier $c$ with (hyper)parameters $h$, performing an automated systematic review on SR dataset $d$. 
 The model starts with 5 inclusions and 5 exclusions, randomly selected. The simulation is repeated for 10 trials $t$. 
-
+We use 5 inclusions and exclusions as we assume the researcher has some prior knowledge on this. 
 for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
 Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions. Results are aggregated (?)
 
+assumptions
+ 
+ - decisions of the original SR are **ground truth** (benchmark) (oracle)
+ 
+ - binary classifications: relevant/irrelevant 
 
 ### Optimizing Hyperparameters 
 Every model has its own hyperparameters. 
