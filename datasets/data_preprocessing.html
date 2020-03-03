@@ -1661,6 +1661,9 @@ data_descr &lt;- function(data){
            sum(data$included))) # papers included in systematic review
 }</code></pre>
 <p>This notebook processes all five systematic review datasets into datasets that can be used for testing asreview.</p>
+<div id="ace-dataset" class="section level2">
+<h2>ace dataset</h2>
+</div>
 <div id="nudging-dataset" class="section level2">
 <h2>nudging dataset</h2>
 <pre class="r"><code># by Rosanna Nagtegaal
@@ -1711,6 +1714,21 @@ write.csv(ptsd_test %&gt;%
 </div>
 <div id="software" class="section level2">
 <h2>software</h2>
+</div>
+<div id="wilson" class="section level2">
+<h2>wilson</h2>
+</div>
+<div id="save-descriptive-statistics" class="section level1">
+<h1>Save descriptive statistics</h1>
+<pre class="r"><code># put everything together in list. 
+all &lt;- list(ace = ace,
+            nudging = nudging,
+            ptsd = ptsd,
+            software = software,
+            wilson = wilson)
+
+# save datafile, to serve as data for descriptive table in manuscript
+save(all, file = &quot;../manuscript/drafts/data/datasets_table.Rdata&quot;)</code></pre>
 </div>
 
 

@@ -25,6 +25,7 @@ data_descr <- function(data){
 
 This notebook processes all five systematic review datasets into datasets that can be used for testing asreview. 
 
+## ace dataset 
 ## nudging dataset 
 ```{r}
 # by Rosanna Nagtegaal
@@ -91,4 +92,20 @@ ptsd["test", ] <- data_descr(ptsd_test)
 ```
 
 ## software
+
+## wilson
+
+# Save descriptive statistics 
+
+```{r eval = FALSE}
+# put everything together in list. 
+all <- list(ace = ace,
+            nudging = nudging,
+            ptsd = ptsd,
+            software = software,
+            wilson = wilson)
+
+# save datafile, to serve as data for descriptive table in manuscript
+save(all, file = "../manuscript/drafts/data/datasets_table.Rdata")
+```
 

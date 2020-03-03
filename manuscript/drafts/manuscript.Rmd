@@ -18,7 +18,8 @@ library(glue)
 # load model parameters 
 source("asr-parameters.R")
 
-pathRdata <- "../../R/data/"
+#pathRdata <- "../../R/data/"
+pathRdata <- "data/"
 
 ```
 
@@ -77,14 +78,44 @@ What must be the objective of our tool?
 
 Selecting papers is a two-step process: abstract & fulltext screening
 
+## active learning for systematic reviews 
+achine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
+The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
+
+A classical example of word embeddings is 'bag of words'. For each each text, the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
+
+Word embeddings allows ASReview to predict relevance of abstracts from the features of abstracts of which relevance is known. 
+
+corpus = all the text: 
+
+ASReview implements several feature extraction strategies. The following will be compared: 
+
+The model is typically a learning algorithm used to predict the relevance of text.
+
+Active learning = 
+increasing classification performance with every query. 
+The query strategy determines the way unlabeled papers are queried to the researcher. 
+
+[@modAL2018]
+
 \newpage
 # Methods
 Goal: evaluate performance of different models of the ASReview tool. 
 The screening process is simulated using ASReview, seeing if the original inclusions replicate. 
+What would happen if the citation screening would have been performed using asreview? 
 
 ## Datasets
 The algorithm will be tested on five systematic reviews from various research areas. 
 test datasets serve as systematic search results, then perform active learning to detect inclusions. 
+
+#### ace
+The ACEInhibitors dataset from the study by [@Cohen2006].
+The study includes several data sets from the medical sciences, one of them is on ACE inhibitors.
+
+a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
+
+WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
+The data
 
 #### software 
 A review on fault prediction in software engineering by [@Hall2012]. 
@@ -97,9 +128,9 @@ The data [@Nagtegaal2019a]
 Difference in 18 inclusions = systematic reviews. to exclude/include? 
 
 #### ptsd
-The review [@vandeSchoot2018]
-The data [@Winter2020]
-
+A review [@vandeSchoot2018] on longitudinal studies on posttraumatic stress symptoms assessed after exposure to trauma. 
+The corresponding dataset [@Winter2020].  
+ 
 #### Wilson
 The review [@Appenzeller-Herzog2019]
 The dataset [@Appenzeller-Herzog2020]
@@ -155,31 +186,17 @@ The cost of a false negative outweighs the cost of a false positive.
 Note that we assume the oracle/original user to hold the truth. 
 This is of course not always the case. 
 
-## Models 
-Five different models were applied on the data. 
+## Simulations
+The original systematic review is reproduced using five different models.
 
-Machine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
-The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
+A simulation consists of the following elements:
+we have a model $M$ with (hyper)parameters $h$, performing an automated systematic review on SR dataset $d$. 
+The model starts with 5 inclusions and 5 exclusions, randomly selected. The simulation is repeated for 10 trials $t$. 
 
-A classical example of word embeddings is 'bag of words'. For each each text, the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
-Word embeddings allows ASReview to predict relevance of abstracts from the features of abstracts of which relevance is known. 
+Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions. Results are aggregated (?)
 
-corpus = all the text: 
-
-ASReview implements several feature extraction strategies. The following will be compared: 
-
-The model is typically a learning algorithm used to predict the relevance of text.
-
-
-Active learning = 
-increasing classification performance with every query. 
-The query strategy determines the way unlabeled papers are queried to the researcher. 
-
-[@modAL2018]
-
-
-#### 
 
 ### Optimizing Hyperparameters 
 Every model has its own hyperparameters. 
@@ -206,12 +223,6 @@ Use these inputs to predict relevance of papers.
 
 ### Stage 1: hyperparameter optimization
 We are going to test 5 models on 5 different datasets. 
-#### ACE
-The ACEInhibitors dataset from the study by [@Cohen2006]. a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
-
-
-WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
-The data
 
 
 ### Models
@@ -250,13 +261,8 @@ The other parameters remain fixed over the 5 models:
 ### Hyperparameters
 Every model has its own set of hyperparameters:
 
-
 ### Optimization
 The hyperparameters are optimized on the 5 datasets in three different ways: 
-
-
-
-
 
 - 1 on 1: maximum performance 
 
@@ -272,10 +278,8 @@ $$ d \in D $$
 
 This results $(5+5+1)*5$ sets of hyperparameters. 
 
-## Stage 2: simulation
-for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
-Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions. Results are aggregated (?)
+
 ### Outcomes 
 For each model, 
 Several metrics are used to compare performance of different models over datasets, 
