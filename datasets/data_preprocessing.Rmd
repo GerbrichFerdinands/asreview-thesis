@@ -26,11 +26,61 @@ data_descr <- function(data){
 This notebook processes all five systematic review datasets into datasets that can be used for testing asreview. 
 
 ## ace dataset 
+```{r}
+ace <- template
+ace["paper", ] <- c(2544, NA, round(2544*0.0160)) 
+
+# raw --------------------------------------------------------------------------
+# original paper not to linked directly. cannot be retrieved? 
+# checked dataset online by cohen et al. 
+#https://dmice.ohsu.edu/cohenaa/systematic-drug-class-review-data.html
+ace["raw", ] <- c(2544, NA, 41)
+
+# asreview ---------------------------------------------------------------------
+ace_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Cohen_EBM/output/ACEInhibitors.csv",
+                     header=T)
+
+ace["asreview", ] <- c(nrow(ace_asr),
+                       NA,
+                       sum(ace_asr$label_included))
+```
+
+Create test dataset
+```{r}
+ace_test <- ace_asr %>%
+  drop_na(abstract) %>% # drop entries with missing abstracts
+  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
+
+ace["test", ] <- c(nrow(ace_test),
+                   NA,
+                   sum(ace_test$label_included))
+```
+
+
+```{r}
+# select columns
+ace_test <- ace_test %>%
+       select(authors, title, abstract, label_included) # select relevant columns
+
+# save test file
+write.csv(ace_test,
+          "test_datasets/ace.csv")
+```
+
+
+
 ## nudging dataset 
 ```{r}
 # by Rosanna Nagtegaal
 nudging <- template
 nudging["paper", ] <- c(2006, 377, 100) 
+```
+
+
+```{r}
+# data is not public yet
+# raw
+# asreview
 ```
 
 
@@ -74,15 +124,17 @@ drop_id <-
   select(id)
 drop_id <- drop_id$id
 
+# get rid of 4 papers
 ptsd_test <- ptsd_test[!(ptsd_test$id %in% drop_id), ] 
-
 ```
 
 Save the test dataset.
 ```{r}
+# finalize dataset and save 
+ptsd_test <- ptsd_test %>%
+            select(authors, title, abstract, included, inclusion_code) # select relevant columns
 # save test file
-write.csv(ptsd_test %>%
-            select(authors, title, abstract, included, inclusion_code), # select relevant columns
+write.csv(ptsd_test,
           "test_datasets/ptsd.csv")
 ```
 
@@ -92,17 +144,93 @@ ptsd["test", ] <- data_descr(ptsd_test)
 ```
 
 ## software
+```{r}
+hall <- template
+# or do it in the paper from the Yu et al study? yes. 
+hall["paper", ] <- c(8911, NA, 104)
+
+# raw --------------------------------------------------------------------------
+h_raw <- read.csv("https://zenodo.org/record/1162952/files/Hall.csv",
+                  header=T)
+
+hall["raw", ] <- c(length(h_raw$Document.Title),
+                   NA,
+                   sum(h_raw$label == "yes"))
+                          
+# asreview ---------------------------------------------------------------------
+hall_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/Software%20Engineering%201%20Hall.csv",
+                     header=T)
+
+hall["asreview", ] <- data_descr(hall_asr)
+
+
+```
+
+creating test dataset
+```{r}
+hall_test <- hall_asr %>%
+   drop_na(abstract) %>% # drop entries with missing abstracts
+   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+hall["test", ] <- data_descr(hall_test)
+
+write.csv(hall_test , # select relevant columns
+          "test_datasets/software.csv")
+```
 
 ## wilson
 
+```{r}
+wilson <- template
+wilson["paper", ] <- c(3453, 174, 26)
+
+# raw --------------------------------------------------------------------------
+# w_ftext <- read.delim("../datasets/raw/DOKU_All FT-Screening_20200116_cap.txt")
+# w_incl <- read.csv("../datasets/raw/DOKU_All Included_20200116_cap.csv")
+# w_all <- read.csv("../datasets/raw/DOKU_All TiAb-Screening_20200116_cap.csv")
+# wilson["raw", ] <- c(nrow(w_all), nrow(w_ftext), nrow(w_incl))
+wilson["raw", ] <- c(3453, 174, 26) # looked it up
+
+w_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv",
+                     header=T)
+
+# inclusion_code label is not in there 
+w_asr$inclusion_code <- w_asr$label_abstract_screening + w_asr$label_included
+w_asr$included <- w_asr$label_included
+wilson["asreview", ] <- data_descr(w_asr)
+
+```
+
+```{r}
+# create test dataset
+w_test <- w_asr %>%
+  drop_na(abstract) %>% # drop entries with missing abstracts
+  distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+
+# select relevant columns
+w_test <- w_test %>%
+            select(authors, title, abstract, included, inclusion_code)
+
+wilson["test",] <- data_descr(w_test)
+```
+
+
+Save the test dataset.
+```{r}
+# save test file
+write.csv(w_test , # select relevant columns
+          "test_datasets/wilson.csv")
+```
+```
+
+
 # Save descriptive statistics 
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 # put everything together in list. 
 all <- list(ace = ace,
             nudging = nudging,
             ptsd = ptsd,
-            software = software,
+            software = hall,
             wilson = wilson)
 
 # save datafile, to serve as data for descriptive table in manuscript

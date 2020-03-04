@@ -1638,12 +1638,12 @@ summary {
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
 ## ✓ tibble  2.1.3     ✓ dplyr   0.8.4
 ## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
 ## ✓ readr   1.3.1     ✓ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>template &lt;- data.frame(search = rep(0,4), # papers obtained in systematic search
@@ -1663,12 +1663,46 @@ data_descr &lt;- function(data){
 <p>This notebook processes all five systematic review datasets into datasets that can be used for testing asreview.</p>
 <div id="ace-dataset" class="section level2">
 <h2>ace dataset</h2>
+<pre class="r"><code>ace &lt;- template
+ace[&quot;paper&quot;, ] &lt;- c(2544, NA, round(2544*0.0160)) 
+
+# raw --------------------------------------------------------------------------
+# original paper not to linked directly. cannot be retrieved? 
+# checked dataset online by cohen et al. 
+#https://dmice.ohsu.edu/cohenaa/systematic-drug-class-review-data.html
+ace[&quot;raw&quot;, ] &lt;- c(2544, NA, 41)
+
+# asreview ---------------------------------------------------------------------
+ace_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Cohen_EBM/output/ACEInhibitors.csv&quot;,
+                     header=T)
+
+ace[&quot;asreview&quot;, ] &lt;- c(nrow(ace_asr),
+                       NA,
+                       sum(ace_asr$label_included))</code></pre>
+<p>Create test dataset</p>
+<pre class="r"><code>ace_test &lt;- ace_asr %&gt;%
+  drop_na(abstract) %&gt;% # drop entries with missing abstracts
+  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
+
+ace[&quot;test&quot;, ] &lt;- c(nrow(ace_test),
+                   NA,
+                   sum(ace_test$label_included))</code></pre>
+<pre class="r"><code># select columns
+ace_test &lt;- ace_test %&gt;%
+       select(authors, title, abstract, label_included) # select relevant columns
+
+# save test file
+write.csv(ace_test,
+          &quot;test_datasets/ace.csv&quot;)</code></pre>
 </div>
 <div id="nudging-dataset" class="section level2">
 <h2>nudging dataset</h2>
 <pre class="r"><code># by Rosanna Nagtegaal
 nudging &lt;- template
 nudging[&quot;paper&quot;, ] &lt;- c(2006, 377, 100) </code></pre>
+<pre class="r"><code># data is not public yet
+# raw
+# asreview</code></pre>
 </div>
 <div id="ptsd-dataset" class="section level2">
 <h2>PTSD dataset</h2>
@@ -1703,28 +1737,90 @@ drop_id &lt;-
   select(id)
 drop_id &lt;- drop_id$id
 
+# get rid of 4 papers
 ptsd_test &lt;- ptsd_test[!(ptsd_test$id %in% drop_id), ] </code></pre>
 <p>Save the test dataset.</p>
-<pre class="r"><code># save test file
-write.csv(ptsd_test %&gt;%
-            select(authors, title, abstract, included, inclusion_code), # select relevant columns
+<pre class="r"><code># finalize dataset and save 
+ptsd_test &lt;- ptsd_test %&gt;%
+            select(authors, title, abstract, included, inclusion_code) # select relevant columns
+# save test file
+write.csv(ptsd_test,
           &quot;test_datasets/ptsd.csv&quot;)</code></pre>
 <p>Derive statistics in final test set.</p>
 <pre class="r"><code>ptsd[&quot;test&quot;, ] &lt;- data_descr(ptsd_test)</code></pre>
 </div>
 <div id="software" class="section level2">
 <h2>software</h2>
+<pre class="r"><code>hall &lt;- template
+# or do it in the paper from the Yu et al study? yes. 
+hall[&quot;paper&quot;, ] &lt;- c(8911, NA, 104)
+
+# raw --------------------------------------------------------------------------
+h_raw &lt;- read.csv(&quot;https://zenodo.org/record/1162952/files/Hall.csv&quot;,
+                  header=T)
+
+hall[&quot;raw&quot;, ] &lt;- c(length(h_raw$Document.Title),
+                   NA,
+                   sum(h_raw$label == &quot;yes&quot;))
+                          
+# asreview ---------------------------------------------------------------------
+hall_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/Software%20Engineering%201%20Hall.csv&quot;,
+                     header=T)
+
+hall[&quot;asreview&quot;, ] &lt;- data_descr(hall_asr)</code></pre>
+<p>creating test dataset</p>
+<pre class="r"><code>hall_test &lt;- hall_asr %&gt;%
+   drop_na(abstract) %&gt;% # drop entries with missing abstracts
+   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+hall[&quot;test&quot;, ] &lt;- data_descr(hall_test)
+
+write.csv(hall_test , # select relevant columns
+          &quot;test_datasets/software.csv&quot;)</code></pre>
 </div>
 <div id="wilson" class="section level2">
 <h2>wilson</h2>
-</div>
-<div id="save-descriptive-statistics" class="section level1">
-<h1>Save descriptive statistics</h1>
-<pre class="r"><code># put everything together in list. 
+<pre class="r"><code>wilson &lt;- template
+wilson[&quot;paper&quot;, ] &lt;- c(3453, 174, 26)
+
+# raw --------------------------------------------------------------------------
+# w_ftext &lt;- read.delim(&quot;../datasets/raw/DOKU_All FT-Screening_20200116_cap.txt&quot;)
+# w_incl &lt;- read.csv(&quot;../datasets/raw/DOKU_All Included_20200116_cap.csv&quot;)
+# w_all &lt;- read.csv(&quot;../datasets/raw/DOKU_All TiAb-Screening_20200116_cap.csv&quot;)
+# wilson[&quot;raw&quot;, ] &lt;- c(nrow(w_all), nrow(w_ftext), nrow(w_incl))
+wilson[&quot;raw&quot;, ] &lt;- c(3453, 174, 26) # looked it up
+
+w_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv&quot;,
+                     header=T)
+
+# inclusion_code label is not in there 
+w_asr$inclusion_code &lt;- w_asr$label_abstract_screening + w_asr$label_included
+w_asr$included &lt;- w_asr$label_included
+wilson[&quot;asreview&quot;, ] &lt;- data_descr(w_asr)</code></pre>
+<pre class="r"><code># create test dataset
+w_test &lt;- w_asr %&gt;%
+  drop_na(abstract) %&gt;% # drop entries with missing abstracts
+  distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+
+# select relevant columns
+w_test &lt;- w_test %&gt;%
+            select(authors, title, abstract, included, inclusion_code)
+
+wilson[&quot;test&quot;,] &lt;- data_descr(w_test)</code></pre>
+<p>Save the test dataset.</p>
+<pre class="r"><code># save test file
+write.csv(w_test , # select relevant columns
+          &quot;test_datasets/wilson.csv&quot;)</code></pre>
+<pre><code>
+
+# Save descriptive statistics 
+
+
+```r
+# put everything together in list. 
 all &lt;- list(ace = ace,
             nudging = nudging,
             ptsd = ptsd,
-            software = software,
+            software = hall,
             wilson = wilson)
 
 # save datafile, to serve as data for descriptive table in manuscript
