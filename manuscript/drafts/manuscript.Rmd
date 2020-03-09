@@ -2,8 +2,11 @@
 title: "Manuscript drafts"
 author: "Gerbrich Ferdinands"
 date: "1/14/2020"
-output: pdf_document
+output: 
+  pdf_document:
+    citation_package: biblatex
 bibliography: asreview.bib
+
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -14,6 +17,7 @@ library(xtable)
 library(kableExtra)
 library(captioner)
 library(glue)
+library(rbbt)
 
 # load model parameters 
 source("asr-parameters.R")
@@ -47,7 +51,8 @@ combins <- combins[!droprows, ]
 
 ```{r all tables, results = 'hide'}
 table_nums <- captioner(prefix = "Table")
-table_nums(name = "datasets", caption = "Descriptive statistics on articles and resulting datasets for each original systematic review.")
+# table  on datasets statistics
+table_nums(name = "datasets", caption = "Statistics on datasets from original systematic reviews.")
 ```
 
 #### Introduction 
@@ -82,6 +87,9 @@ models are designed in a 'realistic' way (you have some inclusions)
 
 Selecting papers is a two-step process: abstract & fulltext screening
 
+
+RQ1 
+
 ## active learning for systematic reviews 
 achine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
 The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
@@ -102,9 +110,21 @@ The query strategy determines the way unlabeled papers are queried to the resear
 
 [@modAL2018]
 
-## Background
-[@Yu2018a, @Yu2019] simulated 32 svm classifiers, on software engineering. 
+- pool unlabeled abstracts $\mathcal{U}$ 
+- labeled data set $\mathcal{L}$, 
+- instance $x$, label $y$
 
+- utility measure $\phi_A(\cdot)$
+- $x^*_A$ best query instance according to $\phi_A(\cdot)$ 
+
+```{}
+while 
+
+```
+
+## Background
+[@Yu2018a], [@Yu2019] simulated 32 svm classifiers, on software engineering. 
+A popular classifier is SVM 
 In terms of Yu et al, we adopt .CT. 
 
 Our extensions is that we try different classifiers, on more datasets. 
@@ -116,10 +136,19 @@ The screening process is simulated using ASReview, seeing if the original inclus
 What would happen if the citation screening would have been performed using asreview? 
 
 ## Datasets
+
 The algorithm will be tested on five systematic reviews from various research areas. 
 test datasets serve as systematic search results, then perform active learning to detect inclusions. 
 
-#### ace
+#### ace 
+A dataset from a collection of systematic reviews on drug efficacy from the medical sciences [@Cohen2006]. 
+This dataset is on a systematic review 
+
+efficacy of Angiotensin-converting enzyme (ACE) inhibitors.
+The ace dataset comes from a study on reducing workload in systematic reviews  [@Cohen2006].
+The ace dataset is on the efficacy of 
+
+drug class 
 The ACEInhibitors dataset from the study by [@Cohen2006].
 The study includes several data sets from the medical sciences, one of them is on ACE inhibitors.
 
@@ -146,13 +175,7 @@ The corresponding dataset [@Winter2020].
 The review [@Appenzeller-Herzog2019]
 The dataset [@Appenzeller-Herzog2020]
 
-- systematic search n = 3453
-- full text screening n = 174
-- included in synthesis n = 26
-
-... dataset is ...
-
-Descriptive statistics on the reviews can be found in `r table_nums("datasets", display = "cite")`. 
+Statistics on the SRs can be found in `r table_nums("datasets", display = "cite")`. 
 All datasets accompanying the systematic reviews are openly published. 
 The datasets contain information on all citations obtained in the search strategy and which citations were included in the systematic review. 
 
@@ -162,32 +185,51 @@ These test datasets contain authors, title, abstract and annotation of whether t
 
 Entries with missing abstracts were removed. 
 Duplicate entries were removed. 
-Preprocessing scripts can be found on the GitHub repository
-
+Preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis]
 
 ```{r}
 # datasets table
 load(paste0(pathRdata, "datasets_table.Rdata"))
 
-tibble(Dataset = names(all), 
+nstudies <- function(all, datastage, col){
+}
+
+nostudies <- function(all, set, stage){
+  sapply(all, function(x) x[set, stage])
+}
+inclrate <- function(all, set){
+  sapply(all, function(x) round(x[set,"incl"]/x[set,"search"]*100,2))
+}
+
+
+datastats <- 
+  tibble(Dataset = names(all), 
        #Citation = NA, # maybe add footnote citation with kableExtra i.o. this.
-       `No. studies` = sapply(all, function(x) x[1,1]), 
-       `No. selected for fulltext screening` = sapply(all, function(x) x[1,2]),
-       `No. final inclusions` = sapply(all, function(x) x[1,3]),
-       `Inclusion rate (%)` = sapply(all, function(x) round(x[1,3]/x[1,1]*100,2)),
-       `No. studies in test collection` = sapply(all, function(x) x[3,1]),
-       `No. selected for fulltext screening test collection` = sapply(all, function(x) x[3,2]),
-       `No. final inclusions in test collection` = sapply(all, function(x) x[3,3]),
-       `Inclusion rate in test collection (%)` = sapply(all, function(x) round(x[3,3]/x[3,1]*100,2))
-       ) %>%
-  # knitr kable
+       # paper 
+       `candidates_paper` = nostudies(all, "paper", "search"), 
+       #`fulltext_paper` = nostudies(all, "paper", "ftext"),
+       `incl_paper` = nostudies(all, "paper", "incl"),
+       `inclrate_paper` = inclrate(all, "paper"),
+       # test set 
+       `candidates_test` =  nostudies(all, "test", "search"), 
+       #`fulltext_test` =  nostudies(all, "test", "ftext"), 
+       `incl_test` =  nostudies(all, "test", "incl"), 
+       `inclrate_test` = inclrate(all, "test")
+       ) 
+```
+
+
+`r table_nums("datasets")`
+```{r}
+datastats %>%
   kable(format = "latex",
         booktabs = TRUE,
-        caption = table_nums("datasets")) %>%
+        col.names = c("Dataset", rep(c("Candidate studies", 
+                                       #"Studies selected for fulltext screening", 
+                                       "Final inclusions", 
+                                       "Inclusion rate (%)"),2))) %>%
   kable_styling(full_width = TRUE) %>%
-  add_header_above(c("", "Original study" = 4, "Test collection" = 4))
-  
-  # add citations
+  add_header_above(c("", "Original study" = 3, "Test collection" = 3))
 ```
 
 The inclusion rate is ... data is imbalanced. 
@@ -197,13 +239,48 @@ The cost of a false negative outweighs the cost of a false positive.
 Note that we assume the oracle/original user to hold the truth. 
 This is of course not always the case. 
 
+## Models 
+Now, we build five different active learning models. 
+
+we have a model $M$ using a classifier $c$ with (hyper)parameters $h$, performing an automated systematic review on SR dataset $d$. 
+
+We are going to test 5 models on 5 different datasets. 
+
+classifier - feature extraction - query strategy - balance strategy
+
+BTMD - 
+
+#### Classifiers
+- Naive Bayes (B)
+- Random Forests (R)
+- Support Vecor Machine (S)
+- Logistic Regression (L)
+- Dense Neural Network (N)
+
+#### Feature extraction strategies
+To compute relevancy of a paper, we use the title and abstract 
+- baseline model: 
+
+
+### Balance strategies
+triple = 
+The other parameters remain fixed over the 5 models:
+
+
+- Query Strategy = max
+- Balance Strategy = triple
+- n_instances=10 (number of papers each query)
+- n_prior_included = 5
+- n_prior_excluded = 5
+
 ## Simulations
 The original systematic review is reproduced using five different models.
 
 A simulation is of one model on one dataset. 
-we have a model $M$ using a classifier $c$ with (hyper)parameters $h$, performing an automated systematic review on SR dataset $d$. 
+
 The model starts with 5 inclusions and 5 exclusions, randomly selected. The simulation is repeated for 10 trials $t$. 
 We use 5 inclusions and exclusions as we assume the researcher has some prior knowledge on this. 
+The researcher has some prior knowledge about the pool, some papers ought to be included in the SR
 for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
 Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions. Results are aggregated (?)
@@ -211,7 +288,6 @@ Every simulation study consists of 10 trials, to account for the randomness of p
 assumptions
  
  - decisions of the original SR are **ground truth** (benchmark) (oracle)
- 
  - binary classifications: relevant/irrelevant 
 
 ### Optimizing Hyperparameters 
@@ -238,15 +314,6 @@ kable(format = "latex",
 Use these inputs to predict relevance of papers. 
 
 ### Stage 1: hyperparameter optimization
-We are going to test 5 models on 5 different datasets. 
-
-
-### Models
-- Naive Bayes 
-- Random Forests
-- Support Vecor Machine 
-- Logistic Regression
-- Dense Neural Network
 
 Or, more specific: 
 
@@ -266,13 +333,7 @@ tabbie %>%
         booktabs = TRUE)
 ```
 
-The other parameters remain fixed over the 5 models:
 
-- Query Strategy = max
-- Balance Strategy = triple
-- n_instances=10 (number of papers each query)
-- n_prior_included = 5
-- n_prior_excluded = 5
 
 ### Hyperparameters
 Every model has its own set of hyperparameters:
