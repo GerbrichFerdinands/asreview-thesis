@@ -88,21 +88,8 @@ models are designed in a 'realistic' way (you have some inclusions)
 Selecting papers is a two-step process: abstract & fulltext screening
 
 
-RQ1 
-
 ## active learning for systematic reviews 
-achine learning algorithms cannot predict the relevance of abstracts from the raw texts as they are. 
-The content of the texts needs to be transformed into numerical representations. The processs of transforming texts to numerical feature vectors is called word embeddings. 
-
-A classical example of word embeddings is 'bag of words'. For each each text, the number of occurrences of each word is stored. This leads to n features, where n is the number of distinct words in the texts. [@scikit-learn]
-
-Word embeddings allows ASReview to predict relevance of abstracts from the features of abstracts of which relevance is known. 
-
 corpus = all the text: 
-
-ASReview implements several feature extraction strategies. The following will be compared: 
-
-The model is typically a learning algorithm used to predict the relevance of text.
 
 Active learning = 
 increasing classification performance with every query. 
@@ -122,10 +109,31 @@ while
 
 ```
 
+RQ1 - what are good classifiers 
+RQ2 - what are good optimization strategies 
+
 ## Background
+[@OMara-Eves2015] literature review 
+
 [@Yu2018a], [@Yu2019] simulated 32 svm classifiers, on software engineering. 
-A popular classifier is SVM 
+A popular classifier is SVM. succes with HUTM (fastread), uncertainty, mix of weighting and agressive undersampling, 
 In terms of Yu et al, we adopt .CT. 
+
+SVM - tf-idf on medical data, uncertainty sampling, agressive undersampling. [@Wallace2010] 
+
+abstrackr
+
+SVM + Weighting + uncertainty (bow) produced good methods  [@Miwa2014]
+Also include social sciences data besides medical data. 
+
+
+[@Cohen2006] perceptron-based classifier (neural network)
+
+SVM on legal documents (no balancing, certainty ) [@Cormack2014] 
+in limitations section mentions that LR yields about same results, nb inferior results. 
+
+[@Kilicoglu2009] - SVM, naive bayes, boosting and combinations. future work should optimize parameters.
+  "Regarding the base classifiers used in identifying method- ologically rigorous studies, boosting consistently strikes the best balance between precision and recall, whereas Naïve Bayes in general performs well on recall (demonstrating a tradeoff between recall and precision), as does polynomial SVM on precision. The AUC results are mixed, although boosting has a slight edge overall. These results demonstrate that different classifiers can be used to satisfy different information needs (SVM for specificity, Naïve Bayes for sensitivity, and boosting for balance between the two, for example)."
 
 Our extensions is that we try different classifiers, on more datasets. 
 
@@ -136,7 +144,6 @@ The screening process is simulated using ASReview, seeing if the original inclus
 What would happen if the citation screening would have been performed using asreview? 
 
 ## Datasets
-
 The algorithm will be tested on five systematic reviews from various research areas. 
 test datasets serve as systematic search results, then perform active learning to detect inclusions. 
 
@@ -218,7 +225,6 @@ datastats <-
        ) 
 ```
 
-
 `r table_nums("datasets")`
 ```{r}
 datastats %>%
@@ -239,60 +245,94 @@ The cost of a false negative outweighs the cost of a false positive.
 Note that we assume the oracle/original user to hold the truth. 
 This is of course not always the case. 
 
+There are two classes in the data: exlusions and inclusions.
+The inclusions are clearly the minority class. 
+
 ## Models 
-Now, we build five different active learning models. 
-
-we have a model $M$ using a classifier $c$ with (hyper)parameters $h$, performing an automated systematic review on SR dataset $d$. 
-
-We are going to test 5 models on 5 different datasets. 
-
-classifier - feature extraction - query strategy - balance strategy
-
-BTMD - 
+Five different active learning models were build. 
+Every model $m$ was used to perform an automated systematic review on SR dataset $d$. 
+The models all apply a different classifier $c$ with its own set of (hyper)parameters $h$. 
 
 #### Classifiers
+The classifier predicts the class of all papers. 
+To predict whether a paper should be an exclusion or an inclusion, different classifiers
+
 - Naive Bayes (B)
 - Random Forests (R)
 - Support Vecor Machine (S)
 - Logistic Regression (L)
 - Dense Neural Network (N)
 
-#### Feature extraction strategies
-To compute relevancy of a paper, we use the title and abstract 
-- baseline model: 
+Besides $c$, components of $m$ are fea
 
+To summarize, every model $m$ consists of the following key components: 
+classifier, feature extraction strategy, query strategy, balance strategy. 
 
-### Balance strategies
-triple = 
-The other parameters remain fixed over the 5 models:
+For example $M_1$ BTMD (naive bayes, tfidf, certainty sampling, double balance)
+STMD 
 
+#### Word representation 
+To be able to predict whether a paper needs to be included or excluded (e.g. to predict class), 
+the classifier needs some features from the papers.  
+As features we use the title and abstract from every paper - this is what is prescribed by prisma, (check!) 
+The classifier cannot predict the paper class from the raw titles and abstracts as they are.
+Therefore, the content of the texts needs to be transformed into numerical representations called feature vectors.
 
-- Query Strategy = max
-- Balance Strategy = triple
+A classical example is a 'bag of words' representation. 
+For each each text, the number of occurrences of each word is stored. 
+This leads to n features, where n is the number of distinct words in the texts [@scikit-learn].
+
+We use the following feature extraction methods
+- TF-IDF 
+
+#### The next abstract to be queried  
+The model has various ways of deciding which instance should be queried next. 
+
+#### Rebalancing the training set
+To account for class imbalance in the data, the model can apply several strategies to rebalance the training set. 
+
+A reweighting strategy is applied where inclusions (the minority class) are weighted more heavily than the exclusions. 
+
+#### Starting point
+The initial training set consists of 5 inclusions and 5 exclusions, randomly sampled from the dataset. 
+We use 5 inclusions and exclusions as we assume the researcher has some prior knowledge on this. 
+The researcher has some prior knowledge about the pool, some papers ought to be included in the SR. 
+
+```
+c = naivebayes
+f = tfidf
+q = max
+n_prior_included = 5
+n_prior_excluded = 5
+``` 
+
+#### Retraining
+We can choose to retrain the model after labeling $n$ instances. 
 - n_instances=10 (number of papers each query)
-- n_prior_included = 5
-- n_prior_excluded = 5
 
 ## Simulations
-The original systematic review is reproduced using five different models.
+To evaluate performance of the five models described above, the model is used to simulate five existing systematic reviews. 
 
-A simulation is of one model on one dataset. 
-
-The model starts with 5 inclusions and 5 exclusions, randomly selected. The simulation is repeated for 10 trials $t$. 
-We use 5 inclusions and exclusions as we assume the researcher has some prior knowledge on this. 
-The researcher has some prior knowledge about the pool, some papers ought to be included in the SR
-for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
-
-Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions. Results are aggregated (?)
-
-assumptions
- 
- - decisions of the original SR are **ground truth** (benchmark) (oracle)
- - binary classifications: relevant/irrelevant 
-
-### Optimizing Hyperparameters 
+### Optimizing hyperparameters
+For every model*data combination, 3 sets of hyperparameters are generated to ... 
+parallel
 Every model has its own hyperparameters. 
 For every model, the hyperparameters are optimized three times, arriving at three versions of the model: 
+
+We nog have 75 combinations. 
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
+
+A simulation is of one model on one dataset. 
+The simulation is repeated for 10 trials $t$. 
+
+Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions.
+So every trial the prior inclusions and exclusions are randomly selected. 
+Results are aggregated (?)
+
+#### Assumptions
+
+ - decisions of the original SR are **ground truth** (benchmark) (oracle)
+ - binary classifications: relevant/irrelevant 
 
 
 # The software 
@@ -332,8 +372,6 @@ tabbie %>%
         format = "latex",
         booktabs = TRUE)
 ```
-
-
 
 ### Hyperparameters
 Every model has its own set of hyperparameters:
@@ -515,7 +553,9 @@ This leads to  `r nrow(combins)` combinations of configurations.
 See appendix A for a table containing all 273 combinations. 
 
 # Performance metrics
+The goal is twofold: we want to identify all relevant papers, as fast as we can. 
 Tradeoff: identifying all relevant papers and reducing workload. 
+A good metric to evaluate this is.. 
 
 What is more important: recall or precision? 
 
