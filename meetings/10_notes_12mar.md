@@ -4,6 +4,17 @@
 - FETC amendement has been submitted
 - Yu et al 2019 - interesting on stopping criteria & human mistakes 
 
+- datasets 
+  - ptsd - datasets on other repository
+  - nagtegaal - discrepancies: 
+    - 2 papers missing - they were added (abstract inclusions)
+    - 18 systematic reviews 'included' in asreview file, 'excluded' in nagtegaals file. 
+    - 1 paper included in nagtegaals, excl in asreview. final decision: included. 
+  
+- begrippen uitleggen 
+  - in hoeverre alles uitleggen (svm, rf etc --> in appendix + referenties?)
+  
+  
 # Meeting
 
 # To do

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.4)  10 MAR 2020 09:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.4)  11 MAR 2020 10:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -777,7 +777,7 @@ Package biblatex Info: ... file 'manuscript.bbl' found.
 
 Package biblatex Warning: The following entry could not be found
 (biblatex)                in the database:
-(biblatex)                vandeSchoot2018
+(biblatex)                Vandeschoot2017
 (biblatex)                Please verify the spelling and rerun
 (biblatex)                LaTeX afterwards.
 
@@ -828,39 +828,40 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 159.
+(Font)              <10> on input line 146.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 159.
+(Font)              <7> on input line 146.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 159.
+(Font)              <5> on input line 146.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-70.
+75.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [2] [3] [4] [5]
+) [2] [3] [4] [5] [6]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 446.
+(hyperref)                than one, level fixed on input line 491.
 
-[6] [7] [8] [9]
+[7] [8] [9] [10]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 619.
+(hyperref)                than one, level fixed on input line 664.
 
-[10] [11] [12] [13] [14] [15]
+[11] [12] [13] [14] [15] [16]
 
 Package biblatex Warning: No driver for entry type ''.
-(biblatex)                Using fallback driver on input line 1025.
+(biblatex)                Using fallback driver on input line 1064.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1027.
-[16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1027.
+[17]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1066.
+[18]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1066.
 (./manuscript.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1027.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1027.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1066.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1066.
 
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: CC20DB336DEBC551E3A55888A9C2E4C5;3559.
+(rerunfilecheck)             Checksum: F37D3A6E3AB9A645B2DA39ECAB66658B;3559.
 
 LaTeX Warning: There were undefined references.
 
@@ -870,13 +871,13 @@ Package biblatex Warning: Please rerun LaTeX.
 Package logreq Info: Writing requests to 'manuscript.run.xml'.
 \openout1 = `manuscript.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1027.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1066.
  ) 
 Here is how much of TeX's memory you used:
- 19345 strings out of 482913
- 313407 string characters out of 5958317
- 956219 words of memory out of 5000000
- 34163 multiletter control sequences out of 15000+600000
+ 19370 strings out of 482913
+ 314111 string characters out of 5958317
+ 956382 words of memory out of 5000000
+ 34178 multiletter control sequences out of 15000+600000
  598066 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  37i,13n,45p,1803b,1640s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -900,10 +901,10 @@ type1/public/lm/lmri10.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/ty
 pe1/public/lm/lmsy10.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/type
 1/public/lm/lmsy7.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/type1/p
 ublic/lm/lmtt10.pfb>
-Output written on manuscript.pdf (16 pages, 322411 bytes).
+Output written on manuscript.pdf (18 pages, 325793 bytes).
 PDF statistics:
- 439 PDF objects out of 1000 (max. 8388607)
- 401 compressed objects within 5 object streams
- 154 named destinations out of 1000 (max. 500000)
+ 466 PDF objects out of 1000 (max. 8388607)
+ 426 compressed objects within 5 object streams
+ 164 named destinations out of 1000 (max. 500000)
  209 words of extra memory for PDF output out of 10000 (max. 10000000)
 

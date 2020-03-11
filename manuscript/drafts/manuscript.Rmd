@@ -55,6 +55,8 @@ table_nums <- captioner(prefix = "Table")
 table_nums(name = "datasets", caption = "Statistics on datasets from original systematic reviews.")
 ```
 
+
+
 #### Introduction 
 #### Methods
 A convenience sample of 5 existing systematic reviews on varying topics was collected.
@@ -87,6 +89,29 @@ models are designed in a 'realistic' way (you have some inclusions)
 
 Selecting papers is a two-step process: abstract & fulltext screening
 
+Binary classification problem. 
+predict whether a paper in the pool is an inclusion or exclusion, 
+based on labeled instances from $\mathcal{L}$ and use training data to understand how input variables are related to class. 
+
+We're building active learning model who takes X as an input an predicts class using labels from training set. 
+Model improves by deciding asking more information from the reviewer (oracle), 
+accounting for imbalance. 
+
+#### Assumptions 
+1) decisions of the original SR are **ground truth** (benchmark) (oracle)
+
+The inclusion rate is ... data is imbalanced. 
+what is the philosophy
+False negatives must be avoided ... 
+The cost of a false negative outweighs the cost of a false positive. 
+Note that we assume the oracle/original user to hold the truth. 
+This is of course not always the case. 
+
+There are two classes in the data: exlusions and inclusions.
+The inclusions are clearly the minority class. 
+
+Datasets from the medical and social sciences, software engineering and public administration. 
+Medical sciences SRs are viewed as more 'strict'/'structured' and social sciences more messy. 
 
 ## active learning for systematic reviews 
 corpus = all the text: 
@@ -126,73 +151,67 @@ abstrackr
 SVM + Weighting + uncertainty (bow) produced good methods  [@Miwa2014]
 Also include social sciences data besides medical data. 
 
-
 [@Cohen2006] perceptron-based classifier (neural network)
 
 SVM on legal documents (no balancing, certainty ) [@Cormack2014] 
 in limitations section mentions that LR yields about same results, nb inferior results. 
 
 [@Kilicoglu2009] - SVM, naive bayes, boosting and combinations. future work should optimize parameters.
-  "Regarding the base classifiers used in identifying method- ologically rigorous studies, boosting consistently strikes the best balance between precision and recall, whereas Naïve Bayes in general performs well on recall (demonstrating a tradeoff between recall and precision), as does polynomial SVM on precision. The AUC results are mixed, although boosting has a slight edge overall. These results demonstrate that different classifiers can be used to satisfy different information needs (SVM for specificity, Naïve Bayes for sensitivity, and boosting for balance between the two, for example)."
+  "Regarding the base classifiers used in identifying method- ologically rigorous studies, boosting consistently strikes the best balance between precision and recall, whereas naive Bayes in general performs well on recall (demonstrating a tradeoff between recall and precision), as does polynomial SVM on precision. The AUC results are mixed, although boosting has a slight edge overall. These results demonstrate that different classifiers can be used to satisfy different information needs (SVM for specificity, naive Bayes for sensitivity, and boosting for balance between the two, for example)."
 
 Our extensions is that we try different classifiers, on more datasets. 
+
+This study was approved by the Ethics Committee of the Faculty of Social and Behavioural Sciences of Utrecht University, filed as an amendement under study 20-104, ASReview - Smart software for Systematic Reviews. 
+
+All simulations were run using through caartesius EINF-156 
 
 \newpage
 # Methods
 Goal: evaluate performance of different models of the ASReview tool. 
 The screening process is simulated using ASReview, seeing if the original inclusions replicate. 
 What would happen if the citation screening would have been performed using asreview? 
+All datasets accompanying the systematic reviews are openly published. 
 
 ## Datasets
 The algorithm will be tested on five systematic reviews from various research areas. 
-test datasets serve as systematic search results, then perform active learning to detect inclusions. 
+test datasets serve as systematic search results, then perform active learning to detect inclusions.
 
 #### ace 
-A dataset from a collection of systematic reviews on drug efficacy from the medical sciences [@Cohen2006]. 
-This dataset is on a systematic review 
-
-efficacy of Angiotensin-converting enzyme (ACE) inhibitors.
-The ace dataset comes from a study on reducing workload in systematic reviews  [@Cohen2006].
-The ace dataset is on the efficacy of 
-
-drug class 
-The ACEInhibitors dataset from the study by [@Cohen2006].
-The study includes several data sets from the medical sciences, one of them is on ACE inhibitors.
+Cohen et al. collected systematic review datasets from the medical sciences [@Cohen2006]. 
+All systematic reviews in this database are on drug efficacy. 
+The ace dataset used in the current study comes from a systematic review on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors.
 
 a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
-
-WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
+Using a perceptron classifier, WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
 The data
 
 #### software 
-A review on fault prediction in software engineering by [@Hall2012]. 
-The dataset is reviewed from [@Yu2018a] who collected datasets on literature reviews from the software engineering field. 
+The dataset is retrieved from [@Yu2018a], who collected datasets on literature reviews from the software engineering field. 
+This dataset is on fault prediction in software engineering by [@Hall2012]. 
 
 #### nudging
-review [@Nagtegaal2019]
-The data [@Nagtegaal2019a]
-
-Difference in 18 inclusions = systematic reviews. to exclude/include? 
+A review from the behavioural public administration area. 
+The SR includes studies on nudging healthcare professionals [@Nagtegaal2019]. 
+The data was stored on the Harvard Dataverse [@Nagtegaal2019a]. 
 
 #### ptsd
-A review [@vandeSchoot2018] on longitudinal studies on posttraumatic stress symptoms assessed after exposure to trauma. 
-The corresponding dataset [@Winter2020].  
+A literature review from field of psychology. The SR is on studies applying latent trajectory analyses on posttraumatic stress after exposure to trauma [@vandeSchoot2017]. 
+The corresponding dataset can be found on the Open Science Framework [...]. 
  
 #### Wilson
-The review [@Appenzeller-Herzog2019]
-The dataset [@Appenzeller-Herzog2020]
+A dataset from the medical sciences [@Appenzeller-Herzog2020]. 
+TA review on effectiveness treatments of Wilson disease [@Appenzeller-Herzog2019]. 
 
-Statistics on the SRs can be found in `r table_nums("datasets", display = "cite")`. 
-All datasets accompanying the systematic reviews are openly published. 
-The datasets contain information on all citations obtained in the search strategy and which citations were included in the systematic review. 
+All datasets started with an initial pool of thousands of papers. 
+A fraction of these papers where deemed relevant for the SR, with inclusion rates varying from .. to .. (`r table_nums("datasets", display = "cite")`).
 
-For every SR, the raw datafiles were preprocessed into a test dataset.
-
-These test datasets contain authors, title, abstract and annotation of whether the entry was included in the final review or not (0/1). 
-
-Entries with missing abstracts were removed. 
-Duplicate entries were removed. 
+The raw datafiles published with the SRs were preprocessed into a test dataset.
+The test datasets contain title information on all citations obtained in the search strategy. 
+The instances in the data consist of a title, an abstract and were labeled to indicate which citations were included in the systematic review. 
+Instances with missing abstracts were removed. 
+Duplicate instances were removed. 
 Preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis]
+
 
 ```{r}
 # datasets table
@@ -238,15 +257,6 @@ datastats %>%
   add_header_above(c("", "Original study" = 3, "Test collection" = 3))
 ```
 
-The inclusion rate is ... data is imbalanced. 
-what is the philosophy
-False negatives must be avoided ... 
-The cost of a false negative outweighs the cost of a false positive. 
-Note that we assume the oracle/original user to hold the truth. 
-This is of course not always the case. 
-
-There are two classes in the data: exlusions and inclusions.
-The inclusions are clearly the minority class. 
 
 ## Models 
 Five different active learning models were build. 
@@ -254,14 +264,22 @@ Every model $m$ was used to perform an automated systematic review on SR dataset
 The models all apply a different classifier $c$ with its own set of (hyper)parameters $h$. 
 
 #### Classifiers
-The classifier predicts the class of all papers. 
+The classifier predicts the class of all papers, given the training dataset/labeled data set $\mathcal{L}$. 
+
+Given the labels and some features from all abstracts in the pool, the classifier 
 To predict whether a paper should be an exclusion or an inclusion, different classifiers
 
-- Naive Bayes (B)
-- Random Forests (R)
-- Support Vecor Machine (S)
-- Logistic Regression (L)
-- Dense Neural Network (N)
+Naive Bayes (B) - predicts the class of an instance given input features $\mathbf{X}$. Naive Bayes assumes all features are independent given the class value. This is obviously not the case but still the algorithm performs impressively [@Zhang2004]. Especially at ... tasks. 
+
+Random Forests (R) is where a large number of decision trees are fit on bootstrapped samples of the original data.
+All trees cast a vote on the class, which are aggregated into a class prediciton for each input $\mathbf{X}$ [@Breiman2001]. 
+
+Support Vecor Machine (S) - finds a multidimensional hyperplane to separate classes.
+[@Tong2001]
+
+Logistic Regression (L) - 
+
+Dense Neural Network (N) - 
 
 Besides $c$, components of $m$ are fea
 
@@ -281,9 +299,11 @@ Therefore, the content of the texts needs to be transformed into numerical repre
 A classical example is a 'bag of words' representation. 
 For each each text, the number of occurrences of each word is stored. 
 This leads to n features, where n is the number of distinct words in the texts [@scikit-learn].
+The bag-of-words method is simplistic and will highly value often occuring but otherwise meaningless words such as "and". 
+Term-frequency Inverse Document Frequency (TF-IDF) [@Ramos2003] circumvents this problem by adjusting a term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire corpus.
 
-We use the following feature extraction methods
-- TF-IDF 
+
+(T) (D)
 
 #### The next abstract to be queried  
 The model has various ways of deciding which instance should be queried next. 
@@ -292,6 +312,8 @@ The model has various ways of deciding which instance should be queried next.
 To account for class imbalance in the data, the model can apply several strategies to rebalance the training set. 
 
 A reweighting strategy is applied where inclusions (the minority class) are weighted more heavily than the exclusions. 
+
+When no balancing is applied, the training data set = labeled data set $\mathcal{L}$
 
 #### Starting point
 The initial training set consists of 5 inclusions and 5 exclusions, randomly sampled from the dataset. 
@@ -329,10 +351,6 @@ Every simulation study consists of 10 trials, to account for the randomness of p
 So every trial the prior inclusions and exclusions are randomly selected. 
 Results are aggregated (?)
 
-#### Assumptions
-
- - decisions of the original SR are **ground truth** (benchmark) (oracle)
- - binary classifications: relevant/irrelevant 
 
 
 # The software 
@@ -428,9 +446,6 @@ Several metrics are used to compare performance of different models over dataset
 split_ta = overall hyperparameter 
 
 #### TF-IDF
-The bag-of-words method is simplistic and will highly value often occuring but otherwise meaningless words such as "and". 
-
-Term-frequency Inverse Document Frequency [@Ramos2003] circumvents this problem by adjusting a term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire corpus.
 
 ##### hyperparameters 
     ngram_max: int
@@ -512,6 +527,20 @@ Arguments
         """
 
 #### Support Vector Machine
+
+
+ Arguments
+        ---------
+        gamma: str
+            Gamma parameter of the SVM model.
+        class_weight:
+            class_weight of the inclusions.
+        C:
+            C parameter of the SVM model.
+        kernel:
+            SVM kernel type.
+        random_state:
+            State of the RNG.
 
 #### Logistic Regression 
 
