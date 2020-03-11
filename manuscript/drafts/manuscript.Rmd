@@ -75,6 +75,40 @@ Various machien learning tools have been proposed to reduce workload in abstract
 - background 
 - guidance to reader 
 - summary/conclusion
+---
+This study is about how machine learning algorithms can increase efficiency in systematic reviews. I will write about what SRs are, and how workload can be reduced. 
+
+Systematic reviews are top of the bill in research. As more and more papers are published and reproducibility crisis has emerged, science calls for more meta. It is important reflect on research by giving an overview of research areas which is typically done by a systematic review […]. Performing a systematic review is a tedious and time-consuming task. To review a specific research area, one starts out with an initial search of thousands of academic papers. All these papers abstracts need to be screened to find an initial batch of possibly relevant papers. With now hopefully only a couple of hundred papers left, the researcher needs to read these papers full-text to arrive at a final selection of papers that are relevant for the final systematic review [this is prisma process?].  This whole processes costs this and this much time [shelmilt]. 
+
+The stage of abstract screening where abstracts are systematically screened is where a lot is to be gained. This stage is the target of possible learning algorithms that can assist the reviewer in selecting the relevant papers. Together with the reviewer /human machine interaction.  The algorithm aims to compute which papers in the pool need to be excluded and which need to be included, based on the reviewers decisions. It learns from the reviewers decisions and asks the reviewer to provide more labels, incrementally improving its class predictions. 
+
+The goal of the algorithm defined in the current study is to reduce to number of abstracts needed to screen (maybe not right term, bit biomedical). To be more specific, the algorithm aims to present the reader with the primary studies as soon as possible. This means that at some point you probably have seen all relevant abstracts and are only viewing excluded papers, which means you can stop reviewing much earlier (theoretically spoken). Also reviewing is now much more fun. As compared to when you have to review all abstracts and you perhaps see only one relevant abstract every other week/day. 
+
+So you might wonder, how does such an algorithm actually work? Active learning strategy, starting with a pool of unlabeled abstracts (U). The reviewer starts labeling some instances in U, creating L. The algorithm utilizes L to predict labels for all abstracts (classifier), by using a set of features from the papers called X, for example the text in the abstract (feature extraction method). Now, it made an initial classification. The algorithm now aims to improve its classification by which paper from U will be presented to the reviewer next. By labeling the next paper, the reviewer provides the algorithm with new information which the algorithm uses to update its prediction. 
+
+Now there are a few technical details. Many different versions of such algorithms exist. Many of such algorithms have been described in the active learning literature and have been applied in the systematic reviewing process.  Not exhaustive, but the algorithm can apply many different strategies to arrive at its predictions, which can be divided in following parameters: classifier, feature extraction strategy, balancing, query strategy. 
+
+Most often the SVM classifier is used, popular and very good results. Also lots of other configurations. However, other classifiers have not been tested a lot (polygon thing by cohe, naïve bayes and random forest by …), but mostly SVM still. Also, most research in the medical sciences (well there are some exceptions of course [conversation between cohen and matwill] 
+
+In the current study, we aim at exploring the performance of several classifiers on reducing workload while maintaining performance in abstract screening process. This is done by performing simulations on existing systematic reviews. Performance is evaluated by how much time can be saved … while maintaining accuracy. 
+
+Present research questions. 
+RQ1 – which classifiers perform best? 
+-	RQ1a – does classifier performance vary over different research areas? 
+(in what terms does it perform best) 
+
+RQ2 different hyperparameter optimizations?
+Classifiers come with hyperparameters. We have to make a choice on how to set these hyperparameters. What we do is create 3 sets, optimizing in three ways, aggregate results obtained.  
+
+The goal is to gain insight in classifiers other than the widely applied SVM, overall various research areas. So not only medical sciences. 
+
+To perform all these computations the research was carried out using the ASReview software by Utrecht University, which has a simulation mode that you can just input your labelled review file into and perform a simulation study with it. To be found on GitHub. It has many adjustable components/is very versatile. 
+
+Then if we still have time left we explore the effect of another feature extraction method, namely doc2vec. This might possibly increase performance as it performs better at grasping structure/hidden relations/hierarchy between words in the texts. So, it could be interesting in more ‘fuzzy’ research areas. A downside is that it takes more computing time. 
+
+Then if there’s even more time we might want to compare a different balance strategy. 
+
+---- 
 
 A SR can be divided into phases. 
 Everything starts with a **systematic search**, leading to
