@@ -71,11 +71,13 @@ Systematic Reviews (SR's) are booming - but they are a lot of work
 Various machien learning tools have been proposed to reduce workload in abstract screening. 
 
 - objectives - to demonstrate effectiveness of ml algorithm in reducing abstract classification for systematic reviews 
-- justification - 
+- justification 
 - background 
 - guidance to reader 
 - summary/conclusion
----
+
+-----
+
 This study is about how machine learning algorithms can increase efficiency in systematic reviews. I will write about what SRs are, and how workload can be reduced. 
 
 Systematic reviews are top of the bill in research. As more and more papers are published and reproducibility crisis has emerged, science calls for more meta. It is important reflect on research by giving an overview of research areas which is typically done by a systematic review […]. Performing a systematic review is a tedious and time-consuming task. To review a specific research area, one starts out with an initial search of thousands of academic papers. All these papers abstracts need to be screened to find an initial batch of possibly relevant papers. With now hopefully only a couple of hundred papers left, the researcher needs to read these papers full-text to arrive at a final selection of papers that are relevant for the final systematic review [this is prisma process?].  This whole processes costs this and this much time [shelmilt]. 

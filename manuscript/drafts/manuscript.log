@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.4)  11 MAR 2020 15:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.4)  11 MAR 2020 21:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -815,46 +815,46 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/Users/gerbrich/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-21.
+22.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [2]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 245.
+(Font)              <10> on input line 247.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 245.
+(Font)              <7> on input line 247.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 245.
+(Font)              <5> on input line 247.
 [3]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 3
-02.
+04.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [4] [5] [6] [7]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 613.
+(hyperref)                than one, level fixed on input line 615.
 
 [8] [9] [10] [11]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 786.
+(hyperref)                than one, level fixed on input line 788.
 
 [12] [13] [14] [15] [16] [17]
 
 Package biblatex Warning: No driver for entry type ''.
-(biblatex)                Using fallback driver on input line 1190.
+(biblatex)                Using fallback driver on input line 1192.
 
 [18]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1192.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1194.
 [19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1192.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1194.
 (./manuscript.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1192.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1192.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1194.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1194.
 
 Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: B6431567EEFE1C01AD290A34D5667A58;3709.
+(rerunfilecheck)             Checksum: B16B1FA9E6E094E3F337EE1567F824C4;3560.
 
 LaTeX Warning: There were undefined references.
 
@@ -864,13 +864,13 @@ Package biblatex Warning: Please rerun LaTeX.
 Package logreq Info: Writing requests to 'manuscript.run.xml'.
 \openout1 = `manuscript.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1192.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1194.
  ) 
 Here is how much of TeX's memory you used:
- 19388 strings out of 482913
- 314483 string characters out of 5958317
- 956443 words of memory out of 5000000
- 34187 multiletter control sequences out of 15000+600000
+ 19384 strings out of 482913
+ 314423 string characters out of 5958317
+ 956401 words of memory out of 5000000
+ 34185 multiletter control sequences out of 15000+600000
  606887 words of font info for 76 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  37i,13n,45p,1803b,1640s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -894,10 +894,10 @@ type1/public/lm/lmri10.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/ty
 pe1/public/lm/lmsy10.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/type
 1/public/lm/lmsy7.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/type1/p
 ublic/lm/lmtt10.pfb>
-Output written on manuscript.pdf (19 pages, 333217 bytes).
+Output written on manuscript.pdf (19 pages, 333032 bytes).
 PDF statistics:
- 488 PDF objects out of 1000 (max. 8388607)
- 447 compressed objects within 5 object streams
- 170 named destinations out of 1000 (max. 500000)
- 217 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 482 PDF objects out of 1000 (max. 8388607)
+ 441 compressed objects within 5 object streams
+ 168 named destinations out of 1000 (max. 500000)
+ 209 words of extra memory for PDF output out of 10000 (max. 10000000)
 
