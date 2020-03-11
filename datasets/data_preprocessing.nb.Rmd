@@ -308,7 +308,7 @@ tibble(Dataset = names(all),
        `candidates_raw` = nostudies(all, "raw", "search"), 
        `fulltext_raw` = nostudies(all, "raw", "ftext"),
        `incl_raw` = nostudies(all, "raw", "incl"),
-       `inclrate_paper` = inclrate(all, "raw"),
+       `inclrate_raw` = inclrate(all, "raw"),
        
        # asreview repository 
        `candidates_asr` = nostudies(all, "asreview", "search"), 
@@ -324,12 +324,12 @@ tibble(Dataset = names(all),
        ) %>% 
   t() %>%
   kable("html") %>%
-  kable_styling(full_width = "TRUE") %>%
+  kable_styling(full_width = TRUE) %>%
   #scroll_box(width = "100%", height = "200px") %>%
   pack_rows("Paper", 2, 5) %>%
   pack_rows("Raw data", 6, 9) %>%
   pack_rows("ASReview data", 10, 13) %>%
-  pack_rows("Test data set", 14, 17) 
+  pack_rows("Test data set", 14, 17)  
 ```
 
 Descriptives on missingness and duplicate abstracts in the ASReview test data set. 

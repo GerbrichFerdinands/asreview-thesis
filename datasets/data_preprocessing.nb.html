@@ -1668,17 +1668,19 @@ library(kableExtra)</code></pre>
 <pre class="r"><code># create storage for statistics
 template &lt;- data.frame(search = rep(0,4), # papers obtained in systematic search
                        ftext = rep(0, 4), # number of abstract inclusions
-                       incl = rep(0,4), # papers included in systematic review
+                       incl = rep(0,4), # papers included in final systematic review
+                       
                        row.names = c(&quot;paper&quot;, # numbers reported in the publication
-                                     &quot;raw&quot;, # numbers published on raw dataset
-                                     &quot;asreview&quot;, # numbers on asreview repository
+                                     &quot;raw&quot;, # numbers published on raw dataset (by author,  mostly on OSF)
+                                     &quot;asreview&quot;, # numbers on asreview repository 
                                      &quot;test&quot;)) # numbers in test dataset 
-# statistics on duplicates and dropping
-drops &lt;- data.frame(n = rep(0,5),
-                    na = rep(0,5), 
-                    narate = rep(0,5), 
-                    dup = rep(0,5), 
-                    duprate = rep(0,5), 
+
+# statistics on duplicates and dropping in ASReview dataset
+drops &lt;- data.frame(n = rep(0,5), # candidates
+                    na = rep(0,5),# number of missing abstracts
+                    narate = rep(0,5), # percenta of missing abstracts
+                    dup = rep(0,5),  # number of duplicate abstracts 
+                    duprate = rep(0,5), # percentage of missing abstracts
                     row.names = c(&quot;ace&quot;, &quot;nudging&quot;, &quot;ptsd&quot;, &quot;software&quot;, &quot;wilson&quot;))
 
 # some functions to extract statistics
@@ -1861,7 +1863,7 @@ hall[&quot;test&quot;, ] &lt;- data_descr(hall_test)</code></pre>
 </div>
 <div id="statistics" class="section level3">
 <h3>Statistics</h3>
-<pre class="r"><code>drops[&quot;hall&quot;, ] &lt;- 
+<pre class="r"><code>drops[&quot;software&quot;, ] &lt;- 
   hall_asr %&gt;%
    summarise(n = length(abstract),
                     na = sum(is.na(abstract)),
@@ -1938,10 +1940,9 @@ save(all, file = &quot;../manuscript/drafts/data/datasets_table.Rdata&quot;)</co
 </div>
 <div id="statistics-1" class="section level1">
 <h1>Statistics</h1>
-<pre><code>## New names:
-## * inclrate_paper -&gt; inclrate_paper...5
-## * inclrate_paper -&gt; inclrate_paper...9</code></pre>
-<table>
+All candidate papers, paper selected for full text screening, papers included in final review and inclusion rate, over various versions of the dataset.<br />
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <tbody>
 <tr>
 <td style="text-align:left;">
@@ -2030,7 +2031,7 @@ incl_paper
 </tr>
 <tr>
 <td style="text-align:left; padding-left: 2em;" indentlevel="1">
-inclrate_paper…5
+inclrate_paper
 </td>
 <td style="text-align:left;">
 1.61
@@ -2115,7 +2116,7 @@ incl_raw
 </tr>
 <tr>
 <td style="text-align:left; padding-left: 2em;" indentlevel="1">
-inclrate_paper…9
+inclrate_raw
 </td>
 <td style="text-align:left;">
 1.61
@@ -2133,8 +2134,13 @@ NA
 0.75
 </td>
 </tr>
+<tr grouplength="4">
+<td colspan="6" style="border-bottom: 1px solid;">
+<strong>ASReview data</strong>
+</td>
+</tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 candidates_asr
 </td>
 <td style="text-align:left;">
@@ -2154,7 +2160,7 @@ candidates_asr
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 fulltext_asr
 </td>
 <td style="text-align:left;">
@@ -2174,7 +2180,7 @@ NA
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 incl_asr
 </td>
 <td style="text-align:left;">
@@ -2194,7 +2200,7 @@ incl_asr
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 inclrate_asr
 </td>
 <td style="text-align:left;">
@@ -2213,8 +2219,13 @@ NA
 0.76
 </td>
 </tr>
+<tr grouplength="4">
+<td colspan="6" style="border-bottom: 1px solid;">
+<strong>Test data set</strong>
+</td>
+</tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 candidates_test
 </td>
 <td style="text-align:left;">
@@ -2234,7 +2245,7 @@ candidates_test
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 fulltext_test
 </td>
 <td style="text-align:left;">
@@ -2254,7 +2265,7 @@ NA
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 incl_test
 </td>
 <td style="text-align:left;">
@@ -2274,7 +2285,7 @@ incl_test
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
 inclrate_test
 </td>
 <td style="text-align:left;">
@@ -2295,7 +2306,8 @@ NA
 </tr>
 </tbody>
 </table>
-<table>
+Descriptives on missingness and duplicate abstracts in the ASReview test data set.
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2304,16 +2316,16 @@ NA
 n
 </th>
 <th style="text-align:right;">
-na
+NA
 </th>
 <th style="text-align:right;">
-narate
+NA rate (%)
 </th>
 <th style="text-align:right;">
-dup
+duplicates
 </th>
 <th style="text-align:right;">
-duprate
+duplicate rate (%)
 </th>
 </tr>
 </thead>
@@ -2383,7 +2395,7 @@ ptsd
 software
 </td>
 <td style="text-align:right;">
-0
+8911
 </td>
 <td style="text-align:right;">
 0
@@ -2392,7 +2404,7 @@ software
 0.00
 </td>
 <td style="text-align:right;">
-0
+15
 </td>
 <td style="text-align:right;">
 0.00
@@ -2416,26 +2428,6 @@ wilson
 </td>
 <td style="text-align:right;">
 0.32
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-hall
-</td>
-<td style="text-align:right;">
-8911
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-15
-</td>
-<td style="text-align:right;">
-0.00
 </td>
 </tr>
 </tbody>
