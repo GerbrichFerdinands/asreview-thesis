@@ -113,12 +113,34 @@ nudging["paper", ] <- c(2006, 377, 100)
 ```{r}
 # data is not public yet
 
-# raw
+# raw --------------------------------------------------------------------------
 
-# asreview
+# asreview ---------------------------------------------------------------------
+
+# remove missing abstracts 
+final <- final[final$title != "NA", ]
+
+# remove duplicates (171 duplicates)
+final <- final %>%
+  distinct(abstract, .keep_all = TRUE)
+table(final$inclusion_code)
+
+
+nrow(final)
+final$abstract_included %>% table()
+final$included %>% table()
+
+# 
+write.csv(final, "data/nagtegaal.csv")
+
 ```
 
 ### Create test dataset
+
+```{r}
+nudging["test", ] <- c(1848, 382, 100)
+```
+
 
 ## PTSD dataset
 ```{r}
