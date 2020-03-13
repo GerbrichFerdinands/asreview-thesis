@@ -1,5 +1,12 @@
 conditiongrid <- readRDS("manuscript/drafts/simulation/00_conditiongrid.RDS")
 
+# which trials to take? 
+st <- "classifier"
+# only select conditions from stage. 
+conditiongrid <- 
+  conditiongrid %>% 
+  filter(stage == st)
+
 # datasets (5)
 D <- c("ace", "nudging", "ptsd", "software", "wilson")
 
@@ -13,7 +20,7 @@ conditiongrid %>% add_column(ace = 0L,
 opt <- c("all", "four", "one")
 
 # 300 sets of hyperparameters
-expand.grid(conditiongrid$condition, D, opt)
+expand.grid(conditiongrid$condition, data = D, hyperopt = opt)
 
 # pick hyperparameter sets for every model 
 

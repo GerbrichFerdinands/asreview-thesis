@@ -110,12 +110,14 @@ nudging["paper", ] <- c(2006, 377, 100)
 ```
 
 
-```{r}
+```{r eval = FALSE}
 # data is not public yet
 
 # raw --------------------------------------------------------------------------
 
 # asreview ---------------------------------------------------------------------
+
+
 
 # remove missing abstracts 
 final <- final[final$title != "NA", ]
@@ -145,7 +147,7 @@ nudging["test", ] <- c(1848, 382, 100)
 ## PTSD dataset
 ```{r}
 ptsd <- template 
-ptsd["paper", ] <- c(6185, 363, 34) # from flowchart 
+ptsd["paper", ] <- c(6185, 363, 38) # from flowchart 
 
 # raw --------------------------------------------------------------------------
 ptsd["raw", ] 
