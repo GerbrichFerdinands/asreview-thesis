@@ -115,33 +115,22 @@ nudging["paper", ] <- c(2006, 377, 100)
 # data is not public yet
 
 # raw --------------------------------------------------------------------------
-
+n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
 # asreview ---------------------------------------------------------------------
 
-
-
 # remove missing abstracts 
-final <- final[final$title != "NA", ]
-
-# remove duplicates (171 duplicates)
-final <- final %>%
-  distinct(abstract, .keep_all = TRUE)
-table(final$inclusion_code)
-
-
-nrow(final)
-final$abstract_included %>% table()
-final$included %>% table()
-
-# 
-write.csv(final, "data/nagtegaal.csv")
+nudging_test <- n_raw %>%
+  drop_na(abstract) %>% # drop entries with missing abstracts
+  filter(abstract != "", abstract != "NA") %>%
+  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
+# missing statistics 
 
 ```
 
 ### Create test dataset
 
 ```{r}
-nudging["test", ] <- c(1848, 382, 100)
+nudging["test", ] <- data_descr(nudging_test)
 ```
 
 
@@ -270,14 +259,12 @@ wilson["paper", ] <- c(3453, 174, 26)
 wilson["raw", ] <- c(3453, 174, 26) # looked it up
 
 # asreview ---------------------------------------------------------------------
-w_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv",
-                     header=T)
+w_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv", header=T)
 
 # add inclusion_code label 
 w_asr$inclusion_code <- w_asr$label_abstract_screening + w_asr$label_included
 w_asr$included <- w_asr$label_included
 wilson["asreview", ] <- data_descr(w_asr)
-
 ```
 
 ```{r}
@@ -285,20 +272,19 @@ wilson["asreview", ] <- data_descr(w_asr)
 w_test <- w_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
   filter(abstract != "",
-         abstract!= " ") %>
-  distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+         abstract!= " ") %>%
+  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
 # select relevant columns
 w_test <- w_test %>%
-            select(authors, title, abstract, included, inclusion_code)
+  select(authors, title, abstract, included, inclusion_code)
 
 wilson["test",] <- data_descr(w_test)
 ```
 
 Statistics
 ```{r}
-drops["wilson",] <- 
-  w_asr %>%
+drops["wilson", ] <- w_asr %>%
    summarise(n = length(abstract),
                     na = sum(is.na(abstract)), # todo correct this, "NA", or ""
                     narate = sum(is.na(abstract))/length(abstract),
@@ -349,9 +335,8 @@ tibble(Dataset = names(all),
        `candidates_test` =  nostudies(all, "test", "search"), 
        `fulltext_test` =  nostudies(all, "test", "ftext"), 
        `incl_test` =  nostudies(all, "test", "incl"), 
-       `inclrate_test` = inclrate(all, "test")
-       ) %>% 
-  t() %>%
+       `inclrate_test` = inclrate(all, "test")) %>% 
+  t() %>% 
   kable("html") %>%
   kable_styling(full_width = TRUE) %>%
   #scroll_box(width = "100%", height = "200px") %>%
@@ -376,7 +361,8 @@ drops %>%
 # ace
 write.csv(ace_test, "test_datasets/ace.csv")
 
-# nagtegaal 
+# nudging 
+write.csv(nudging_test, "test_datasets/nudging.csv")
 
 # ptsd
 write.csv(ptsd_test, "test_datasets/ptsd.csv")
