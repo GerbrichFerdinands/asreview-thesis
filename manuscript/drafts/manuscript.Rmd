@@ -3,13 +3,10 @@ title: "Manuscript drafts"
 author: "Gerbrich Ferdinands"
 date: "1/14/2020"
 output:
-  pdf_document:
-    keep_tex: yes
-    citation_package: biblatex
+   pdf_document:
+  #   citation_package: biblatex
 bibliography: asreview.bib
 ---
-
-
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)

@@ -77,6 +77,7 @@ ace_asr[ace_asr$abstract == "", "abstract"] <- NA
 # drop missings and duplicates. 
 ace_test <- ace_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
+  filter(abstract != "") %>%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
 # select columns
@@ -165,6 +166,7 @@ Now, remove duplicate entries and empty abstracts to arrive at test set.
 ```{r}
 ptsd_test <- ptsd_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
+  filter(abstract != "") %>%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 ``` 
 
@@ -233,6 +235,7 @@ hall["asreview", ] <- data_descr(hall_asr)
 ```{r}
 hall_test <- hall_asr %>%
    drop_na(abstract) %>% # drop entries with missing abstracts
+   filter(abstract != "") %>%
    distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 
 hall["test", ] <- data_descr(hall_test)
@@ -281,6 +284,7 @@ wilson["asreview", ] <- data_descr(w_asr)
 # create test dataset
 w_test <- w_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
+  filter(abstract != "") %>%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 
 # select relevant columns
@@ -295,7 +299,7 @@ Statistics
 drops["wilson",] <- 
   w_asr %>%
    summarise(n = length(abstract),
-                    na = sum(is.na(abstract)),
+                    na = sum(is.na(abstract)), # todo correct this, "NA", or ""
                     narate = sum(is.na(abstract))/length(abstract),
                     dup = sum(duplicated(abstract, incomparables = NA)),
                     duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))

@@ -1,0 +1,90 @@
+---
+title: "logbook simulations"
+output:   
+  md_document:
+    variant: markdown_github
+---
+
+This is the log of simulations. 
+There are three stages, we start with the first where we are comparing different classifiers. 
+
+```{r include = FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+```{r, echo = FALSE}
+conditiongrid <- readRDS("00_conditiongrid.RDS")
+
+conditiongrid$condition %>%
+  kable(format = "markdown") %>%
+  pack_rows("Classifier", 1, 5) %>%
+  pack_rows("Feature Extraction", 6, 10) %>%
+  pack_rows("Balance Strategy", 11, 20)
+```
+
+### Version information
+Personal device 
+
+Cartesius supercomputer 
+
+
+
+-----
+
+# Stage 1 - Classifiers 
+Comparing five different classifiers
+```{r}
+hyperparametersets <- readRDS("01_hyperparameter_sets.RDS")
+
+hyperparametersets %>%
+  kable(format = "markdown")
+```
+
+R - 275 secs 119% - 5 datasets 
+```{r}
+275 / 5 * 1000 / 60 # 916 minutes
+```
+
+## 1.1 Optimizing (hyper)parameters per model, per dataset (1-1)
+
+### 1.1.1 Ace
+```{r}
+lubridate::date("2020-03-17")
+```
+
+Optimization run on own device 
+```{bash, eval = FALSE}
+# RCTW
+mpirun -n 2 asreview hyper-active -m nb -b double -e tfidf -q max -d ace -n 10000 -r 8 --mpi 
+```
+
+Optimization run on Cartesius
+```{bash, eval = FALSE}
+# RCTW
+./cart_hyper_run.py hyper-active -t 10 -m rf -b double -e tfidf -q max -d ace
+
+# SCTW
+
+# LCTW
+
+# NCTW
+```
+
+### 1.1.2 Nudging
+### 1.1.3 PTSD
+### 1.1.4 Software
+### 1.1.5 Wilson
+
+
+
+
+
+
+# Stage 2 - Feature exraction 
+Comparing tfidf with doc2vec
+
+# Stage 3 - Balance strategy
+Redo all the analyses with a different balance strategy (aggressive undersampling?)
+Probably won't have time for this. 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.13)  13 MAR 2020 15:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.13)  13 MAR 2020 15:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -456,246 +456,35 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \rotheadsize=\dimen192
 \c@nlinenum=\count288
 \TeXr@lab=\toks34
-) (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty
-Package: biblatex 2019/12/01 v3.14 programmable bibliographies (PK/MW)
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty
-Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count289
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def
-File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
-)) (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\c@tabx@nest=\count290
-\c@listtotal=\count291
-\c@listcount=\count292
-\c@liststart=\count293
-\c@liststop=\count294
-\c@citecount=\count295
-\c@citetotal=\count296
-\c@multicitecount=\count297
-\c@multicitetotal=\count298
-\c@instcount=\count299
-\c@maxnames=\count300
-\c@minnames=\count301
-\c@maxitems=\count302
-\c@minitems=\count303
-\c@citecounter=\count304
-\c@maxcitecounter=\count305
-\c@savedcitecounter=\count306
-\c@uniquelist=\count307
-\c@uniquename=\count308
-\c@refsection=\count309
-\c@refsegment=\count310
-\c@maxextratitle=\count311
-\c@maxextratitleyear=\count312
-\c@maxextraname=\count313
-\c@maxextradate=\count314
-\c@maxextraalpha=\count315
-\c@abbrvpenalty=\count316
-\c@highnamepenalty=\count317
-\c@lownamepenalty=\count318
-\c@maxparens=\count319
-\c@parenlevel=\count320
-\blx@tempcnta=\count321
-\blx@tempcntb=\count322
-\blx@tempcntc=\count323
-\blx@maxsection=\count324
-\blx@maxsegment@0=\count325
-\blx@notetype=\count326
-\blx@parenlevel@text=\count327
-\blx@parenlevel@foot=\count328
-\blx@sectionciteorder@0=\count329
-\blx@entrysetcounter=\count330
-\labelnumberwidth=\skip65
-\labelalphawidth=\skip66
-\biblabelsep=\skip67
-\bibitemsep=\skip68
-\bibnamesep=\skip69
-\bibinitsep=\skip70
-\bibparsep=\skip71
-\bibhang=\skip72
-\blx@bcfin=\read2
-\blx@bcfout=\write3
-\blx@langwohyphens=\language5
-\c@mincomprange=\count331
-\c@maxcomprange=\count332
-\c@mincompwidth=\count333
-Package biblatex Info: Trying to load biblatex default data model...
-Package biblatex Info: ... file 'blx-dm.def' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def
-File: blx-dm.def 2019/12/01 v3.14 biblatex localization (PK/MW)
-)
-Package biblatex Info: Trying to load biblatex custom data model...
-Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count334
-\c@savedafterword=\count335
-\c@annotator=\count336
-\c@savedannotator=\count337
-\c@author=\count338
-\c@savedauthor=\count339
-\c@bookauthor=\count340
-\c@savedbookauthor=\count341
-\c@commentator=\count342
-\c@savedcommentator=\count343
-\c@editor=\count344
-\c@savededitor=\count345
-\c@editora=\count346
-\c@savededitora=\count347
-\c@editorb=\count348
-\c@savededitorb=\count349
-\c@editorc=\count350
-\c@savededitorc=\count351
-\c@foreword=\count352
-\c@savedforeword=\count353
-\c@holder=\count354
-\c@savedholder=\count355
-\c@introduction=\count356
-\c@savedintroduction=\count357
-\c@namea=\count358
-\c@savednamea=\count359
-\c@nameb=\count360
-\c@savednameb=\count361
-\c@namec=\count362
-\c@savednamec=\count363
-\c@translator=\count364
-\c@savedtranslator=\count365
-\c@shortauthor=\count366
-\c@savedshortauthor=\count367
-\c@shorteditor=\count368
-\c@savedshorteditor=\count369
-\c@labelname=\count370
-\c@savedlabelname=\count371
-\c@institution=\count372
-\c@savedinstitution=\count373
-\c@lista=\count374
-\c@savedlista=\count375
-\c@listb=\count376
-\c@savedlistb=\count377
-\c@listc=\count378
-\c@savedlistc=\count379
-\c@listd=\count380
-\c@savedlistd=\count381
-\c@liste=\count382
-\c@savedliste=\count383
-\c@listf=\count384
-\c@savedlistf=\count385
-\c@location=\count386
-\c@savedlocation=\count387
-\c@organization=\count388
-\c@savedorganization=\count389
-\c@origlocation=\count390
-\c@savedoriglocation=\count391
-\c@origpublisher=\count392
-\c@savedorigpublisher=\count393
-\c@publisher=\count394
-\c@savedpublisher=\count395
-\c@language=\count396
-\c@savedlanguage=\count397
-\c@origlanguage=\count398
-\c@savedoriglanguage=\count399
-\c@pageref=\count400
-\c@savedpageref=\count401
-\shorthandwidth=\skip73
-\shortjournalwidth=\skip74
-\shortserieswidth=\skip75
-\shorttitlewidth=\skip76
-\shortauthorwidth=\skip77
-\shorteditorwidth=\skip78
-\locallabelnumberwidth=\skip79
-\locallabelalphawidth=\skip80
-\localshorthandwidth=\skip81
-\localshortjournalwidth=\skip82
-\localshortserieswidth=\skip83
-\localshorttitlewidth=\skip84
-\localshortauthorwidth=\skip85
-\localshorteditorwidth=\skip86
-Package biblatex Info: Trying to load compatibility code...
-Package biblatex Info: ... file 'blx-compat.def' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def
-File: blx-compat.def 2019/12/01 v3.14 biblatex compatibility (PK/MW)
-)
-Package biblatex Info: Trying to load generic definitions...
-Package biblatex Info: ... file 'biblatex.def' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def
-File: biblatex.def 2019/12/01 v3.14 biblatex compatibility (PK/MW)
-\c@textcitecount=\count402
-\c@textcitetotal=\count403
-\c@textcitemaxnames=\count404
-\c@biburlbigbreakpenalty=\count405
-\c@biburlbreakpenalty=\count406
-\c@biburlnumpenalty=\count407
-\c@biburlucpenalty=\count408
-\c@biburllcpenalty=\count409
-\biburlbigskip=\muskip18
-\biburlnumskip=\muskip19
-\biburlucskip=\muskip20
-\biburllcskip=\muskip21
-\c@smartand=\count410
-)
-Package biblatex Info: Trying to load bibliography style 'numeric'...
-Package biblatex Info: ... file 'numeric.bbx' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
-File: numeric.bbx 2019/12/01 v3.14 biblatex bibliography style (PK/MW)
-Package biblatex Info: Trying to load bibliography style 'standard'...
-Package biblatex Info: ... file 'standard.bbx' found.
-
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
-File: standard.bbx 2019/12/01 v3.14 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count411
-\c@bbx:relatedtotal=\count412
-))
-Package biblatex Info: Trying to load citation style 'numeric'...
-Package biblatex Info: ... file 'numeric.cbx' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
-File: numeric.cbx 2019/12/01 v3.14 biblatex citation style (PK/MW)
-Package biblatex Info: Redefining '\cite'.
-Package biblatex Info: Redefining '\parencite'.
-Package biblatex Info: Redefining '\footcite'.
-Package biblatex Info: Redefining '\footcitetext'.
-Package biblatex Info: Redefining '\smartcite'.
-Package biblatex Info: Redefining '\supercite'.
-Package biblatex Info: Redefining '\textcite'.
-Package biblatex Info: Redefining '\textcites'.
-Package biblatex Info: Redefining '\cites'.
-Package biblatex Info: Redefining '\parencites'.
-Package biblatex Info: Redefining '\smartcites'.
-)
-Package biblatex Info: Trying to load configuration file...
-Package biblatex Info: ... file 'biblatex.cfg' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.cfg
-File: biblatex.cfg 
-))
-\@quotelevel=\count413
-\@quotereset=\count414
+\cslhangindent=\skip65
 
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdfmo
 de.def
 File: l3backend-pdfmode.def 2020-02-23 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count415
+\l__kernel_color_stack_int=\count289
 \l__pdf_internal_box=\box66
-)
-No file manuscript.aux.
+) (./manuscript.aux)
 \openout1 = `manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
 
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-bas
 e.sty
@@ -709,7 +498,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box67
-Package hyperref Info: Link coloring OFF on input line 92.
+Package hyperref Info: Link coloring OFF on input line 96.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
@@ -719,13 +508,14 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 string.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count416
+\c@section@level=\count290
 )
-LaTeX Info: Redefining \ref on input line 92.
-LaTeX Info: Redefining \pageref on input line 92.
-LaTeX Info: Redefining \nameref on input line 92.
-\@outlinefile=\write4
-\openout4 = `manuscript.out'.
+LaTeX Info: Redefining \ref on input line 96.
+LaTeX Info: Redefining \pageref on input line 96.
+LaTeX Info: Redefining \nameref on input line 96.
+(./manuscript.out) (./manuscript.out)
+\@outlinefile=\write3
+\openout3 = `manuscript.out'.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -761,53 +551,38 @@ LaTeX Info: Redefining \nameref on input line 92.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package biblatex Info: Trying to load language 'english'...
-Package biblatex Info: ... file 'english.lbx' found.
-(/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/english.lbx
-File: english.lbx 2019/12/01 v3.14 biblatex localization (PK/MW)
-)
-Package biblatex Info: Input encoding 'utf8' detected.
-Package biblatex Info: Automatic encoding selection.
-(biblatex)             Assuming data encoding 'utf8'.
-\openout3 = `manuscript.bcf'.
-
-Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'manuscript.bbl' not found.
-No file manuscript.bbl.
-Package biblatex Info: Reference section=0 on input line 92.
-Package biblatex Info: Reference segment=0 on input line 92.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 9
-4.
+8.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 9
-4.
+8.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-94.
+98.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-94.
+98.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 94.
+(Font)              <12> on input line 98.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 94.
+(Font)              <8> on input line 98.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 94.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 94.
+(Font)              <6> on input line 98.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 98.
 
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 94.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 98.
 
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -815,208 +590,31 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/Users/gerbrich/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-22.
+26.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 188.
+(Font)              <10> on input line 192.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 188.
+(Font)              <7> on input line 192.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 188.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-98.
+(Font)              <5> on input line 192.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+02.
 (/Users/gerbrich/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [2]
-
-LaTeX Warning: Citation 'PRISMA-PGroup2015' on page 3 undefined on input line 2
-74.
-
-[3]
-
-LaTeX Warning: Citation 'modAL2018' on page 4 undefined on input line 326.
-
-
-LaTeX Warning: Citation 'OMara-Eves2015' on page 4 undefined on input line 334.
-
-
-
-LaTeX Warning: Citation 'Yu2018a' on page 4 undefined on input line 336.
-
-
-LaTeX Warning: Citation 'Yu2019' on page 4 undefined on input line 336.
-
-
-LaTeX Warning: Citation 'Wallace2010' on page 4 undefined on input line 342.
-
-
-LaTeX Warning: Citation 'Miwa2014' on page 4 undefined on input line 347.
-
-
-LaTeX Warning: Citation 'Cohen2006' on page 4 undefined on input line 350.
-
-
-LaTeX Warning: Citation 'Cormack2014' on page 4 undefined on input line 352.
-
-
-LaTeX Warning: Citation 'Kilicoglu2009' on page 4 undefined on input line 356.
-
-[4] [5]
-
-LaTeX Warning: Citation 'Cohen2006' on page 6 undefined on input line 395.
-
-
-LaTeX Warning: Citation 'Cohen2006' on page 6 undefined on input line 403.
-
-
-LaTeX Warning: Citation 'Yu2018a' on page 6 undefined on input line 405.
-
-
-LaTeX Warning: Citation 'Hall2012' on page 6 undefined on input line 408.
-
-
-LaTeX Warning: Citation 'Nagtegaal2019' on page 6 undefined on input line 412.
-
-
-LaTeX Warning: Citation 'Nagtegaal2019a' on page 6 undefined on input line 413.
-
-
-
-LaTeX Warning: Citation 'vandeSchoot2017' on page 6 undefined on input line 417
-.
-
-
-LaTeX Warning: Citation 'Appenzeller-Herzog2020' on page 6 undefined on input l
-ine 421.
-
-
-LaTeX Warning: Citation 'Appenzeller-Herzog2019' on page 6 undefined on input l
-ine 422.
-
-[6]
-
-LaTeX Warning: Citation 'Zhang2004' on page 7 undefined on input line 476.
-
-
-LaTeX Warning: Citation 'Breiman2001' on page 7 undefined on input line 482.
-
-
-LaTeX Warning: Citation 'Tong2001' on page 7 undefined on input line 485.
-
-
-LaTeX Warning: Citation 'scikit-learn' on page 7 undefined on input line 513.
-
-
-LaTeX Warning: Citation 'Ramos2003' on page 7 undefined on input line 516.
-
-[7] [8]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 632.
-
-[9] [10] [11] [12]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 844.
-
-
-LaTeX Warning: Citation 'Le2014' on page 13 undefined on input line 864.
-
-
-LaTeX Warning: Citation 'Rehurek2010' on page 13 undefined on input line 870.
-
-
-LaTeX Warning: Citation 'Reimers2019' on page 13 undefined on input line 904.
-
-
-LaTeX Warning: Citation 'Zhang2004' on page 13 undefined on input line 920.
-
-[13]
-
-LaTeX Warning: Citation 'scikit-learn' on page 14 undefined on input line 923.
-
-
-LaTeX Warning: Citation 'Breiman2001' on page 14 undefined on input line 939.
-
-
-LaTeX Warning: Citation 'Lewis1994' on page 14 undefined on input line 971.
-
-[14] [15] [16]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 2 on input line 1201.
-
-[17]
-
-LaTeX Warning: Empty bibliography on input line 1216.
-
-
-Package longtable Warning: Table widths have changed. Rerun LaTeX.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1218.
-[18]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1218.
-(./manuscript.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1218.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1218.
-
-
-Package rerunfilecheck Warning: File `manuscript.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `manuscript.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  0B7B9D98C5773F53D2393193816238F7;3610.
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                manuscript
-(biblatex)                and rerun LaTeX afterwards.
-
-Package logreq Info: Writing requests to 'manuscript.run.xml'.
-\openout1 = `manuscript.run.xml'.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1218.
- ) 
+) [2] [3] [4] [5]
+! Undefined control sequence.
+l.420 after exposure to trauma (\noopsort
+                                         {schoot}van de Schoot et al. 2017). 
 Here is how much of TeX's memory you used:
- 19178 strings out of 482913
- 309057 string characters out of 5958316
- 953228 words of memory out of 5000000
- 34019 multiletter control sequences out of 15000+600000
- 609974 words of font info for 77 fonts, out of 8000000 for 9000
+ 12350 strings out of 482913
+ 175633 string characters out of 5958316
+ 430834 words of memory out of 5000000
+ 27351 multiletter control sequences out of 15000+600000
+ 591497 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 35i,13n,44p,904b,1624s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Us
-ers/gerbrich/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/ge
-rbrich/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/gerb
-rich/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/gerbri
-ch/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/gerbrich/Li
-brary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/gerbrich/Libr
-ary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/gerbrich/Librar
-y/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/gerbrich/Library/
-TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/gerbrich/Library/Tin
-yTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/gerbrich/Library/TinyTe
-X/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/gerbrich/Library/TinyTeX/t
-exmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/gerbrich/Library/TinyTeX/texm
-f-dist/fonts/type1/public/lm/lmr6.pfb></Users/gerbrich/Library/TinyTeX/texmf-di
-st/fonts/type1/public/lm/lmr7.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/f
-onts/type1/public/lm/lmr8.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts
-/type1/public/lm/lmri10.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/t
-ype1/public/lm/lmsy10.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/typ
-e1/public/lm/lmsy7.pfb></Users/gerbrich/Library/TinyTeX/texmf-dist/fonts/type1/
-public/lm/lmtt10.pfb>
-Output written on manuscript.pdf (18 pages, 295569 bytes).
-PDF statistics:
- 301 PDF objects out of 1000 (max. 8388607)
- 264 compressed objects within 3 object streams
- 135 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 34i,7n,37p,904b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
 
+!  ==> Fatal error occurred, no output PDF file produced!

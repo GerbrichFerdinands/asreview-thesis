@@ -1648,12 +1648,12 @@ summary {
 
 <p>This notebook processes all five systematic review datasets into datasets that can be used for testing asreview.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
-## ✓ tibble  2.1.3     ✓ dplyr   0.8.4
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.3
+## ✓ tibble  2.1.3     ✓ dplyr   0.8.5
 ## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(knitr)
@@ -1725,6 +1725,7 @@ ace_asr[ace_asr$abstract == &quot;&quot;, &quot;abstract&quot;] &lt;- NA
 # drop missings and duplicates. 
 ace_test &lt;- ace_asr %&gt;%
   drop_na(abstract) %&gt;% # drop entries with missing abstracts
+  filter(abstract != &quot;&quot;) %&gt;%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
 # select columns
@@ -1814,6 +1815,7 @@ ptsd[&quot;asreview&quot;, ] &lt;- data_descr(ptsd_asr)</code></pre>
 <p>Now, remove duplicate entries and empty abstracts to arrive at test set.</p>
 <pre class="r"><code>ptsd_test &lt;- ptsd_asr %&gt;%
   drop_na(abstract) %&gt;% # drop entries with missing abstracts
+  filter(abstract != &quot;&quot;) %&gt;%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts</code></pre>
 <p>There are 38 inclusions in this dataset, should be 34.</p>
 <pre class="r"><code># get rid of 4 extra inclusions (see log book)
@@ -1876,6 +1878,7 @@ hall[&quot;asreview&quot;, ] &lt;- data_descr(hall_asr)</code></pre>
 <h3>Creating test dataset</h3>
 <pre class="r"><code>hall_test &lt;- hall_asr %&gt;%
    drop_na(abstract) %&gt;% # drop entries with missing abstracts
+   filter(abstract != &quot;&quot;) %&gt;%
    distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 
 hall[&quot;test&quot;, ] &lt;- data_descr(hall_test)</code></pre>
@@ -1922,6 +1925,7 @@ wilson[&quot;asreview&quot;, ] &lt;- data_descr(w_asr)</code></pre>
 <pre class="r"><code># create test dataset
 w_test &lt;- w_asr %&gt;%
   drop_na(abstract) %&gt;% # drop entries with missing abstracts
+  filter(abstract != &quot;&quot;) %&gt;%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 
 # select relevant columns
@@ -1933,7 +1937,7 @@ wilson[&quot;test&quot;,] &lt;- data_descr(w_test)</code></pre>
 <pre class="r"><code>drops[&quot;wilson&quot;,] &lt;- 
   w_asr %&gt;%
    summarise(n = length(abstract),
-                    na = sum(is.na(abstract)),
+                    na = sum(is.na(abstract)), # todo correct this, &quot;NA&quot;, or &quot;&quot;
                     narate = sum(is.na(abstract))/length(abstract),
                     dup = sum(duplicated(abstract, incomparables = NA)),
                     duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
@@ -1941,7 +1945,7 @@ wilson[&quot;test&quot;,] &lt;- data_descr(w_test)</code></pre>
 wilson</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["search"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["ftext"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["incl"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"3453","2":"174","3":"26","_rn_":"paper"},{"1":"3453","2":"174","3":"26","_rn_":"raw"},{"1":"3437","2":"174","3":"26","_rn_":"asreview"},{"1":"2334","2":"156","3":"24","_rn_":"test"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["search"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["ftext"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["incl"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"3453","2":"174","3":"26","_rn_":"paper"},{"1":"3453","2":"174","3":"26","_rn_":"raw"},{"1":"3437","2":"174","3":"26","_rn_":"asreview"},{"1":"2333","2":"155","3":"23","_rn_":"test"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -2260,7 +2264,7 @@ candidates_test
 8896
 </td>
 <td style="text-align:left;">
-2334
+2333
 </td>
 </tr>
 <tr>
@@ -2280,7 +2284,7 @@ NA
 NA
 </td>
 <td style="text-align:left;">
-156
+155
 </td>
 </tr>
 <tr>
@@ -2300,7 +2304,7 @@ incl_test
 104
 </td>
 <td style="text-align:left;">
-24
+23
 </td>
 </tr>
 <tr>
@@ -2320,7 +2324,7 @@ inclrate_test
 1.17
 </td>
 <td style="text-align:left;">
-1.03
+0.99
 </td>
 </tr>
 </tbody>
@@ -2397,16 +2401,16 @@ ptsd
 5782
 </td>
 <td style="text-align:right;">
-747
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-4
+0
 </td>
 <td style="text-align:right;">
 0.00
+</td>
+<td style="text-align:right;">
+750
+</td>
+<td style="text-align:right;">
+0.13
 </td>
 </tr>
 <tr>

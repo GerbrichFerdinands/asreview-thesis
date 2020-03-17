@@ -82,8 +82,12 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
-\usepackage[]{biblatex}
-\addbibresource{asreview.bib}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
+  {\par}
 
 \title{Manuscript drafts}
 \author{Gerbrich Ferdinands}
@@ -271,7 +275,7 @@ balance strategy.
 
 A SR can be divided into phases. Everything starts with a
 \textbf{systematic search}, leading to then citation screening is
-performed, then full-text screening \autocite{PRISMA-PGroup2015}
+performed, then full-text screening (PRISMA-P Group et al. 2015)
 
 What must be the objective of our tool?: It is the tedious task citation
 screening part where loads of time can be saved.
@@ -323,7 +327,7 @@ Active learning = increasing classification performance with every
 query. The query strategy determines the way unlabeled papers are
 queried to the researcher.
 
-\autocite{modAL2018}
+(Danka and Horvath, n.d.)
 
 RQ1 - what are good classifiers RQ2 - what are good optimization
 strategies
@@ -331,29 +335,28 @@ strategies
 \hypertarget{background}{%
 \subsection{Background}\label{background}}
 
-\autocite{OMara-Eves2015} literature review
+(O'Mara-Eves et al. 2015) literature review
 
-\autocite{Yu2018a}, \autocite{Yu2019} simulated 32 svm classifiers, on
-software engineering. A popular classifier is SVM. succes with HUTM
-(fastread), uncertainty, mix of weighting and agressive undersampling,
-In terms of Yu et al, we adopt .CT.
+(Yu, Kraft, and Menzies 2018), (Yu and Menzies 2019) simulated 32 svm
+classifiers, on software engineering. A popular classifier is SVM.
+succes with HUTM (fastread), uncertainty, mix of weighting and agressive
+undersampling, In terms of Yu et al, we adopt .CT.
 
 SVM - tf-idf on medical data, uncertainty sampling, agressive
-undersampling. \autocite{Wallace2010}
+undersampling. (Wallace et al. 2010)
 
 abstrackr
 
-SVM + Weighting + uncertainty (bow) produced good methods
-\autocite{Miwa2014} Also include social sciences data besides medical
-data.
+SVM + Weighting + uncertainty (bow) produced good methods (Miwa et al.
+2014) Also include social sciences data besides medical data.
 
-\autocite{Cohen2006} perceptron-based classifier (neural network)
+(Cohen et al. 2006) perceptron-based classifier (neural network)
 
-SVM on legal documents (no balancing, certainty ) \autocite{Cormack2014}
-in limitations section mentions that LR yields about same results, nb
-inferior results.
+SVM on legal documents (no balancing, certainty ) (Cormack and Grossman
+2014) in limitations section mentions that LR yields about same results,
+nb inferior results.
 
-\autocite{Kilicoglu2009} - SVM, naive bayes, boosting and combinations.
+(Kilicoglu et al. 2009) - SVM, naive bayes, boosting and combinations.
 future work should optimize parameters. ``Regarding the base classifiers
 used in identifying method- ologically rigorous studies, boosting
 consistently strikes the best balance between precision and recall,
@@ -392,34 +395,35 @@ research areas. test datasets serve as systematic search results, then
 perform active learning to detect inclusions.
 
 Cohen et al.~collected systematic review datasets from the medical
-sciences \autocite{Cohen2006}. All systematic reviews in this database
+sciences (Cohen et al. 2006). All systematic reviews in this database
 are on drug efficacy. The \emph{ace} dataset used in the current study
 comes from a systematic review on the efficacy of Angiotensin-converting
 enzyme (ACE) inhibitors.
 
 a machine learning-based citation classification tool to reduce workload
 in systematic reviews of drug class efficacy. Using a perceptron
-classifier, \href{mailto:WSS@95}{\nolinkurl{WSS@95}}\% = 56.61 in
-\autocite{Cohen2006}. (5x2 crossvalidation). Can we beat this? The data
+classifier, \href{mailto:WSS@95}{\nolinkurl{WSS@95}}\% = 56.61 in (Cohen
+et al. 2006). (5x2 crossvalidation). Can we beat this? The data
 
-The \emph{software} dataset is retrieved from \autocite{Yu2018a}, who
-collected datasets on literature reviews from the software engineering
-field. This dataset is on fault prediction in software engineering by
-\autocite{Hall2012}.
+The \emph{software} dataset is retrieved from (Yu, Kraft, and Menzies
+2018), who collected datasets on literature reviews from the software
+engineering field. This dataset is on fault prediction in software
+engineering by (Hall et al. 2012).
 
 The \emph{nudging} dataset comes from a review from the behavioural
 public administration area. The SR includes studies on nudging
-healthcare professionals \autocite{Nagtegaal2019}. The data was stored
-on the Harvard Dataverse \autocite{Nagtegaal2019a}.
+healthcare professionals (Nagtegaal et al. 2019a). The data was stored
+on the Harvard Dataverse (Nagtegaal et al. 2019b).
 
 A literature review from field of psychology, \emph{ptsd}. The SR is on
 studies applying latent trajectory analyses on posttraumatic stress
-after exposure to trauma \autocite{vandeSchoot2017}. The corresponding
-data can be found on the Open Science Framework {[}\ldots{]}.
+after exposure to trauma (\noopsort{schoot}van de Schoot et al. 2017).
+The corresponding data can be found on the Open Science Framework
+{[}\ldots{]}.
 
-\emph{wilson}, a dataset from the medical sciences
-\autocite{Appenzeller-Herzog2020}. TA review on effectiveness treatments
-of Wilson disease \autocite{Appenzeller-Herzog2019}.
+\emph{wilson}, a dataset from the medical sciences (Appenzeller-Herzog
+2020). TA review on effectiveness treatments of Wilson disease
+(Appenzeller-Herzog et al. 2019).
 
 All datasets started with an initial pool of thousands of papers. A
 fraction of these papers where deemed relevant for the SR, with
@@ -473,16 +477,15 @@ Logistic Regression (L) -
 Naive Bayes (B) - predicts the class of an instance given input features
 \(\mathbf{X}\). Naive Bayes assumes all features are independent given
 the class value. This is obviously not the case but still the algorithm
-performs impressively \autocite{Zhang2004}. Especially at \ldots{}
-tasks.
+performs impressively (Zhang 2004). Especially at \ldots{} tasks.
 
 Random Forests (R) is where a large number of decision trees are fit on
 bootstrapped samples of the original data. All trees cast a vote on the
 class, which are aggregated into a class prediciton for each input
-\(\mathbf{X}\) \autocite{Breiman2001}.
+\(\mathbf{X}\) (Breiman 2001).
 
 Support Vecor Machine (S) - finds a multidimensional hyperplane to
-separate classes. \autocite{Tong2001}
+separate classes. (Tong and Koller 2001)
 
 Dense Neural Network (N) -
 
@@ -510,12 +513,12 @@ representations called feature vectors.
 A classical example is a `bag of words' representation. For each each
 text, the number of occurrences of each word is stored. This leads to n
 features, where n is the number of distinct words in the texts
-\autocite{scikit-learn}. The bag-of-words method is simplistic and will
+(Pedregosa et al. 2011). The bag-of-words method is simplistic and will
 highly value often occuring but otherwise meaningless words such as
-``and''. Term-frequency Inverse Document Frequency (TF-IDF)
-\autocite{Ramos2003} circumvents this problem by adjusting a term
-frequency in a text with the inverse docuement frequency, the frequency
-of a given word in the entire corpus.
+``and''. Term-frequency Inverse Document Frequency (TF-IDF) (Ramos and
+others 2003) circumvents this problem by adjusting a term frequency in a
+text with the inverse docuement frequency, the frequency of a given word
+in the entire corpus.
 
 \begin{enumerate}
 \def\labelenumi{(\Alph{enumi})}
@@ -861,13 +864,14 @@ ngram_max: int
 \paragraph{Doc2Vec}\label{doc2vec}}
 
 Predicts words from context. Aims at capturing the relations between
-word (man-woman, king-queen). \autocite{Le2014}. Using a neural network.
+word (man-woman, king-queen). (Le and Mikolov 2014). Using a neural
+network.
 
 using Continuous Bag-of-Words (CBOW), Skip-Gram model, \ldots. Word
 vector \emph{W} and extra: document vector \emph{D}, trained to predict
 words in the text.
 
-From gensim \autocite{Rehurek2010}.
+From gensim (Řehůřek and Sojka 2010).
 
 \begin{verbatim}
     Arguments
@@ -901,7 +905,7 @@ From gensim \autocite{Rehurek2010}.
 \hypertarget{sbert}{%
 \paragraph{SBERT}\label{sbert}}
 
-BERT-base model with mean-tokens pooling \autocite{Reimers2019}
+BERT-base model with mean-tokens pooling (Reimers and Gurevych 2019)
 
 \hypertarget{embeddingidf}{%
 \paragraph{embeddingIdf}\label{embeddingidf}}
@@ -917,10 +921,10 @@ are provided by the inverse document frequencies
 \paragraph{Naive Bayes}\label{naive-bayes}}
 
 Naive Bayes assumes all features are independent given the class value.
-\autocite{Zhang2004}
+(Zhang 2004)
 
 ASReview uses the \texttt{MultinomialNB} from the scikit-learn package
-\autocite{scikit-learn}, that implements the naive Bayes algorithm for
+(Pedregosa et al. 2011), that implements the naive Bayes algorithm for
 multinomially distributed data. \texttt{nb}
 
 Hyperparameters
@@ -936,8 +940,7 @@ Hyperparameters
 \paragraph{Random Forests}\label{random-forests}}
 
 A number of decision trees are fit on bootstrapped samples of the
-original data, \autocite{Breiman2001} RandomForestClassifier from
-sklearn
+original data, (Breiman 2001) RandomForestClassifier from sklearn
 
 Arguments --------- n\_estimators: int Number of estimators.
 max\_features: int Number of features in the model. class\_weight: float
@@ -968,7 +971,7 @@ Network}}{Dense Neural Network}}\label{dense-neural-network}}
   model
 \item
   Uncertainty - choose the most uncertain samples according to the model
-  (i.e.~closest to 0.5 probability) \autocite{Lewis1994}
+  (i.e.~closest to 0.5 probability) (Lewis and Catlett 1994)
 \item
   Random - randomly selects abstracts with no regard to model assigned
   probabilities.
@@ -1213,6 +1216,161 @@ core for 20 minutes on a GPU node. Since compute nodes are allocated
 exclusively to a single job at a time, you will be charged for all cores
 on that node - even if you are using less.
 
-\printbibliography[title=References]
+\hypertarget{references}{%
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-Appenzeller-Herzog2020}{}%
+Appenzeller-Herzog, Christian. 2020. ``Data from Comparative
+Effectiveness of Common Therapies for Wilson Disease: A Systematic
+Review and Meta-Analysis of Controlled Studies.'' Zenodo.
+
+\leavevmode\hypertarget{ref-Appenzeller-Herzog2019}{}%
+Appenzeller-Herzog, Christian, Tim Mathes, Marlies L. S. Heeres, Karl
+Heinz Weiss, Roderick H. J. Houwen, and Hannah Ewald. 2019.
+``Comparative Effectiveness of Common Therapies for Wilson Disease: A
+Systematic Review and Meta-Analysis of Controlled Studies.'' \emph{Liver
+International} 39 (11): 2136--52.
+\url{https://doi.org/10.1111/liv.14179}.
+
+\leavevmode\hypertarget{ref-Breiman2001}{}%
+Breiman, Leo. 2001. ``Random Forests.'' \emph{Machine Learning} 45 (1):
+5--32. \url{https://doi.org/10.1023/A:1010933404324}.
+
+\leavevmode\hypertarget{ref-Cohen2006}{}%
+Cohen, A. M., W. R. Hersh, K. Peterson, and Po-Yin Yen. 2006. ``Reducing
+Workload in Systematic Review Preparation Using Automated Citation
+Classification.'' \emph{Journal of the American Medical Informatics
+Association : JAMIA} 13 (2): 206--19.
+\url{https://doi.org/10.1197/jamia.M1929}.
+
+\leavevmode\hypertarget{ref-Cormack2014}{}%
+Cormack, Gordon V., and Maura R. Grossman. 2014. ``Evaluation of
+Machine-Learning Protocols for Technology-Assisted Review in Electronic
+Discovery.'' In \emph{Proceedings of the 37th International ACM SIGIR
+Conference on Research \& Development in Information Retrieval},
+153--62. SIGIR '14. Gold Coast, Queensland, Australia: Association for
+Computing Machinery. \url{https://doi.org/10.1145/2600428.2609601}.
+
+\leavevmode\hypertarget{ref-modAL2018}{}%
+Danka, Tivadar, and Peter Horvath. n.d. ``modAL: A Modular Active
+Learning Framework for Python.''
+
+\leavevmode\hypertarget{ref-Hall2012}{}%
+Hall, Tracy, Sarah Beecham, David Bowes, David Gray, and Steve Counsell.
+2012. ``A Systematic Literature Review on Fault Prediction Performance
+in Software Engineering.'' \emph{IEEE Transactions on Software
+Engineering} 38 (6): 1276--1304.
+\url{https://doi.org/10.1109/TSE.2011.103}.
+
+\leavevmode\hypertarget{ref-Kilicoglu2009}{}%
+Kilicoglu, H., D. Demner-Fushman, T. C. Rindflesch, N. L. Wilczynski,
+and R. B. Haynes. 2009. ``Towards Automatic Recognition of
+Scientifically Rigorous Clinical Research Evidence.'' \emph{Journal of
+the American Medical Informatics Association} 16 (1): 25--31.
+\url{https://doi.org/10/bjkhh9}.
+
+\leavevmode\hypertarget{ref-Le2014}{}%
+Le, Quoc V., and Tomas Mikolov. 2014. ``Distributed Representations of
+Sentences and Documents.'' \emph{arXiv:1405.4053 {[}Cs{]}}, May.
+\url{http://arxiv.org/abs/1405.4053}.
+
+\leavevmode\hypertarget{ref-Lewis1994}{}%
+Lewis, David D., and Jason Catlett. 1994. ``Heterogeneous Uncertainty
+Sampling for Supervised Learning.'' In \emph{Machine Learning
+Proceedings 1994}, edited by William W. Cohen and Haym Hirsh, 148--56.
+San Francisco (CA): Morgan Kaufmann.
+\url{https://doi.org/10.1016/B978-1-55860-335-6.50026-X}.
+
+\leavevmode\hypertarget{ref-Miwa2014}{}%
+Miwa, Makoto, James Thomas, Alison O'Mara-Eves, and Sophia Ananiadou.
+2014. ``Reducing Systematic Review Workload Through Certainty-Based
+Screening.'' \emph{Journal of Biomedical Informatics} 51 (October):
+242--53. \url{https://doi.org/10.1016/j.jbi.2014.06.005}.
+
+\leavevmode\hypertarget{ref-Nagtegaal2019}{}%
+Nagtegaal, Rosanna, Lars Tummers, Mirko Noordegraaf, and Victor Bekkers.
+2019a. ``Nudging Healthcare Professionals Towards Evidence-Based
+Medicine: A Systematic Scoping Review.'' \emph{Journal of Behavioral
+Public Administration} 2 (2).
+\url{https://doi.org/doi.org/10.30636/jbpa.22.71}.
+
+\leavevmode\hypertarget{ref-Nagtegaal2019a}{}%
+---------. 2019b. ``Nudging Healthcare Professionals Towards
+Evidence-Based Medicine: A Systematic Scoping Review.'' Harvard
+Dataverse.
+
+\leavevmode\hypertarget{ref-OMara-Eves2015}{}%
+O'Mara-Eves, Alison, James Thomas, John McNaught, Makoto Miwa, and
+Sophia Ananiadou. 2015. ``Using Text Mining for Study Identification in
+Systematic Reviews: A Systematic Review of Current Approaches.''
+\emph{Systematic Reviews} 4 (1): 5.
+\url{https://doi.org/10.1186/2046-4053-4-5}.
+
+\leavevmode\hypertarget{ref-scikit-learn}{}%
+Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O.
+Grisel, M. Blondel, et al. 2011. ``Scikit-Learn: Machine Learning in
+Python.'' \emph{Journal of Machine Learning Research} 12: 2825--30.
+
+\leavevmode\hypertarget{ref-PRISMA-PGroup2015}{}%
+PRISMA-P Group, David Moher, Larissa Shamseer, Mike Clarke, Davina
+Ghersi, Alessandro Liberati, Mark Petticrew, Paul Shekelle, and Lesley A
+Stewart. 2015. ``Preferred Reporting Items for Systematic Review and
+Meta-Analysis Protocols (PRISMA-P) 2015 Statement.'' \emph{Systematic
+Reviews} 4 (1): 1. \url{https://doi.org/10.1186/2046-4053-4-1}.
+
+\leavevmode\hypertarget{ref-Ramos2003}{}%
+Ramos, Juan, and others. 2003. ``Using Tf-Idf to Determine Word
+Relevance in Document Queries.'' In \emph{Proceedings of the First
+Instructional Conference on Machine Learning}, 242:133--42. Piscataway,
+NJ.
+
+\leavevmode\hypertarget{ref-Reimers2019}{}%
+Reimers, Nils, and Iryna Gurevych. 2019. ``Sentence-BERT: Sentence
+Embeddings Using Siamese BERT-Networks.'' \emph{arXiv:1908.10084
+{[}Cs{]}}, August. \url{http://arxiv.org/abs/1908.10084}.
+
+\leavevmode\hypertarget{ref-Rehurek2010}{}%
+Řehůřek, Radim, and Petr Sojka. 2010. ``Software Framework for Topic
+Modelling with Large Corpora.'' In \emph{Proceedings of the LREC 2010
+Workshop on New Challenges for NLP Frameworks}, 45--50. Valletta, Malta:
+ELRA.
+
+\leavevmode\hypertarget{ref-Tong2001}{}%
+Tong, Simon, and Daphne Koller. 2001. ``Support Vector Machine Active
+Learning with Applications to Text Classification.'' \emph{Journal of
+Machine Learning Research} 2 (Nov): 45--66.
+
+\leavevmode\hypertarget{ref-vandeSchoot2017}{}%
+\noopsort{schoot}van de Schoot, Rens, Marit Sijbrandij, Sonja D. Winter,
+Sarah Depaoli, and Jeroen K. Vermunt. 2017. ``The GRoLTS-Checklist:
+Guidelines for Reporting on Latent Trajectory Studies.''
+\emph{Structural Equation Modeling: A Multidisciplinary Journal} 24 (3):
+451--67. \url{https://doi.org/10/gdpcw9}.
+
+\leavevmode\hypertarget{ref-Wallace2010}{}%
+Wallace, Byron C., Thomas A. Trikalinos, Joseph Lau, Carla Brodley, and
+Christopher H. Schmid. 2010. ``Semi-Automated Screening of Biomedical
+Citations for Systematic Reviews.'' \emph{BMC Bioinformatics} 11 (1):
+55. \url{https://doi.org/10.1186/1471-2105-11-55}.
+
+\leavevmode\hypertarget{ref-Yu2018a}{}%
+Yu, Zhe, Nicholas A. Kraft, and Tim Menzies. 2018. ``Finding Better
+Active Learners for Faster Literature Reviews.'' \emph{Empirical
+Software Engineering} 23 (6): 3161--86.
+\url{https://doi.org/10.1007/s10664-017-9587-0}.
+
+\leavevmode\hypertarget{ref-Yu2019}{}%
+Yu, Zhe, and Tim Menzies. 2019. ``FAST2: An Intelligent Assistant for
+Finding Relevant Papers.'' \emph{Expert Systems with Applications} 120
+(April): 57--71. \url{https://doi.org/10.1016/j.eswa.2018.11.021}.
+
+\leavevmode\hypertarget{ref-Zhang2004}{}%
+Zhang, Harry. 2004. ``The Optimality of Naive Bayes.'' In
+\emph{Proceedings of the Seventeenth International Florida Artificial
+Intelligence Research Society Conference, FLAIRS 2004}. Vol. 2.
+\end{cslreferences}
 
 \end{document}
