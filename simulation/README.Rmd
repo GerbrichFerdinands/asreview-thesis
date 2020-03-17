@@ -12,16 +12,15 @@ There are three stages, we start with the first where we are comparing different
 library(tidyverse)
 library(knitr)
 library(kableExtra)
+
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r, echo = FALSE}
+```{r}
 conditiongrid <- readRDS("00_conditiongrid.RDS")
 
-conditiongrid$condition %>%
-  kable(format = "markdown") %>%
-  pack_rows("Classifier", 1, 5) %>%
-  pack_rows("Feature Extraction", 6, 10) %>%
-  pack_rows("Balance Strategy", 11, 20)
+conditiongrid %>%
+  kable(format = "markdown")
 ```
 
 ### Version information
@@ -29,7 +28,7 @@ Personal device
 
 Cartesius supercomputer 
 
-
+asreview 
 
 -----
 
@@ -37,9 +36,6 @@ Cartesius supercomputer
 Comparing five different classifiers
 ```{r}
 hyperparametersets <- readRDS("01_hyperparameter_sets.RDS")
-
-hyperparametersets %>%
-  kable(format = "markdown")
 ```
 
 R - 275 secs 119% - 5 datasets 
@@ -50,6 +46,7 @@ R - 275 secs 119% - 5 datasets
 ## 1.1 Optimizing (hyper)parameters per model, per dataset (1-1)
 
 ### 1.1.1 Ace
+
 ```{r}
 lubridate::date("2020-03-17")
 ```
@@ -63,7 +60,7 @@ mpirun -n 2 asreview hyper-active -m nb -b double -e tfidf -q max -d ace -n 1000
 Optimization run on Cartesius
 ```{bash, eval = FALSE}
 # RCTW
-./cart_hyper_run.py hyper-active -t 10 -m rf -b double -e tfidf -q max -d ace
+./cart_hyper_run.py hyper-active -t 5 -m rf -b double -e tfidf -q max -d ace -r 23
 
 # SCTW
 
@@ -78,9 +75,25 @@ Optimization run on Cartesius
 ### 1.1.5 Wilson
 
 
+```{r}
+# to-do grid 
+todo <- hyperparametersets
+
+# set emojis for grid 
+c <- emo::ji("check") 
 
 
+todo$ace[1] <- c
+```
 
+```{r}
+# save the to-do grid in markdown style
+todo <- todo %>%
+  kable(format = "markdown")
+saveRDS(todo, file = "02_todo_hp.RDS")
+
+todo 
+```
 
 # Stage 2 - Feature exraction 
 Comparing tfidf with doc2vec
@@ -88,3 +101,4 @@ Comparing tfidf with doc2vec
 # Stage 3 - Balance strategy
 Redo all the analyses with a different balance strategy (aggressive undersampling?)
 Probably won't have time for this. 
+

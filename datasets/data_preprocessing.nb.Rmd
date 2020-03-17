@@ -284,7 +284,8 @@ wilson["asreview", ] <- data_descr(w_asr)
 # create test dataset
 w_test <- w_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
-  filter(abstract != "") %>%
+  filter(abstract != "",
+         abstract!= " ") %>
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 
 # select relevant columns
