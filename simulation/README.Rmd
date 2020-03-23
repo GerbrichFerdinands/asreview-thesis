@@ -208,6 +208,7 @@ Sent hyperparameters for optimization
 # RCTW 
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e tfidf -q max -d ace -r 23 # 7805989
 
+
 # NCTW does not work well with tfidf, save for second round with doc2vec: 
 # NCDW
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 23 # 7806021
@@ -242,19 +243,33 @@ Nudging dataset doesn't optimize well?
 todo <- huh(todo, "SCTW", "one", "nudging")
 ```
 
-Checkout results first hyperopt: 
-LCTW - no output?? 
+### Checkout results first hyperopt 
+LCTW - no output? 
 RCTW - only 'current'
 ```{r}
 todo <- huh(todo, c("LCTW", "RCTW"), "one", "ace")
 ```
 
+```{bash, eval = FALSE}
+# LCTW 
+# made a mistake in command, "logistic" instead of "lr", run again 
+./cart_hyper_run.py hyper-active -t 03:00:00 -m logistic -b double -e tfidf -q max -d ace -r 23 # 7813556
+
+# RCTW, fixed a parameter bug in simulation package. 
+./cart_hyper_run.py hyper-active -t 03:00:00 -m rf -b double -e tfidf -q max -d ace -r 23 # 7813592
+```
+
+```{r}
+todo <- busy(todo, c("LCTW", "RCTW"), "one", "ace")
+```
+
 NCDW - loss still going down, sent in for another 12 hours. 
 ```{bash, eval = FALSE}
+# NCDW
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 23 # 7811926
 ```
 
-(re)Simulate BCTW models
+(re)Simulate BCTW models 
 Simulate SCTW models 
 
 ***
