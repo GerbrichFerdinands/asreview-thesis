@@ -243,6 +243,22 @@ drops["software", ] <-
 hall
 ```
 
+## Virus dataset
+```{r}
+v_raw <- read.csv("../../sims/data/virus.csv")
+
+sum(v_raw$abstract == "")
+
+v_test <- v_raw %>%
+  drop_na(abstract) %>%
+  filter(abstract != "", abstract != "NA")
+
+v_test <- v_test[v_test$record_id != 1732,]
+
+
+```
+
+
 
 ## Wilson dataset
 
@@ -369,8 +385,13 @@ write.csv(ptsd_test, "test_datasets/ptsd.csv")
 
 # hall
 write.csv(hall_test, "test_datasets/software.csv")
+
+# virus 
+write.csv(v_test, "test_datasets/virus.csv")
+
 # wilson
 write.csv(w_test, "test_datasets/wilson.csv")
+
 
 ```
 
