@@ -31,3 +31,6 @@ conditiongrid$stage <- factor(c(rep(1:2, each = 5), rep(3,10)), labels = c("clas
 # stage 1 = all classifiers + tfidf, stage 2 is repeat with doc2vec, stage 3 is repeat with agressive undersampling. 
 
 saveRDS(conditiongrid, file = "simulation/00_conditiongrid.RDS")
+saveRDS(c("ace", "nudging", "ptsd", "software", "wilson"), file = "simulation/00_datasets.RDS")
+
+        

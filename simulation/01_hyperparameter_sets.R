@@ -1,12 +1,12 @@
 conditiongrid <- readRDS("simulation/00_conditiongrid.RDS")
 
 # stage - which trials to take? (1, 2, 3)
-st <- "classifier"
+st <- c("classifier", "doc2vec")
 
 # only select conditions from stage. 
 conditiongrid <- 
   conditiongrid %>% 
-  filter(stage == st)
+  filter(stage %in% st)
 
 # datasets (D)
 D <- c("ace", "nudging", "ptsd", "software", "wilson")

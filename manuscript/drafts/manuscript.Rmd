@@ -121,7 +121,7 @@ oracle labels a few initial papers, from $\mathcal{U}$, $\mathcal{L}$,
 - $x^*_A$ best query instance according to $\phi_A(\cdot)$ 
 
 
-Now there are a few technical details. Many different versions of such algorithms exist. Many of such algorithms have been described in the active learning literature and have been applied in the systematic reviewing process.  Not exhaustive, but the algorithm can apply many different strategies to arrive at its predictions, which can be divided in following parameters: classifier, feature extraction strategy, balancing, query strategy. 
+Now there are a few technical details. Many different versions of such algorithms exist. Many of such algorithms have been described in the active learning literature and have been applied in the systematic reviewing process.  Not exhaustive, but the algorithm can apply many different strategies to arrive at its predictions, which can be divided in following parameters: classifier, feature extraction strategy, balancing, query strateg y. 
 
 Most often the SVM classifier is used, popular and very good results. Also lots of other configurations. However, other classifiers have not been tested a lot (polygon thing by cohe, naïve bayes and random forest by …), but mostly SVM still. Also, most research in the medical sciences (well there are some exceptions of course [conversation between cohen and matwill] 
 
@@ -343,17 +343,23 @@ For example $M_1$ BTMD (naive bayes, tfidf, certainty sampling, double balance)
 STMD 
 
 #### Word representation 
-To be able to predict whether a paper needs to be included or excluded (e.g. to predict class), 
-the classifier needs some features from the papers.  
-As features we use the title and abstract from every paper - this is what is prescribed by prisma, (check!) 
-The classifier cannot predict the paper class from the raw titles and abstracts as they are.
-Therefore, the content of the texts needs to be transformed into numerical representations called feature vectors.
+To predict the class of a publication class (e.g. whether a publication should be included or excluded), the classifier uses information from the publications in the dataset. 
+Examples of such information are titles and abstracts. 
+However, the classifier cannot predict the publication class from titles and abstracts as they are. 
+Their textual content to needs to be mapped to feature vectors. 
+This process of numerically representing textual content is called 'word embeddings'. 
 
-A classical example is a 'bag of words' representation. 
-For each each text, the number of occurrences of each word is stored. 
+A classical example of word embeddings a 'bag of words' representation. 
+For each text in the data set, the number of occurrences of each word is stored. 
 This leads to n features, where n is the number of distinct words in the texts [@scikit-learn].
 The bag-of-words method is simplistic and will highly value often occuring but otherwise meaningless words such as "and". 
-Term-frequency Inverse Document Frequency (TF-IDF) [@Ramos2003] circumvents this problem by adjusting a term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire corpus.
+Term-frequency Inverse Document Frequency (TF-IDF) [@Ramos2003] circumvents this problem by adjusting a term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire data set.
+
+The model expedits features of previously labeled publications and 
+Based on features of the previously labeled inclusions and exclusions, the model 
+
+The features used are title and abstract from every publication. - this is what is prescribed by prisma, (check!) 
+
 
 
 (T) (D)
