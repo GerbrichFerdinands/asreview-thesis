@@ -9,7 +9,7 @@ conditiongrid <-
   filter(stage %in% st)
 
 # datasets (D)
-D <- c("ace", "nudging", "ptsd", "software", "wilson")
+D <- readRDS("simulation/00_datasets.RDS")
 
 # add datsets? 
 conditiongrid %>% add_column(ace = 0L,
