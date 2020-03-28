@@ -349,8 +349,10 @@ scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-
 
 scp -r gerbrich@cartesius.surfsara.nl:/output/active/nb_max_random_triple_tfidf ~
 
-scp -r gerbrich@cartesius.surfsara.nl:/asreview/output/active/nb_max_random_triple_tfidf/ /Volumes/Gerbrich/asreview/archive/output
+scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/output/active/nb_max_random_triple_tfidf ~
 
+
+scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/output/active/nb_max_random_triple_tfidf/ptsd_virus_ace_software_wilson_nudging/best ~
 ***
 
 ```{r}

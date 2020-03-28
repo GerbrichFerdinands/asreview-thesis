@@ -402,7 +402,7 @@ drops %>%
 
 
 # Write all test dataset files 
-```{r}
+```{r, eval = FALSE}
 # ace
 write.csv(ace_test %>%  select(authors, title, abstract, keywords, label_included), "test_datasets/ace.csv")
 
@@ -423,7 +423,7 @@ write.csv(w_test %>% select(authors, title, abstract, keywords, included), "test
 ```
 
 # write test dataset files for simulation (removing keywords)
-```{r}
+```{r, eval = FALSE}
 # ace
 write.csv(ace_test %>%  select(authors, title, abstract, label_included), "sim_datasets/ace.csv")
 # nudging (no keywords available)
@@ -436,4 +436,90 @@ write.csv(hall_test, "sim_datasets/software.csv")
 write.csv(v_test %>% select(authors, title, abstract, included), "sim_datasets/virus.csv")
 # wilson
 write.csv(w_test %>% select(authors, title, abstract, included), "sim_datasets/wilson.csv")
+```
+
+To check:
+```{bash , eval = FALSE}
+asreview stat test_datasets/*
+```
+
+returns 
+```
+************  ace.csv  ************
+
+Number of papers:            2235
+Number of inclusions:        41 (1.83%)
+Number of exclusions:        2194 (98.17%)
+Number of unlabeled:         0 (0.00%)
+Average title length:        123
+Average abstract length:     1623
+Average number of keywords:  15.0
+Number of missing titles:    0 (of which 0 included)
+Number of missing abstracts: 0 (of which 0 included)
+
+
+************  nudging.csv  ************
+
+Number of papers:            1847
+Number of inclusions:        100 (5.41%)
+Number of exclusions:        1747 (94.59%)
+Number of unlabeled:         0 (0.00%)
+Average title length:        109
+Average abstract length:     1831
+Average number of keywords:  None
+Number of missing titles:    0 (of which 0 included)
+Number of missing abstracts: 0 (of which 0 included)
+
+
+************  ptsd.csv  ************
+
+Number of papers:            5031
+Number of inclusions:        38 (0.76%)
+Number of exclusions:        4993 (99.24%)
+Number of unlabeled:         0 (0.00%)
+Average title length:        104
+Average abstract length:     1537
+Average number of keywords:  9.9
+Number of missing titles:    1 (of which 0 included)
+Number of missing abstracts: 0 (of which 0 included)
+
+
+************  software.csv  ************
+
+Number of papers:            8896
+Number of inclusions:        104 (1.17%)
+Number of exclusions:        8792 (98.83%)
+Number of unlabeled:         0 (0.00%)
+Average title length:        81
+Average abstract length:     896
+Average number of keywords:  None
+Number of missing titles:    0 (of which 0 included)
+Number of missing abstracts: 0 (of which 0 included)
+
+
+************  virus.csv  ************
+
+Number of papers:            2304
+Number of inclusions:        114 (4.95%)
+Number of exclusions:        2190 (95.05%)
+Number of unlabeled:         0 (0.00%)
+Average title length:        103
+Average abstract length:     1345
+Average number of keywords:  20.3
+Number of missing titles:    0 (of which 0 included)
+Number of missing abstracts: 0 (of which 0 included)
+
+
+************  wilson.csv  ************
+
+Number of papers:            2333
+Number of inclusions:        23 (0.99%)
+Number of exclusions:        2310 (99.01%)
+Number of unlabeled:         0 (0.00%)
+Average title length:        83
+Average abstract length:     1325
+Average number of keywords:  31.3
+Number of missing titles:    1 (of which 0 included)
+Number of missing abstracts: 0 (of which 0 included)
+
 ```
