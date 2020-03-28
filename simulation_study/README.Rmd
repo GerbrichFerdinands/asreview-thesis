@@ -5,9 +5,13 @@ output:
     variant: markdown_github
 ---
 
-This is the log of simulations. 
+The log of the simulation study. 
 
-# Simulations
+- hpoptimization. 
+  - Sripts for hyperparameter optimization
+  - 
+- simulation 
+  - scripts for simulation studies 
 
 ## Hyperparameter optimization
 There are three stages, we start with the first where we are comparing different classifiers. 
@@ -16,9 +20,10 @@ There are three stages, we start with the first where we are comparing different
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-datasets <- c("ace", "ptsd", "nudging", "software", "wilson")
+datasets <- c("ace", "nudging","ptsd",  "software", "wilson")
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
 
 ```{r}
 conditiongrid <- readRDS("00_conditiongrid.RDS")
@@ -175,14 +180,14 @@ asreview create-config output/active/nb_max_double_tfidf/wilson/trials.pkl  -o c
 ```
 
 ### extract simulation results nb 
-```{bash}
+```{bash, eval = FALSE}
 # transfer files to device 
 scp -r gerbrich@cartesius.surfsara.nl:asreview/simoutput /Users/gerbrich/Documents/MSBBSS/asreviewthesis/asreview-thesis/simulation_output
 
 scp -r /Users/gerbrich/Documents/MSBBSS/asreviewthesis/asreview-thesis/hyperopt/config/one gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/config
 ```
 
-```{bash}
+```{bash, eval = FALSE}
 # on own device
 asreview plot asreview-thesis/simulation_output
 ```
@@ -228,6 +233,7 @@ Checkout hyperopt SCTW
 Nudging dataset doesn't optimize well? 
 ```{r}
 todo <- huh(todo, "SCTW", "one", "nudging")
+todo <- check(todo, "SCTW", "one", "nudging")
 ```
 
 ### Checkout results first hyperopt 
@@ -241,27 +247,43 @@ todo <- huh(todo, c("LCTW", "RCTW"), "one", "ace")
 # LCTW 
 # made a mistake in command, "logistic" instead of "lr", run again 
 ./cart_hyper_run.py hyper-active -t 03:00:00 -m logistic -b double -e tfidf -q max -d ace -r 23 # 7813556
+# evaluated run, now other datasets
+./cart_hyper_run.py hyper-active -t 09:00:00 -m logistic -b double -e tfidf -q max -d ace -r 23 # 7815137
+./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d nudging -r 23 # 7815154
+./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d ptsd -r 23 # 7815155
+./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d software -r 23 # 7815156
+./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d wilson -r 23 # 7815157
 
 # RCTW, fixed a parameter bug in simulation package. 
 ./cart_hyper_run.py hyper-active -t 03:00:00 -m rf -b double -e tfidf -q max -d ace -r 23 # 7813592
+# evaluated run, now other datasets
+./cart_hyper_run.py hyper-active -t 09:00:00 -m rf -b double -e tfidf -q max -d ace -r 23 # 7815139
+./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e tfidf -q max -d nudging -r 23 # 7815158
+./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e tfidf -q max -d ptsd -r 23 # 7815159
+./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e tfidf -q max -d software -r 23 # 7815160
+./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e tfidf -q max -d wilson -r 23 # 7815162
 ```
 
 ```{r}
-todo <- busy(todo, c("LCTW", "RCTW"), "one", "ace")
+todo <- busy(todo, c("LCTW", "RCTW"), "one", datasets)
 ```
 
 NCDW - loss still going down, sent in for another 12 hours. 
 ```{bash, eval = FALSE}
 # NCDW
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 23 # 7811926
-```
+# error 
+# accidentally got killed while downgrading tensorflow at the same time. 
+# run again, 7815147
 
-(re)Simulate BCTW models 
+# NCDW for remaining datasets 
+
+```
 
 Resimulate BCTW models.
  - create-config file from trials.pkl: n_instances 20, 1/1
  - how to overrule this parameters? (not possible through cli) 
- 
+
 ```{bash, eval = FALSE}
 ./cart_simulate.py data/ace.csv --config_file config/one/BCTW_ace.ini --state_file "simoutput/bctw/ace/results_ace.h5" -r 23 # 7814382
 ./cart_simulate.py data/nudging.csv --config_file config/one/BCTW_nudging.ini --state_file "simoutput/bctw/nudging/results_nudging.h5" -r 23 # 7814384
@@ -270,29 +292,64 @@ Resimulate BCTW models.
 ./cart_simulate.py data/wilson.csv --config_file config/one/BCTW_wilson.ini --state_file "simoutput/bctw/wilson/results_wilson.h5" -r 23 # 7814395
 ```
 
+Optimize BCTW model 6 datasets (for paper)
+```{bash, eval = FALSE}
+./cart_hyper_run.py hyper-active -t 5 -b triple -r 23 # 7815097
+./cart_hyper_run.py hyper-active -t 12:00:00 -b triple -r 23 # 7815102
+# create config file (BMTW (M=mixed)) 
+asreview create-config output/active/nb_max_random_triple_tfidf/ptsd_virus_ace_software_wilson_nudging/trials.pkl -o config/BMTW_all.ini
+# move config to device
+scp gerbrich@cartesius.surfsara.nl:asreview/config/BMTW_all.ini ~/
+
+# run simulations (on own device)
+
+
+# see script
+
+```
 
  
 ***
 
 ```{r}
-lubridate::date("2020-03-24")
+lubridate::date("2020-03-27")
 # todo <- busy(todo, "SCTW", "one", datasets[2:5])
+
+
 ```
 
-Process BCTW models into table
+Process BCTW models simulations into table
  - python script to extract statistics
  
+Create checklist table for simulations
+
 Checkout what happened with NCDW and other errors in hpcbatch 
+```{bash, eval = FALSE}
+# retest with hall dataset 
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nn-2-layer -b double -e doc2vec -q max -d hall -r 23 # 7843185
+```
+
 
 Simulate SCTW models 
 
 Process SCTW models into table
 
 Simulate LCTW, RCTW and NCTW models 
-
+   - create config files
+   - run simulation
+   
 Create a nice plot 
 
 Send first version of table
+
+Move all hyperopt results to harddrive
+
+
+scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/output/active /Volumes/Gerbrich/asreview/archive/output
+
+scp -r gerbrich@cartesius.surfsara.nl:/output/active/nb_max_random_triple_tfidf ~
+
+scp -r gerbrich@cartesius.surfsara.nl:/asreview/output/active/nb_max_random_triple_tfidf/ /Volumes/Gerbrich/asreview/archive/output
 
 ***
 
