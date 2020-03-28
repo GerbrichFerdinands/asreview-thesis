@@ -1646,60 +1646,14 @@ summary {
 </div>
 
 
-<p>This notebook processes all five systematic review datasets into datasets that can be used for testing asreview.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.3
-## ✓ tibble  2.1.3     ✓ dplyr   0.8.5
-## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(knitr)
-library(kableExtra)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;kableExtra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     group_rows</code></pre>
+<p>This notebook processes all systematic review datasets into datasets suitable testing asreview.</p>
+<p>Every dataset is a .csv file with the following columns: - title - abstract - label_included - keywords? (?)</p>
+<p>Entries with missing abstracts are removed</p>
 <div id="set-up" class="section level3">
 <h3>Set-up</h3>
-<pre class="r"><code># create storage for statistics
-template &lt;- data.frame(search = rep(0,4), # papers obtained in systematic search
-                       ftext = rep(0, 4), # number of abstract inclusions
-                       incl = rep(0,4), # papers included in final systematic review
-                       
-                       row.names = c(&quot;paper&quot;, # numbers reported in the publication
-                                     &quot;raw&quot;, # numbers published on raw dataset (by author,  mostly on OSF)
-                                     &quot;asreview&quot;, # numbers on asreview repository 
-                                     &quot;test&quot;)) # numbers in test dataset 
-
-# statistics on duplicates and dropping in ASReview dataset
-drops &lt;- data.frame(n = rep(0,5), # candidates
-                    na = rep(0,5),# number of missing abstracts
-                    narate = rep(0,5), # percenta of missing abstracts
-                    dup = rep(0,5),  # number of duplicate abstracts 
-                    duprate = rep(0,5), # percentage of missing abstracts
-                    row.names = c(&quot;ace&quot;, &quot;nudging&quot;, &quot;ptsd&quot;, &quot;software&quot;, &quot;wilson&quot;))
-
-# some functions to extract statistics
-data_descr &lt;- function(data){
-  return(c(nrow(data), # all papers obtained in the systematic search
-           ifelse(sum(data$inclusion_code &gt; 0), sum(data$inclusion_code &gt; 0), NA), # number of abstract inclusions
-           sum(data$included))) # papers included in systematic review
-}
-
-nostudies &lt;- function(all, set, stage){ # number of studies
-  sapply(all, function(x) x[set, stage])
-}
-
-inclrate &lt;- function(all, set){ # inclusion rate
-  sapply(all, function(x) round(x[set,&quot;incl&quot;]/x[set,&quot;search&quot;]*100,2))
-}</code></pre>
 </div>
-<div id="ace-dataset" class="section level2">
-<h2>Ace dataset</h2>
+<div id="ace" class="section level2">
+<h2>ACE</h2>
 <pre class="r"><code>ace &lt;- template
 # paper ------------------------------------------------------------------------
 ace[&quot;paper&quot;, ] &lt;- c(2544, NA, round(2544*0.0160)) 
@@ -1713,24 +1667,26 @@ ace[&quot;raw&quot;, ] &lt;- c(2544, NA, 41)
 # asreview ---------------------------------------------------------------------
 ace_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Cohen_EBM/output/ACEInhibitors.csv&quot;,
                      header=T)
+# replace empty abstracts by NA values. 
+
+ace_asr[ace_asr$abstract == &quot;&quot;, &quot;abstract&quot;] &lt;- NA
+# stats on missingness in this data
+drops[&quot;ace&quot;,] &lt;- ace_asr %&gt;%
+           summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    na_rate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    dup_rate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 
 ace[&quot;asreview&quot;, ] &lt;- c(nrow(ace_asr),
                        NA,
                        sum(ace_asr$label_included))</code></pre>
 <div id="create-test-dataset" class="section level3">
 <h3>Create test dataset</h3>
-<pre class="r"><code># replace empty abstracts by NA values. 
-ace_asr[ace_asr$abstract == &quot;&quot;, &quot;abstract&quot;] &lt;- NA
-
-# drop missings and duplicates. 
+<pre class="r"><code># drop missings and duplicates. 
 ace_test &lt;- ace_asr %&gt;%
   drop_na(abstract) %&gt;% # drop entries with missing abstracts
-  filter(abstract != &quot;&quot;) %&gt;%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
-
-# select columns
-ace_test &lt;- ace_test %&gt;%
-       select(authors, title, abstract, label_included) # select relevant columns
 
 # data on 
 ace[&quot;test&quot;, ] &lt;- c(nrow(ace_test),
@@ -1740,16 +1696,10 @@ ace[&quot;test&quot;, ] &lt;- c(nrow(ace_test),
 <div id="some-statistics" class="section level3">
 <h3>Some statistics</h3>
 <pre class="r"><code># missingness and duplicates in raw data on ASReview
-drops[&quot;ace&quot;,] &lt;- ace_asr %&gt;%
-          summarise(n = length(abstract),
-                    na = sum(is.na(abstract)),
-                    na_rate = sum(is.na(abstract))/length(abstract),
-                    dup = sum(duplicated(abstract, incomparables = NA)),
-                    dup_rate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
 drops[&quot;ace&quot;,]</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["n"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["na"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["narate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["dup"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["duprate"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"2544","2":"309","3":"0.1214623","4":"0","5":"0","_rn_":"ace"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["n"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["na"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["narate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["dup"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["duprate"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"2544","2":"309","3":"12.14623","4":"0","5":"0","_rn_":"ace"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>ace</code></pre>
@@ -1768,29 +1718,41 @@ nudging[&quot;paper&quot;, ] &lt;- c(2006, 377, 100) </code></pre>
 <pre class="r"><code># data is not public yet
 
 # raw --------------------------------------------------------------------------
+n_raw &lt;- read.csv(&quot;../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv&quot;)
 
+# missing statistics 
+drops[&quot;nudging&quot;,] &lt;- n_raw %&gt;%
+          summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    na_rate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    dup_rate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 # asreview ---------------------------------------------------------------------
 
-
-
 # remove missing abstracts 
-final &lt;- final[final$title != &quot;NA&quot;, ]
+nudging_test &lt;- n_raw %&gt;%
+  drop_na(abstract) %&gt;% # drop entries with missing abstracts
+  filter(abstract != &quot;&quot;, abstract != &quot;NA&quot;) %&gt;%
+  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
-# remove duplicates (171 duplicates)
-final &lt;- final %&gt;%
-  distinct(abstract, .keep_all = TRUE)
-table(final$inclusion_code)
-
-
-nrow(final)
-final$abstract_included %&gt;% table()
-final$included %&gt;% table()
-
-# 
-write.csv(final, &quot;data/nagtegaal.csv&quot;)</code></pre>
+nudging[&quot;test&quot;, ] &lt;- data_descr(nudging_test)</code></pre>
 <div id="create-test-dataset-1" class="section level3">
 <h3>Create test dataset</h3>
-<pre class="r"><code>nudging[&quot;test&quot;, ] &lt;- c(1848, 382, 100)</code></pre>
+</div>
+<div id="some-statistics-1" class="section level3">
+<h3>Some statistics</h3>
+<pre class="r"><code>drops[&quot;nudging&quot;,]</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["n"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["na"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["narate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["dup"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["duprate"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"2019","2":"169","3":"8.37048","4":"3","5":"0.1485884","_rn_":"nudging"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>nudging</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["search"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["ftext"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["incl"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2006","2":"377","3":"100","_rn_":"paper"},{"1":"0","2":"0","3":"0","_rn_":"raw"},{"1":"0","2":"0","3":"0","_rn_":"asreview"},{"1":"1847","2":"382","3":"100","_rn_":"test"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <div id="ptsd-dataset" class="section level2">
@@ -1809,13 +1771,21 @@ ptsd[&quot;raw&quot;, ] </code></pre>
 ptsd_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Van_de_Schoot_PTSD/output/PTSD_VandeSchoot_18.csv&quot;, 
                      header=T)
 
-ptsd[&quot;asreview&quot;, ] &lt;- data_descr(ptsd_asr)</code></pre>
+ptsd[&quot;asreview&quot;, ] &lt;- data_descr(ptsd_asr)
+
+# statistics on duplicates from asr data to test
+drops[&quot;ptsd&quot;, ] &lt;- ptsd_asr %&gt;%
+  summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)</code></pre>
 <div id="create-test-dataset-2" class="section level3">
 <h3>Create test dataset</h3>
 <p>Now, remove duplicate entries and empty abstracts to arrive at test set.</p>
 <pre class="r"><code>ptsd_test &lt;- ptsd_asr %&gt;%
   drop_na(abstract) %&gt;% # drop entries with missing abstracts
-  filter(abstract != &quot;&quot;) %&gt;%
+  filter(abstract != &quot;&quot;, abstract != &quot;NA&quot;) %&gt;%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts</code></pre>
 <p>There are 38 inclusions in this dataset, should be 34.</p>
 <pre class="r"><code># get rid of 4 extra inclusions (see log book)
@@ -1834,19 +1804,17 @@ indices &lt;- ptsd_test$id %in% excl
 ptsd_test[indices, &quot;included&quot;] &lt;- 0</code></pre>
 <pre class="r"><code># finalize dataset  
 ptsd_test &lt;- ptsd_test %&gt;%
-  select(authors, title, abstract, included, inclusion_code) # select relevant columns</code></pre>
+  select(authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
+
+ptsd[&quot;test&quot;, ] &lt;- data_descr(ptsd_test)</code></pre>
 <p>Derive statistics in final test set.</p>
-<pre class="r"><code>ptsd[&quot;test&quot;, ] &lt;- data_descr(ptsd_test)
-
-# statistics on duplicates from asr data to test
-drops[&quot;ptsd&quot;, ] &lt;- ptsd_asr %&gt;%
-  summarise(n = length(abstract),
-                    na = sum(is.na(abstract)),
-                    narate = sum(is.na(abstract))/length(abstract),
-                    dup = sum(duplicated(abstract, incomparables = NA)),
-                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
-
-ptsd</code></pre>
+<pre class="r"><code>drops[&quot;ptsd&quot;, ]</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["n"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["na"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["narate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["dup"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["duprate"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"5782","2":"0","3":"0","4":"750","5":"12.97129","_rn_":"ptsd"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>ptsd</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["search"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["ftext"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["incl"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"6185","2":"363","3":"38","_rn_":"paper"},{"1":"0","2":"0","3":"0","_rn_":"raw"},{"1":"5782","2":"356","3":"38","_rn_":"asreview"},{"1":"5031","2":"328","3":"38","_rn_":"test"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1887,11 +1855,11 @@ hall[&quot;test&quot;, ] &lt;- data_descr(hall_test)</code></pre>
 <h3>Statistics</h3>
 <pre class="r"><code>drops[&quot;software&quot;, ] &lt;- 
   hall_asr %&gt;%
-   summarise(n = length(abstract),
+  summarise(n = length(abstract),
                     na = sum(is.na(abstract)),
-                    narate = sum(is.na(abstract))/length(abstract),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
                     dup = sum(duplicated(abstract, incomparables = NA)),
-                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 
 hall</code></pre>
 <div data-pagedtable="false">
@@ -1900,6 +1868,30 @@ hall</code></pre>
   </script>
 </div>
 </div>
+</div>
+<div id="virus-dataset" class="section level2">
+<h2>Virus dataset</h2>
+<pre class="r"><code>virus &lt;- template
+virus[&quot;paper&quot;,] &lt;- c(2481, 132, 120)
+v_raw &lt;- read.csv(&quot;../../sims/data/virus.csv&quot;)
+v_raw$abstract[v_raw$abstract == &quot;&quot;] &lt;- NA
+
+virus[&quot;raw&quot;, ] &lt;- data_descr(v_raw)
+
+drops[&quot;virus&quot;, ] &lt;- 
+  v_raw %&gt;%
+  summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
+
+v_test &lt;- v_raw %&gt;%
+  drop_na(abstract) %&gt;% # drop entries with missing abstracts
+   filter(abstract != &quot;&quot;) %&gt;%
+   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+
+virus[&quot;test&quot;,] &lt;- data_descr(v_test)</code></pre>
 </div>
 <div id="wilson-dataset" class="section level2">
 <h2>Wilson dataset</h2>
@@ -1915,9 +1907,15 @@ wilson[&quot;paper&quot;, ] &lt;- c(3453, 174, 26)
 wilson[&quot;raw&quot;, ] &lt;- c(3453, 174, 26) # looked it up
 
 # asreview ---------------------------------------------------------------------
-w_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv&quot;,
-                     header=T)
+w_asr &lt;- read.csv(&quot;https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv&quot;, header=T)
 
+w_asr[w_asr$abstract == &quot;&quot;, &quot;abstract&quot;] &lt;- NA
+drops[&quot;wilson&quot;, ] &lt;- w_asr %&gt;%
+   summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 # add inclusion_code label 
 w_asr$inclusion_code &lt;- w_asr$label_abstract_screening + w_asr$label_included
 w_asr$included &lt;- w_asr$label_included
@@ -1925,24 +1923,17 @@ wilson[&quot;asreview&quot;, ] &lt;- data_descr(w_asr)</code></pre>
 <pre class="r"><code># create test dataset
 w_test &lt;- w_asr %&gt;%
   drop_na(abstract) %&gt;% # drop entries with missing abstracts
-  filter(abstract != &quot;&quot;) %&gt;%
-  distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
-
-# select relevant columns
-w_test &lt;- w_test %&gt;%
-            select(authors, title, abstract, included, inclusion_code)
+  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
 wilson[&quot;test&quot;,] &lt;- data_descr(w_test)</code></pre>
 <p>Statistics</p>
-<pre class="r"><code>drops[&quot;wilson&quot;,] &lt;- 
-  w_asr %&gt;%
-   summarise(n = length(abstract),
-                    na = sum(is.na(abstract)), # todo correct this, &quot;NA&quot;, or &quot;&quot;
-                    narate = sum(is.na(abstract))/length(abstract),
-                    dup = sum(duplicated(abstract, incomparables = NA)),
-                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
-
-wilson</code></pre>
+<pre class="r"><code>drops[&quot;wilson&quot;,]</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["n"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["na"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["narate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["dup"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["duprate"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"3437","2":"1090","3":"31.7137","4":"14","5":"0.407332","_rn_":"wilson"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>wilson</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["search"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["ftext"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["incl"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"3453","2":"174","3":"26","_rn_":"paper"},{"1":"3453","2":"174","3":"26","_rn_":"raw"},{"1":"3437","2":"174","3":"26","_rn_":"asreview"},{"1":"2333","2":"155","3":"23","_rn_":"test"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1959,7 +1950,9 @@ all &lt;- list(ace = ace,
             wilson = wilson)
 
 # save datafile, to serve as data for descriptive table in manuscript
-save(all, file = &quot;../manuscript/drafts/data/datasets_table.Rdata&quot;)</code></pre>
+save(all, file = &quot;../manuscript/drafts/data/datasets_table.Rdata&quot;)
+
+saveRDS(drops, file = &quot;data_statistics/drops.RDS&quot;)</code></pre>
 </div>
 <div id="statistics-1" class="section level1">
 <h1>Statistics</h1>
@@ -2255,7 +2248,7 @@ candidates_test
 2235
 </td>
 <td style="text-align:left;">
-1848
+1847
 </td>
 <td style="text-align:left;">
 5031
@@ -2364,7 +2357,7 @@ ace
 309
 </td>
 <td style="text-align:right;">
-0.12
+12.15
 </td>
 <td style="text-align:right;">
 0
@@ -2378,19 +2371,19 @@ ace
 nudging
 </td>
 <td style="text-align:right;">
-0
+2019
 </td>
 <td style="text-align:right;">
-0
+169
 </td>
 <td style="text-align:right;">
-0.00
+8.37
 </td>
 <td style="text-align:right;">
-0
+3
 </td>
 <td style="text-align:right;">
-0.00
+0.15
 </td>
 </tr>
 <tr>
@@ -2410,7 +2403,7 @@ ptsd
 750
 </td>
 <td style="text-align:right;">
-0.13
+12.97
 </td>
 </tr>
 <tr>
@@ -2430,7 +2423,27 @@ software
 15
 </td>
 <td style="text-align:right;">
-0.00
+0.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virus
+</td>
+<td style="text-align:right;">
+2481
+</td>
+<td style="text-align:right;">
+176
+</td>
+<td style="text-align:right;">
+7.09
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.04
 </td>
 </tr>
 <tr>
@@ -2441,16 +2454,16 @@ wilson
 3437
 </td>
 <td style="text-align:right;">
-0
+1090
 </td>
 <td style="text-align:right;">
-0.00
+31.71
 </td>
 <td style="text-align:right;">
-1103
+14
 </td>
 <td style="text-align:right;">
-0.32
+0.41
 </td>
 </tr>
 </tbody>
@@ -2459,17 +2472,37 @@ wilson
 <div id="write-all-test-dataset-files" class="section level1">
 <h1>Write all test dataset files</h1>
 <pre class="r"><code># ace
-write.csv(ace_test, &quot;test_datasets/ace.csv&quot;)
+write.csv(ace_test %&gt;%  select(authors, title, abstract, keywords, label_included), &quot;test_datasets/ace.csv&quot;)
 
-# nagtegaal 
+# nudging (no keywords available)
+write.csv(nudging_test %&gt;% select(title, abstract, included), &quot;test_datasets/nudging.csv&quot;)
 
 # ptsd
-write.csv(ptsd_test, &quot;test_datasets/ptsd.csv&quot;)
+write.csv(ptsd_test %&gt;% select(authors, title, abstract, keywords, included), &quot;test_datasets/ptsd.csv&quot;)
 
-# hall
+# hall (no keywords available )
 write.csv(hall_test, &quot;test_datasets/software.csv&quot;)
+
+# virus 
+write.csv(v_test %&gt;% select(authors, title, abstract, keywords, included), &quot;test_datasets/virus.csv&quot;)
+
 # wilson
-write.csv(w_test, &quot;test_datasets/wilson.csv&quot;)</code></pre>
+write.csv(w_test %&gt;% select(authors, title, abstract, keywords, included), &quot;test_datasets/wilson.csv&quot;)</code></pre>
+</div>
+<div id="write-test-dataset-files-for-simulation-removing-keywords" class="section level1">
+<h1>write test dataset files for simulation (removing keywords)</h1>
+<pre class="r"><code># ace
+write.csv(ace_test %&gt;%  select(authors, title, abstract, label_included), &quot;sim_datasets/ace.csv&quot;)
+# nudging (no keywords available)
+write.csv(nudging_test %&gt;% select(title, abstract, included), &quot;sim_datasets/nudging.csv&quot;)
+# ptsd
+write.csv(ptsd_test %&gt;% select(authors, title, abstract, included), &quot;sim_datasets/ptsd.csv&quot;)
+# hall (no keywords available )
+write.csv(hall_test, &quot;sim_datasets/software.csv&quot;)
+# virus 
+write.csv(v_test %&gt;% select(authors, title, abstract, included), &quot;sim_datasets/virus.csv&quot;)
+# wilson
+write.csv(w_test %&gt;% select(authors, title, abstract, included), &quot;sim_datasets/wilson.csv&quot;)</code></pre>
 </div>
 
 

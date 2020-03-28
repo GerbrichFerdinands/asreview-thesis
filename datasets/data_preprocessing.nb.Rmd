@@ -4,16 +4,26 @@ output:
   html_document:
     df_print: paged
 ---
-This notebook processes all five systematic review datasets into datasets that can be used for testing asreview. 
+This notebook processes all systematic review datasets into datasets suitable testing asreview. 
 
-```{r, results = "hide"}
+Every dataset is a .csv file with the following columns: 
+  - title
+  - abstract
+  - label_included
+  - keywords? (?) 
+
+Entries with missing abstracts are removed 
+
+```{r, include = FALSE}
 library(tidyverse)
 library(knitr)
 library(kableExtra)
 ```
 
 ### Set-up
-```{r}
+```{r, echo = FALSE}
+datasets <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
+nd <- length(datasets)
 # create storage for statistics
 template <- data.frame(search = rep(0,4), # papers obtained in systematic search
                        ftext = rep(0, 4), # number of abstract inclusions
@@ -25,12 +35,12 @@ template <- data.frame(search = rep(0,4), # papers obtained in systematic search
                                      "test")) # numbers in test dataset 
 
 # statistics on duplicates and dropping in ASReview dataset
-drops <- data.frame(n = rep(0,5), # candidates
-                    na = rep(0,5),# number of missing abstracts
-                    narate = rep(0,5), # percenta of missing abstracts
-                    dup = rep(0,5),  # number of duplicate abstracts 
-                    duprate = rep(0,5), # percentage of missing abstracts
-                    row.names = c("ace", "nudging", "ptsd", "software", "wilson"))
+drops <- data.frame(n = rep(0,nd), # candidates
+                    na = rep(0,nd),# number of missing abstracts
+                    narate = rep(0,nd), # percentage of missing abstracts
+                    dup = rep(0,nd),  # number of duplicate abstracts 
+                    duprate = rep(0,nd), # percentage of missing abstracts
+                    row.names = datasets)
 
 # some functions to extract statistics
 data_descr <- function(data){
@@ -48,7 +58,7 @@ inclrate <- function(all, set){ # inclusion rate
 }
 ```
 
-## Ace dataset 
+## ACE
 ```{r}
 ace <- template
 # paper ------------------------------------------------------------------------
@@ -63,6 +73,16 @@ ace["raw", ] <- c(2544, NA, 41)
 # asreview ---------------------------------------------------------------------
 ace_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Cohen_EBM/output/ACEInhibitors.csv",
                      header=T)
+# replace empty abstracts by NA values. 
+
+ace_asr[ace_asr$abstract == "", "abstract"] <- NA
+# stats on missingness in this data
+drops["ace",] <- ace_asr %>%
+           summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    na_rate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    dup_rate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 
 ace["asreview", ] <- c(nrow(ace_asr),
                        NA,
@@ -71,18 +91,10 @@ ace["asreview", ] <- c(nrow(ace_asr),
 
 ### Create test dataset
 ```{r}
-# replace empty abstracts by NA values. 
-ace_asr[ace_asr$abstract == "", "abstract"] <- NA
-
 # drop missings and duplicates. 
 ace_test <- ace_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
-  filter(abstract != "") %>%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
-
-# select columns
-ace_test <- ace_test %>%
-       select(authors, title, abstract, label_included) # select relevant columns
 
 # data on 
 ace["test", ] <- c(nrow(ace_test),
@@ -93,12 +105,6 @@ ace["test", ] <- c(nrow(ace_test),
 ### Some statistics 
 ```{r}
 # missingness and duplicates in raw data on ASReview
-drops["ace",] <- ace_asr %>%
-          summarise(n = length(abstract),
-                    na = sum(is.na(abstract)),
-                    na_rate = sum(is.na(abstract))/length(abstract),
-                    dup = sum(duplicated(abstract, incomparables = NA)),
-                    dup_rate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
 drops["ace",]
 ace
 ```
@@ -111,11 +117,19 @@ nudging["paper", ] <- c(2006, 377, 100)
 ```
 
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 # data is not public yet
 
 # raw --------------------------------------------------------------------------
 n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
+
+# missing statistics 
+drops["nudging",] <- n_raw %>%
+          summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    na_rate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    dup_rate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 # asreview ---------------------------------------------------------------------
 
 # remove missing abstracts 
@@ -123,16 +137,19 @@ nudging_test <- n_raw %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
   filter(abstract != "", abstract != "NA") %>%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
-# missing statistics 
+
+nudging["test", ] <- data_descr(nudging_test)
 
 ```
 
 ### Create test dataset
 
+### Some statistics
 ```{r}
-nudging["test", ] <- data_descr(nudging_test)
-```
 
+drops["nudging",]
+nudging
+```
 
 ## PTSD dataset
 ```{r}
@@ -148,6 +165,13 @@ ptsd_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets
 
 ptsd["asreview", ] <- data_descr(ptsd_asr)
 
+# statistics on duplicates from asr data to test
+drops["ptsd", ] <- ptsd_asr %>%
+  summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 ```
 
 ### Create test dataset
@@ -155,8 +179,10 @@ Now, remove duplicate entries and empty abstracts to arrive at test set.
 ```{r}
 ptsd_test <- ptsd_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
-  filter(abstract != "") %>%
+  filter(abstract != "", abstract != "NA") %>%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+
+
 ``` 
 
 There are 38 inclusions in this dataset, should be 34. 
@@ -180,21 +206,14 @@ ptsd_test[indices, "included"] <- 0
 ```{r}
 # finalize dataset  
 ptsd_test <- ptsd_test %>%
-  select(authors, title, abstract, included, inclusion_code) # select relevant columns
+  select(authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
+
+ptsd["test", ] <- data_descr(ptsd_test)
 ```
 
 Derive statistics in final test set.
 ```{r}
-ptsd["test", ] <- data_descr(ptsd_test)
-
-# statistics on duplicates from asr data to test
-drops["ptsd", ] <- ptsd_asr %>%
-  summarise(n = length(abstract),
-                    na = sum(is.na(abstract)),
-                    narate = sum(is.na(abstract))/length(abstract),
-                    dup = sum(duplicated(abstract, incomparables = NA)),
-                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
-
+drops["ptsd", ]
 ptsd
 ```
 
@@ -234,28 +253,38 @@ hall["test", ] <- data_descr(hall_test)
 ```{r}
 drops["software", ] <- 
   hall_asr %>%
-   summarise(n = length(abstract),
+  summarise(n = length(abstract),
                     na = sum(is.na(abstract)),
-                    narate = sum(is.na(abstract))/length(abstract),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
                     dup = sum(duplicated(abstract, incomparables = NA)),
-                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 
 hall
 ```
 
 ## Virus dataset
 ```{r}
+virus <- template
+virus["paper",] <- c(2481, 132, 120)
 v_raw <- read.csv("../../sims/data/virus.csv")
+v_raw$abstract[v_raw$abstract == ""] <- NA
 
-sum(v_raw$abstract == "")
+virus["raw", ] <- data_descr(v_raw)
+
+drops["virus", ] <- 
+  v_raw %>%
+  summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 
 v_test <- v_raw %>%
-  drop_na(abstract) %>%
-  filter(abstract != "", abstract != "NA")
+  drop_na(abstract) %>% # drop entries with missing abstracts
+   filter(abstract != "") %>%
+   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
 
-v_test <- v_test[v_test$record_id != 1732,]
-
-
+virus["test",] <- data_descr(v_test)
 ```
 
 
@@ -277,6 +306,13 @@ wilson["raw", ] <- c(3453, 174, 26) # looked it up
 # asreview ---------------------------------------------------------------------
 w_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Appenzeller-Herzog_Wilson/output/output_csv_wilson.csv", header=T)
 
+w_asr[w_asr$abstract == "", "abstract"] <- NA
+drops["wilson", ] <- w_asr %>%
+   summarise(n = length(abstract),
+                    na = sum(is.na(abstract)),
+                    narate = sum(is.na(abstract))/length(abstract)*100,
+                    dup = sum(duplicated(abstract, incomparables = NA)),
+                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 # add inclusion_code label 
 w_asr$inclusion_code <- w_asr$label_abstract_screening + w_asr$label_included
 w_asr$included <- w_asr$label_included
@@ -287,25 +323,14 @@ wilson["asreview", ] <- data_descr(w_asr)
 # create test dataset
 w_test <- w_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
-  filter(abstract != "",
-         abstract!= " ") %>%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
-
-# select relevant columns
-w_test <- w_test %>%
-  select(authors, title, abstract, included, inclusion_code)
 
 wilson["test",] <- data_descr(w_test)
 ```
 
 Statistics
 ```{r}
-drops["wilson", ] <- w_asr %>%
-   summarise(n = length(abstract),
-                    na = sum(is.na(abstract)), # todo correct this, "NA", or ""
-                    narate = sum(is.na(abstract))/length(abstract),
-                    dup = sum(duplicated(abstract, incomparables = NA)),
-                    duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract))
+drops["wilson",]
 
 wilson
 ```
@@ -323,6 +348,8 @@ all <- list(ace = ace,
 
 # save datafile, to serve as data for descriptive table in manuscript
 save(all, file = "../manuscript/drafts/data/datasets_table.Rdata")
+
+saveRDS(drops, file = "data_statistics/drops.RDS")
 ```
 
 # Statistics
@@ -369,29 +396,44 @@ drops %>%
         col.names = c("n", "NA", "NA rate (%)", "duplicates", "duplicate rate (%)"),
         digits = 2) %>%
   kable_styling(full_width = TRUE)
+
+
 ```
 
 
 # Write all test dataset files 
 ```{r}
 # ace
-write.csv(ace_test, "test_datasets/ace.csv")
+write.csv(ace_test %>%  select(authors, title, abstract, keywords, label_included), "test_datasets/ace.csv")
 
-# nudging 
-write.csv(nudging_test, "test_datasets/nudging.csv")
+# nudging (no keywords available)
+write.csv(nudging_test %>% select(title, abstract, included), "test_datasets/nudging.csv")
 
 # ptsd
-write.csv(ptsd_test, "test_datasets/ptsd.csv")
+write.csv(ptsd_test %>% select(authors, title, abstract, keywords, included), "test_datasets/ptsd.csv")
 
-# hall
+# hall (no keywords available )
 write.csv(hall_test, "test_datasets/software.csv")
 
 # virus 
-write.csv(v_test, "test_datasets/virus.csv")
+write.csv(v_test %>% select(authors, title, abstract, keywords, included), "test_datasets/virus.csv")
 
 # wilson
-write.csv(w_test, "test_datasets/wilson.csv")
-
-
+write.csv(w_test %>% select(authors, title, abstract, keywords, included), "test_datasets/wilson.csv")
 ```
 
+# write test dataset files for simulation (removing keywords)
+```{r}
+# ace
+write.csv(ace_test %>%  select(authors, title, abstract, label_included), "sim_datasets/ace.csv")
+# nudging (no keywords available)
+write.csv(nudging_test %>% select(title, abstract, included), "sim_datasets/nudging.csv")
+# ptsd
+write.csv(ptsd_test %>% select(authors, title, abstract, included), "sim_datasets/ptsd.csv")
+# hall (no keywords available )
+write.csv(hall_test, "sim_datasets/software.csv")
+# virus 
+write.csv(v_test %>% select(authors, title, abstract, included), "sim_datasets/virus.csv")
+# wilson
+write.csv(w_test %>% select(authors, title, abstract, included), "sim_datasets/wilson.csv")
+```
