@@ -1,0 +1,110 @@
+---
+title: "log hyperparameter optimization"
+output: html_notebook
+---
+
+Per day, all commands sent to surfsara
+
+After a command is sent, save that todo checklist file! 
+
+```{r}
+hpsets <- readRDS("../R/01_hyperparameter_sets.RDS")
+
+d <- colnames(hpsets)
+condition <- rownames(hpsets)
+classifier <- c("nb", "rf", "svm", "logistic", "nn-2-layer")
+names(classifier) <- c("B", "R", "S", "L", "N")
+```
+
+# one on one optimization
+
+## classifiers 
+BCTD on all datasets
+```{r}
+# BCTD
+script <- noquote(sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d %s -r 23", d))
+write.table(script, file = "scripts/one/nb_classifier.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+# job names
+names(script) <- c("7846991", "7846993", "7846994", "7846997", "7846998", "7846999")
+```
+
+```{r}
+# check off to do list. 
+hpsets["NCTD", , ] <- 9 # impossible model
+hpsets["BCTD", , "one"] <- 1 # finish nb one-one-one simulations
+```
+
+The other 3 classifiers 
+```{r}
+cons <- expand.grid(c = classifier[2:4], d = d, stringsAsFactors = FALSE)
+# all models
+class1 <- sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m %s -b double -e tfidf -q max -d %s -r 23", cons$c, cons$d)
+write.table(class1, file = "scripts/one/three_classifiers.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+
+# job names
+names(class1) <- c(7847065,7847066,7847067,7847068,7847069, 7847070, 7847071,7847072, 7847074,7847075, 7847076, 7847077,7847078,7847079,7847080,7847081, 7847082,7847084)
+
+hpsets[condition[2:4], , "one"] <- 1
+```
+
+
+## now with doc2vec feature extraction 
+```{r}
+cons <- expand.grid(c = classifier[2:5], d = d, stringsAsFactors = FALSE)
+
+# a test run first maybe
+# NCDD
+noquote("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e doc2vec -q max -d ace -r 23") # 7847109
+# todo list
+hpsets[condition[6], , ] <- 9 # multinomial nb cannot deal with doc2vec (negative values!!)
+```
+
+```{r}
+# then all classifier * dataset combinations. 
+t <- rep(c("12", "42", "42", "5-00"), length(d))
+d2v1 <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m %s -b double -e doc2vec -q max -d %s -r 23", t, cons$c, cons$d)
+# one test of doc2vec 
+write.table(d2v1, file = "scripts/one/doc2vec.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+names(d2v1) <- c("7854137", "7854187", "7854188", "7854208", 
+                 "7854189", "7854190", "7854191", "7854209", 
+                 "7854192", "7854193", "7854194", "7854210", 
+                 "7854195", "7854196", "7854197", "7854211", 
+                 "7854198", "7854199", "7854200", "7854212", 
+                 "7854201", "7854202", "7854203", "7854213")
+
+hpsets[condition[7:10], ,"one"] <- 1
+```
+
+# n
+```{r}
+t <- c("12:00:00", "24:00:00", "48:00:00", "24:00:00")
+# optimize hyperparams over all datasets
+allc <- sprintf("./cart_hyper_run.py hyper-active -t %s -m %s -b double -e tfidf -q max -r 23", t, classifier[1:4])
+write.table(allc, file = "scripts/n/fourclassifiers.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+
+# later for more than 12 hours. 
+names(allc) <- c("7848203", "7848204", "7848205", "7848206")
+
+hpsets[condition[1:4], , "all"] <- 1
+```
+
+
+## doc2vec models 
+```{r}
+t <- rep(c("42", "42", "42", "5-00"))
+cons <- expand.grid(c = classifier[2:5], stringsAsFactors = FALSE)
+
+d2vall <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m %s -b double -e doc2vec -q max -r 23", t, cons$c)
+
+write.table(d2vall, file = "scripts/n/doc2vec.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+names(d2vall) <- c("7854227", "7854228", "7854229", "7854230")
+
+hpsets[condition[7:10], ,"all"] <- 1
+```
+
+# n-1

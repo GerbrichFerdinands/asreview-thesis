@@ -5,23 +5,36 @@
 - Yu et al 2019 - interesting on stopping criteria & human mistakes 
 
 - datasets 
-  - dataset tabellen
+  - dataset tabellen 
   - ptsd - datasets on other repository
   - nagtegaal - discrepancies: 
-    - 2 papers missing - they were added (abstract inclusions)
+    - 1 paper missing - they were added (abstract inclusions)
     - 18 systematic reviews 'included' in asreview file, 'excluded' in nagtegaals file. 
     - 1 paper included in nagtegaals, excl in asreview. final decision: included. 
-  
+
 - begrippen uitleggen 
   - in hoeverre alles uitleggen (svm, rf etc --> in appendix + referenties?)
-  
+
+- asreview versie - simulatie - 0.7.2
   
 # Meeting
+- hyperparameter optimalisatie (1 alinea max.)
+- hyperparameters - verschilt het niet te veel? 
+
+- competitors table
+
+- how do you want to have writing feedback (Rens checks it about 2 times. )
+
+
 
 # To do
+- [x] add missing book nagtegaal 
+- [ ] check slr toolbox for FASTREAD and 
+- [x] send preprocessing scripts nagtegaal > Jonathan 
+- [ ] publish nagtegaal supplement online. 
 - [ ] alle 5 datasets op dataset repository?? check! 
-- [ ] add fastread to table! 
-- [ ] nagtegaal dataset extra column!
+- [x] add fastread to table! 
+- [x] nagtegaal dataset extra column!
 - [x] dataset from Jan de Boer (medical one)
 - [ ] read paper burt settles 
 - [x] analyseplan schrijven.
