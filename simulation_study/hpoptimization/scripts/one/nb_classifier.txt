@@ -1,0 +1,7 @@
+x
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d ace -r 23
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d nudging -r 23
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d ptsd -r 23
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d software -r 23
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d virus -r 23
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d wilson -r 23

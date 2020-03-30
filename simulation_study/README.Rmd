@@ -1,5 +1,5 @@
 ---
-title: "logbook simulations"
+title: "log"
 output:   
   md_document:
     variant: markdown_github
@@ -12,18 +12,24 @@ The log of the simulation study.
   - 
 - simulation 
   - scripts for simulation studies 
-
-## Hyperparameter optimization
-There are three stages, we start with the first where we are comparing different classifiers. 
+  
 
 ```{r include = FALSE}
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-datasets <- c("ace", "nudging","ptsd",  "software", "wilson")
+source("R/functions.R")
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+```{r eval = FALSE}
+# 
+source("R/00_condition_grid.R")
+source("R/01_hyperparameter_sets.R")
+```
+
+## Hyperparameter optimization
+There are three stages, we start with the first 5 where we are comparing different classifiers. 
 
 ```{r}
 conditiongrid <- readRDS("00_conditiongrid.RDS")
@@ -44,33 +50,16 @@ asreview simulation branch reorganization.
 # Stage 1 - Classifiers 
 Comparing five different classifiers
 ```{r}
-hyperparametersets <- readRDS("01_hyperparameter_sets.RDS")
+emptytodo <- readRDS("R/01_hyperparameter_sets.RDS")
 
-# to-do grid 
-todo <- hyperparametersets
 
-# set emojis for grid 
-check <- function(todo, m, ho, d){
-  todo[todo$model %in% m & todo$hyperopt == ho, d] <- emo::ji("check") 
-  return(todo)
-}
 
-busy <- function(todo, m, ho, d){
-  todo[todo$model %in% m & todo$hyperopt == ho, d] <- emo::ji("timer") 
-  return(todo)
-}
-
-huh <- function(todo, m, ho, d){
-  todo[todo$model %in% m & todo$hyperopt == ho, d] <- emo::ji("question") 
-  return(todo)
-}
-
-not <- function(todo, m, ho, d){
-  todo[todo$model %in% m & todo$hyperopt == ho, d] <- emo::ji("x") 
-  return(todo)
-}
 
 ```
+
+
+
+
 
 R - 275 secs 119% - 5 datasets 
 ```{r}
@@ -279,6 +268,7 @@ NCDW - loss still going down, sent in for another 12 hours.
 # NCDW for remaining datasets 
 
 ```
+
 
 Resimulate BCTW models.
  - create-config file from trials.pkl: n_instances 20, 1/1

@@ -1,0 +1,5 @@
+x
+./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -r 23
+./cart_hyper_run.py hyper-active -t 24:00:00 -m rf -b double -e tfidf -q max -r 23
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e tfidf -q max -r 23
+./cart_hyper_run.py hyper-active -t 24:00:00 -m logistic -b double -e tfidf -q max -r 23
