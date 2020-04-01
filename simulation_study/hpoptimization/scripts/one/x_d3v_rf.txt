@@ -1,0 +1,7 @@
+x
+./cart_hyper_run.py hyper-active -t 36:00:00 -m rf -b double -e doc2vec -q max -d ace -r 23
+./cart_hyper_run.py hyper-active -t 24:00:00 -m rf -b double -e doc2vec -q max -d nudging -r 23
+./cart_hyper_run.py hyper-active -t 72:00:00 -m rf -b double -e doc2vec -q max -d ptsd -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m rf -b double -e doc2vec -q max -d software -r 23
+./cart_hyper_run.py hyper-active -t 18:00:00 -m rf -b double -e doc2vec -q max -d virus -r 23
+./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e doc2vec -q max -d wilson -r 23

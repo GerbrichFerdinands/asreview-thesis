@@ -1,0 +1,34 @@
+---
+title: "create_config_files"
+author: "Gerbrich Ferdinands"
+date: "4/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+hpsets <- readRDS("../R/01_hyperparameter_sets.RDS")
+
+```
+
+## R Markdown
+
+```{bash, eval = FALSE}
+# get config files from surfsara to hard drive 
+scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/config /Volumes/Gerbrich/asreview/config/optimization_output
+```
+
+
+Manually update config files to simulation 
+Push finished ones to GH repository
+Fetch github repo on surfsara
+
+make link in surfsara 
+ln -s /home/gerbrich/asreview/manuscript/asreview-thesis/simulation_study/simulation/config simconfig
+
+
+```{r}
+scp -r 
+gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/siminput
+```
+

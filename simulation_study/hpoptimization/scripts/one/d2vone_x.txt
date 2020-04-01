@@ -1,0 +1,13 @@
+x
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e doc2vec -q max -d ace -r 23
+./cart_hyper_run.py hyper-active -t 96:00:00 -m logistic -b double -e doc2vec -q max -d ace -r 23
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e doc2vec -q max -d nudging -r 23
+./cart_hyper_run.py hyper-active -t 96:00:00 -m logistic -b double -e doc2vec -q max -d nudging -r 23
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e doc2vec -q max -d ptsd -r 23
+./cart_hyper_run.py hyper-active -t 96:00:00 -m logistic -b double -e doc2vec -q max -d ptsd -r 23
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e doc2vec -q max -d software -r 23
+./cart_hyper_run.py hyper-active -t 96:00:00 -m logistic -b double -e doc2vec -q max -d software -r 23
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e doc2vec -q max -d virus -r 23
+./cart_hyper_run.py hyper-active -t 96:00:00 -m logistic -b double -e doc2vec -q max -d virus -r 23
+./cart_hyper_run.py hyper-active -t 48:00:00 -m svm -b double -e doc2vec -q max -d wilson -r 23
+./cart_hyper_run.py hyper-active -t 96:00:00 -m logistic -b double -e doc2vec -q max -d wilson -r 23
