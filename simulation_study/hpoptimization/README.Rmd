@@ -290,4 +290,31 @@ names(d2v1_x) <- c("7877706", "7877707", "7877708", "7877709", "7877710",
 hpsets[condition[2], d[4] , "one"] <- 2
 ```
 
+01.04
+nn-2-layer retry r-1 
+```{r}
+cons <- expand.grid(c = classifier[5], fe = c("tfidf", "doc2vec"), d = d, stringsAsFactors = FALSE)
+
+nn_test <- sprintf("./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m %s -b double -e %s -q max -d %s -r 2", cons$c, cons$fe, cons$d)
+write.table(nn_test, file = "scripts/one/nn_test.txt", sep="\t", quote = FALSE, row.names = FALSE)
+
+names(nn_test) <- c("7891389", "7891390", "7891391", "7891392", "7891393", "7891394", "7891395", "7891396", "7891402", "7891407", "7891408", "7891411")
+# ./cart_hyper_run_asrnn.py hyper-active -t 55 -m nn-2-layer -b double -e doc2vec -q max -d wilson -r 2 # 7886988, 
+#./cart_hyper_run.py hyper-active -t 55 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 2 # 7883466
+# ssh tcn560
+# top 
+```
+
+
+```{r}
+# cancel all logistic 4-1 sets 
+#  7873347, 7873448, 7873460, 7873464, 7873469, 7873473
+hpsets["LCTD", , "four"] <- 2
+```
+
+03.04.2020
+```{r}
+# svm d2v one are done! 
+hpsets["SCDD",, "one"] <- 2
+```
 
