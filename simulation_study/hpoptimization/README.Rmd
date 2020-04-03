@@ -304,7 +304,7 @@ names(nn_test) <- c("7891389", "7891390", "7891391", "7891392", "7891393", "7891
 # ssh tcn560
 # top 
 ```
-
+ 
 
 ```{r}
 # cancel all logistic 4-1 sets 
@@ -316,5 +316,12 @@ hpsets["LCTD", , "four"] <- 2
 ```{r}
 # svm d2v one are done! 
 hpsets["SCDD",, "one"] <- 2
+```
+
+```{r}
+
+# all - BCTD gets a few extra
+hpsets["BCTD",, "all"] <- 1 # 7893274 (12 hours)
+# all - LCTD is done
 ```
 

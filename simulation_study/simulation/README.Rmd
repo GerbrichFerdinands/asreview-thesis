@@ -129,19 +129,27 @@ SCDD model
 
 ```{r}
 # get config files
-scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/config /Volumes/Gerbrich/asreview/config/optimization_output
 # manually transform
 # push to github 
-
 sims[condition[8], d, "one"] <- 1 # simulation configs are up
+
 # run simulations 
-
 scdd <- createLines(condition[8], d, "one")
-
+write.table(scdd, file = "scripts/one/scdd.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+names(scdd) <- c("7893237", "7893241", "7893243", "7893244", "7893246", "7893247")
 sims[condition[8], d, "one"] <- 2 # simulations are running 
+
 # transfer to harddrive 
-transfer()
-sims[condition[8], , "one"] <- 3 # output is on harddrive
+transfer("hp", condition[8])
+#sims[condition[8], , "one"] <- 3 # output is on harddrive
+```
+
+all - LCTD hyperparameters 
+```{r}
+# manually transform
+# push to github 
+sims[condition[4], , "all"] <- 1 # configs are on github 
 ```
 
 
@@ -149,7 +157,6 @@ sims[condition[8], , "one"] <- 3 # output is on harddrive
 
 ```{r template, eval = FALSE}
 # get config files
-scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/config /Volumes/Gerbrich/asreview/config/optimization_output
 # manually transform
 # push to github 
 sims[condition[1], d, "one"] <- 1 # simulation configs are up
