@@ -1,63 +1,20 @@
----
-title: "Dataset preprocessing"
-output: github_document
----
-This notebook processes all systematic review datasets into datasets suitable testing ASReview.  
+Dataset preprocessing
+================
 
-Every dataset is a .csv file with the following columns: 
-  - title
-  - abstract
-  - label_included
-  - keywords? (only for hyperparameter optimization, not for simulation). 
+This notebook processes all systematic review datasets into datasets
+suitable testing ASReview.
 
-Entries with missing abstracts are removed 
+Every dataset is a .csv file with the following columns: - title -
+abstract - label\_included - keywords? (only for hyperparameter
+optimization, not for simulation).
 
-```{r, include = FALSE}
-library(tidyverse)
-library(knitr)
-library(kableExtra)
-```
+Entries with missing abstracts are removed
 
 ### Set-up
-```{r, echo = FALSE}
-datasets <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
-nd <- length(datasets)
-# create storage for statistics
-template <- data.frame(search = rep(0,4), # papers obtained in systematic search
-                       ftext = rep(0, 4), # number of abstract inclusions
-                       incl = rep(0,4), # papers included in final systematic review
-                       
-                       row.names = c("paper", # numbers reported in the publication
-                                     "raw", # numbers published on raw dataset (by author,  mostly on OSF)
-                                     "asreview", # numbers on asreview repository 
-                                     "test")) # numbers in test dataset 
-
-# statistics on duplicates and dropping in ASReview dataset
-drops <- data.frame(n = rep(0,nd), # candidates
-                    na = rep(0,nd),# number of missing abstracts
-                    narate = rep(0,nd), # percentage of missing abstracts
-                    dup = rep(0,nd),  # number of duplicate abstracts 
-                    duprate = rep(0,nd), # percentage of missing abstracts
-                    row.names = datasets)
-
-# some functions to extract statistics
-data_descr <- function(data){
-  return(c(nrow(data), # all papers obtained in the systematic search
-           ifelse(sum(data$inclusion_code > 0), sum(data$inclusion_code > 0), NA), # number of abstract inclusions
-           sum(data$included))) # papers included in systematic review
-}
-
-nostudies <- function(all, set, stage){ # number of studies
-  sapply(all, function(x) x[set, stage])
-}
-
-inclrate <- function(all, set){ # inclusion rate
-  sapply(all, function(x) round(x[set,"incl"]/x[set,"search"]*100,2))
-}
-```
 
 ## ACE
-```{r}
+
+``` r
 ace <- template
 # paper ------------------------------------------------------------------------
 ace["paper", ] <- c(2544, NA, round(2544*0.0160)) 
@@ -88,7 +45,8 @@ ace["asreview", ] <- c(nrow(ace_asr),
 ```
 
 ### Create test dataset
-```{r}
+
+``` r
 # drop missings and duplicates. 
 ace_test <- ace_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
@@ -100,22 +58,35 @@ ace["test", ] <- c(nrow(ace_test),
                    sum(ace_test$label_included))
 ```
 
-### Some statistics 
-```{r}
+### Some statistics
+
+``` r
 # missingness and duplicates in raw data on ASReview
 drops["ace",]
+```
+
+    ##        n  na   narate dup duprate
+    ## ace 2544 309 12.14623   0       0
+
+``` r
 ace
 ```
 
-## nudging dataset 
-```{r}
+    ##          search ftext incl
+    ## paper      2544    NA   41
+    ## raw        2544    NA   41
+    ## asreview   2544    NA   41
+    ## test       2235    NA   41
+
+## nudging dataset
+
+``` r
 # by Rosanna Nagtegaal
 nudging <- template
 nudging["paper", ] <- c(2006, 377, 100) 
 ```
 
-
-```{r eval = TRUE}
+``` r
 # data is not public yet
 
 # raw --------------------------------------------------------------------------
@@ -137,26 +108,43 @@ nudging_test <- n_raw %>%
   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
 nudging["test", ] <- data_descr(nudging_test)
-
 ```
 
 ### Create test dataset
 
 ### Some statistics
-```{r}
 
+``` r
 drops["nudging",]
+```
+
+    ##            n  na  narate dup   duprate
+    ## nudging 2019 169 8.37048   3 0.1485884
+
+``` r
 nudging
 ```
 
+    ##          search ftext incl
+    ## paper      2006   377  100
+    ## raw           0     0    0
+    ## asreview      0     0    0
+    ## test       1847   382  100
+
 ## PTSD dataset
-```{r}
+
+``` r
 ptsd <- template 
 ptsd["paper", ] <- c(6185, 363, 38) # from flowchart 
 
 # raw --------------------------------------------------------------------------
 ptsd["raw", ] 
+```
 
+    ##     search ftext incl
+    ## raw      0     0    0
+
+``` r
 # asreview ---------------------------------------------------------------------
 ptsd_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Van_de_Schoot_PTSD/output/PTSD_VandeSchoot_18.csv", 
                      header=T)
@@ -173,18 +161,19 @@ drops["ptsd", ] <- ptsd_asr %>%
 ```
 
 ### Create test dataset
-Now, remove duplicate entries and empty abstracts to arrive at test set. 
-```{r}
+
+Now, remove duplicate entries and empty abstracts to arrive at test set.
+
+``` r
 ptsd_test <- ptsd_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
   filter(abstract != "", abstract != "NA") %>%
   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+```
 
+There are 38 inclusions in this dataset, should be 34.
 
-``` 
-
-There are 38 inclusions in this dataset, should be 34. 
-```{r}
+``` r
 # get rid of 4 extra inclusions (see log book)
 excl <- 
   ptsd_test %>%
@@ -201,7 +190,7 @@ indices <- ptsd_test$id %in% excl
 ptsd_test[indices, "included"] <- 0
 ```
 
-```{r}
+``` r
 # finalize dataset  
 ptsd_test <- ptsd_test %>%
   select(authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
@@ -210,13 +199,27 @@ ptsd["test", ] <- data_descr(ptsd_test)
 ```
 
 Derive statistics in final test set.
-```{r}
+
+``` r
 drops["ptsd", ]
+```
+
+    ##         n na narate dup  duprate
+    ## ptsd 5782  0      0 750 12.97129
+
+``` r
 ptsd
 ```
 
+    ##          search ftext incl
+    ## paper      6185   363   38
+    ## raw           0     0    0
+    ## asreview   5782   356   38
+    ## test       5031   328   38
+
 ## software dataset
-```{r}
+
+``` r
 hall <- template
 
 # paper ------------------------------------------------------------------------
@@ -238,7 +241,8 @@ hall["asreview", ] <- data_descr(hall_asr)
 ```
 
 ### Creating test dataset
-```{r}
+
+``` r
 hall_test <- hall_asr %>%
    drop_na(abstract) %>% # drop entries with missing abstracts
    filter(abstract != "") %>%
@@ -247,8 +251,9 @@ hall_test <- hall_asr %>%
 hall["test", ] <- data_descr(hall_test)
 ```
 
-### Statistics 
-```{r}
+### Statistics
+
+``` r
 drops["software", ] <- 
   hall_asr %>%
   summarise(n = length(abstract),
@@ -260,8 +265,15 @@ drops["software", ] <-
 hall
 ```
 
+    ##          search ftext incl
+    ## paper      8911    NA  104
+    ## raw        8911    NA  104
+    ## asreview   8911    NA  104
+    ## test       8896    NA  104
+
 ## Virus dataset
-```{r}
+
+``` r
 virus <- template
 virus["paper",] <- c(2481, 132, 120)
 v_raw <- read.csv("../../sims/data/virus.csv")
@@ -285,11 +297,9 @@ v_test <- v_raw %>%
 virus["test",] <- data_descr(v_test)
 ```
 
-
-
 ## Wilson dataset
 
-```{r}
+``` r
 wilson <- template
 # paper ------------------------------------------------------------------------
 wilson["paper", ] <- c(3453, 174, 26)
@@ -317,7 +327,7 @@ w_asr$included <- w_asr$label_included
 wilson["asreview", ] <- data_descr(w_asr)
 ```
 
-```{r}
+``` r
 # create test dataset
 w_test <- w_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
@@ -327,16 +337,27 @@ wilson["test",] <- data_descr(w_test)
 ```
 
 Statistics
-```{r}
-drops["wilson",]
 
+``` r
+drops["wilson",]
+```
+
+    ##           n   na  narate dup  duprate
+    ## wilson 3437 1090 31.7137  14 0.407332
+
+``` r
 wilson
 ```
 
+    ##          search ftext incl
+    ## paper      3453   174   26
+    ## raw        3453   174   26
+    ## asreview   3437   174   26
+    ## test       2333   155   23
 
 # Save descriptive statistics on all datasets
 
-```{r eval = TRUE}
+``` r
 # put everything together in list. 
 all <- list(ace = ace,
             nudging = nudging,
@@ -351,56 +372,73 @@ saveRDS(drops, file = "data_statistics/drops.RDS")
 ```
 
 # Statistics
-All candidate papers, paper selected for full text screening, papers included in final review and inclusion rate, over various versions of the dataset.  
-```{r, echo = FALSE}
-tibble(Dataset = names(all), 
-       # paper 
-       `candidates_paper` = nostudies(all, "paper", "search"), 
-       `fulltext_paper` = nostudies(all, "paper", "ftext"),
-       `incl_paper` = nostudies(all, "paper", "incl"),
-       `inclrate_paper` = inclrate(all, "paper"),
-       
-       # raw data 
-       `candidates_raw` = nostudies(all, "raw", "search"), 
-       `fulltext_raw` = nostudies(all, "raw", "ftext"),
-       `incl_raw` = nostudies(all, "raw", "incl"),
-       `inclrate_raw` = inclrate(all, "raw"),
-       
-       # asreview repository 
-       `candidates_asr` = nostudies(all, "asreview", "search"), 
-       `fulltext_asr` = nostudies(all, "asreview", "ftext"),
-       `incl_asr` = nostudies(all, "asreview", "incl"),
-       `inclrate_asr` = inclrate(all, "asreview"),
-       
-       # test set 
-       `candidates_test` =  nostudies(all, "test", "search"), 
-       `fulltext_test` =  nostudies(all, "test", "ftext"), 
-       `incl_test` =  nostudies(all, "test", "incl"), 
-       `inclrate_test` = inclrate(all, "test")) %>% 
-  t() %>% 
-  kable("markdown") %>%
-  kable_styling(full_width = TRUE) %>%
-  #scroll_box(width = "100%", height = "200px") %>%
-  pack_rows("Paper", 2, 5) %>%
-  pack_rows("Raw data", 6, 9) %>%
-  pack_rows("ASReview data", 10, 13) %>%
-  pack_rows("Test data set", 14, 17)  
-```
 
-Descriptives on missingness and duplicate abstracts in the ASReview test data set. 
-```{r, echo = FALSE}
-drops %>%
-  kable("markdown",
-        col.names = c("n", "NA", "NA rate (%)", "duplicates", "duplicate rate (%)"),
-        digits = 2) %>%
-  kable_styling(full_width = TRUE)
+All candidate papers, paper selected for full text screening, papers
+included in final review and inclusion rate, over various versions of
+the dataset.
 
+    ## Warning in kable_markdown(x = structure(c("Dataset", "candidates_paper", : The
+    ## table should have a header (column names)
 
-```
+    ## Warning in kable_styling(., full_width = TRUE): Please specify format in
+    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
 
+    ## Warning in pack_rows(., "Paper", 2, 5): Please specify format in kable.
+    ## kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
 
-# Write all test dataset files 
-```{r, eval = FALSE}
+    ## Warning in pack_rows(., "Raw data", 6, 9): Please specify format in
+    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+    ## Warning in pack_rows(., "ASReview data", 10, 13): Please specify format in
+    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+    ## Warning in pack_rows(., "Test data set", 14, 17): Please specify format in
+    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+|                   |      |         |      |          |        |
+| :---------------- | :--- | :------ | :--- | :------- | :----- |
+| Dataset           | ace  | nudging | ptsd | software | wilson |
+| candidates\_paper | 2544 | 2006    | 6185 | 8911     | 3453   |
+| fulltext\_paper   | NA   | 377     | 363  | NA       | 174    |
+| incl\_paper       | 41   | 100     | 38   | 104      | 26     |
+| inclrate\_paper   | 1.61 | 4.99    | 0.61 | 1.17     | 0.75   |
+| candidates\_raw   | 2544 | 0       | 0    | 8911     | 3453   |
+| fulltext\_raw     | NA   | 0       | 0    | NA       | 174    |
+| incl\_raw         | 41   | 0       | 0    | 104      | 26     |
+| inclrate\_raw     | 1.61 | NA      | NA   | 1.17     | 0.75   |
+| candidates\_asr   | 2544 | 0       | 5782 | 8911     | 3437   |
+| fulltext\_asr     | NA   | 0       | 356  | NA       | 174    |
+| incl\_asr         | 41   | 0       | 38   | 104      | 26     |
+| inclrate\_asr     | 1.61 | NA      | 0.66 | 1.17     | 0.76   |
+| candidates\_test  | 2235 | 1847    | 5031 | 8896     | 2333   |
+| fulltext\_test    | NA   | 382     | 328  | NA       | 155    |
+| incl\_test        | 41   | 100     | 38   | 104      | 23     |
+| inclrate\_test    | 1.83 | 5.41    | 0.76 | 1.17     | 0.99   |
+
+Descriptives on missingness and duplicate abstracts in the ASReview test
+data set.
+
+    ## Warning in kable_styling(., full_width = TRUE): Please specify format in
+    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
+    ## haozhu233.github.io/kableExtra/ for details.
+
+|          |    n |   NA | NA rate (%) | duplicates | duplicate rate (%) |
+| :------- | ---: | ---: | ----------: | ---------: | -----------------: |
+| ace      | 2544 |  309 |       12.15 |          0 |               0.00 |
+| nudging  | 2019 |  169 |        8.37 |          3 |               0.15 |
+| ptsd     | 5782 |    0 |        0.00 |        750 |              12.97 |
+| software | 8911 |    0 |        0.00 |         15 |               0.17 |
+| virus    | 2481 |  176 |        7.09 |          1 |               0.04 |
+| wilson   | 3437 | 1090 |       31.71 |         14 |               0.41 |
+
+# Write all test dataset files
+
+``` r
 # ace
 write.csv(ace_test %>%  select(authors, title, abstract, keywords, label_included), "test_datasets/ace.csv")
 
@@ -421,7 +459,8 @@ write.csv(w_test %>% select(authors, title, abstract, keywords, included), "test
 ```
 
 # write test dataset files for simulation (removing keywords)
-```{r, eval = FALSE}
+
+``` r
 # ace
 write.csv(ace_test %>%  select(authors, title, abstract, label_included), "sim_datasets/ace.csv")
 # nudging (no keywords available)
@@ -437,87 +476,86 @@ write.csv(w_test %>% select(authors, title, abstract, included), "sim_datasets/w
 ```
 
 To check:
-```{bash , eval = FALSE}
+
+``` bash
 asreview stat test_datasets/*
 ```
 
-returns 
-```
-************  ace.csv  ************
+returns
 
-Number of papers:            2235
-Number of inclusions:        41 (1.83%)
-Number of exclusions:        2194 (98.17%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        123
-Average abstract length:     1623
-Average number of keywords:  15.0
-Number of missing titles:    0 (of which 0 included)
-Number of missing abstracts: 0 (of which 0 included)
-
-
-************  nudging.csv  ************
-
-Number of papers:            1847
-Number of inclusions:        100 (5.41%)
-Number of exclusions:        1747 (94.59%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        109
-Average abstract length:     1831
-Average number of keywords:  None
-Number of missing titles:    0 (of which 0 included)
-Number of missing abstracts: 0 (of which 0 included)
-
-
-************  ptsd.csv  ************
-
-Number of papers:            5031
-Number of inclusions:        38 (0.76%)
-Number of exclusions:        4993 (99.24%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        104
-Average abstract length:     1537
-Average number of keywords:  9.9
-Number of missing titles:    1 (of which 0 included)
-Number of missing abstracts: 0 (of which 0 included)
-
-
-************  software.csv  ************
-
-Number of papers:            8896
-Number of inclusions:        104 (1.17%)
-Number of exclusions:        8792 (98.83%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        81
-Average abstract length:     896
-Average number of keywords:  None
-Number of missing titles:    0 (of which 0 included)
-Number of missing abstracts: 0 (of which 0 included)
-
-
-************  virus.csv  ************
-
-Number of papers:            2304
-Number of inclusions:        114 (4.95%)
-Number of exclusions:        2190 (95.05%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        103
-Average abstract length:     1345
-Average number of keywords:  20.3
-Number of missing titles:    0 (of which 0 included)
-Number of missing abstracts: 0 (of which 0 included)
-
-
-************  wilson.csv  ************
-
-Number of papers:            2333
-Number of inclusions:        23 (0.99%)
-Number of exclusions:        2310 (99.01%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        83
-Average abstract length:     1325
-Average number of keywords:  31.3
-Number of missing titles:    1 (of which 0 included)
-Number of missing abstracts: 0 (of which 0 included)
-
-```
+    ************  ace.csv  ************
+    
+    Number of papers:            2235
+    Number of inclusions:        41 (1.83%)
+    Number of exclusions:        2194 (98.17%)
+    Number of unlabeled:         0 (0.00%)
+    Average title length:        123
+    Average abstract length:     1623
+    Average number of keywords:  15.0
+    Number of missing titles:    0 (of which 0 included)
+    Number of missing abstracts: 0 (of which 0 included)
+    
+    
+    ************  nudging.csv  ************
+    
+    Number of papers:            1847
+    Number of inclusions:        100 (5.41%)
+    Number of exclusions:        1747 (94.59%)
+    Number of unlabeled:         0 (0.00%)
+    Average title length:        109
+    Average abstract length:     1831
+    Average number of keywords:  None
+    Number of missing titles:    0 (of which 0 included)
+    Number of missing abstracts: 0 (of which 0 included)
+    
+    
+    ************  ptsd.csv  ************
+    
+    Number of papers:            5031
+    Number of inclusions:        38 (0.76%)
+    Number of exclusions:        4993 (99.24%)
+    Number of unlabeled:         0 (0.00%)
+    Average title length:        104
+    Average abstract length:     1537
+    Average number of keywords:  9.9
+    Number of missing titles:    1 (of which 0 included)
+    Number of missing abstracts: 0 (of which 0 included)
+    
+    
+    ************  software.csv  ************
+    
+    Number of papers:            8896
+    Number of inclusions:        104 (1.17%)
+    Number of exclusions:        8792 (98.83%)
+    Number of unlabeled:         0 (0.00%)
+    Average title length:        81
+    Average abstract length:     896
+    Average number of keywords:  None
+    Number of missing titles:    0 (of which 0 included)
+    Number of missing abstracts: 0 (of which 0 included)
+    
+    
+    ************  virus.csv  ************
+    
+    Number of papers:            2304
+    Number of inclusions:        114 (4.95%)
+    Number of exclusions:        2190 (95.05%)
+    Number of unlabeled:         0 (0.00%)
+    Average title length:        103
+    Average abstract length:     1345
+    Average number of keywords:  20.3
+    Number of missing titles:    0 (of which 0 included)
+    Number of missing abstracts: 0 (of which 0 included)
+    
+    
+    ************  wilson.csv  ************
+    
+    Number of papers:            2333
+    Number of inclusions:        23 (0.99%)
+    Number of exclusions:        2310 (99.01%)
+    Number of unlabeled:         0 (0.00%)
+    Average title length:        83
+    Average abstract length:     1325
+    Average number of keywords:  31.3
+    Number of missing titles:    1 (of which 0 included)
+    Number of missing abstracts: 0 (of which 0 included)

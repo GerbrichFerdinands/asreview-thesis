@@ -1,6 +1,6 @@
 ---
-title: "log hyperparameter optimization"
-output: html_notebook
+title: "Hyperparameter optimization log"
+output: github_document
 ---
 
 Per day, all commands sent to surfsara
@@ -319,9 +319,16 @@ hpsets["SCDD",, "one"] <- 2
 ```
 
 ```{r}
-
 # all - BCTD gets a few extra
 hpsets["BCTD",, "all"] <- 1 # 7893274 (12 hours)
 # all - LCTD is done
+```
+
+
+04.04.2020
+```{r}
+# rf all is done 
+hpsets["RCTD",,"all"] <- 2 
+hpsets["BCTD",, "all"] <- 2 
 ```
 

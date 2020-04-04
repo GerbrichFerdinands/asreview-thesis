@@ -4,7 +4,7 @@ author: "Gerbrich Ferdinands"
 date: "1/14/2020"
 output:
    pdf_document:
-  #   citation_package: biblatex
+     citation_package: biblatex
 bibliography: asreview.bib
 ---
 
@@ -24,9 +24,8 @@ library(rbbt)
 # load model parameters 
 source("asr-parameters.R")
 
-#pathRdata <- "../../R/data/"
-pathRdata <- "data/"
-
+#pathRdata <- "data/"
+pathRdata <- "../../datasets/data_statistics/"
 ```
 
 
@@ -268,7 +267,8 @@ Preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFer
 
 ```{r}
 # datasets table
-load(paste0(pathRdata, "datasets_table.Rdata"))
+drops <- readRDS(paste0(pathRdata, "drops.RDS"))
+all <- readRDS(paste0(pathRdata, "all.RDS"))
 
 nstudies <- function(all, datastage, col){
 }
@@ -279,7 +279,6 @@ nostudies <- function(all, set, stage){
 inclrate <- function(all, set){
   sapply(all, function(x) round(x[set,"incl"]/x[set,"search"]*100,2))
 }
-
 
 datastats <- 
   tibble(Dataset = names(all), 
@@ -393,6 +392,16 @@ We can choose to retrain the model after labeling $n$ instances.
 
 ## Simulations
 To evaluate performance of the five models described above, the model is used to simulate five existing systematic reviews. 
+A simulation is of one model on one dataset. 
+The simulation is repeated for 15 trials $t$. 
+
+The starting point of the active learning model in the simulation is one prior included publication and one prior excluded publication. 
+The training set is randomly sampled from the data. 
+Every simulation study consists of 15 trials, to account for the randomness of prior inclusions and exclusions.
+So every trial the prior inclusions and exclusions are randomly selected. 
+Results are aggregated (?)
+
+ 
 
 ### Optimizing hyperparameters
 For every model*data combination, 3 sets of hyperparameters are generated to ... 
@@ -403,12 +412,7 @@ For every model, the hyperparameters are optimized three times, arriving at thre
 We now have 75 combinations. 
 for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
-A simulation is of one model on one dataset. 
-The simulation is repeated for 10 trials $t$. 
 
-Every simulation study consists of 10 trials, to account for the randomness of prior inclusions and exclusions.
-So every trial the prior inclusions and exclusions are randomly selected. 
-Results are aggregated (?)
 
 ### Statistical analysis 
 #### measures

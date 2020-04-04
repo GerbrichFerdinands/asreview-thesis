@@ -1,5 +1,5 @@
 ---
-title: "README"
+title: "Simulations log"
 output: github_document
 ---
 
@@ -141,7 +141,7 @@ names(scdd) <- c("7893237", "7893241", "7893243", "7893244", "7893246", "7893247
 sims[condition[8], d, "one"] <- 2 # simulations are running 
 
 # transfer to harddrive 
-transfer("hp", condition[8])
+transfer("one", condition[8])
 #sims[condition[8], , "one"] <- 3 # output is on harddrive
 ```
 
@@ -150,6 +150,17 @@ all - LCTD hyperparameters
 # manually transform
 # push to github 
 sims[condition[4], , "all"] <- 1 # configs are on github 
+
+# run simulations 
+lctd_n <- createLines(condition[4], d, "all")
+write.table(lctd_n, file = "scripts/n/lctd_n.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+names(lctd_n) <- c()
+#sims[condition[4], d, "all"] <- 2 # simulations are running 
+
+# transfer to harddrive 
+transfer("n", condition[4])
+#sims[condition[8], , "one"] <- 3 # output is on harddrive
 ```
 
 
