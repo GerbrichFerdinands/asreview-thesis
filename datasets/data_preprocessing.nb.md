@@ -105,7 +105,8 @@ drops["nudging",] <- n_raw %>%
 nudging_test <- n_raw %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
   filter(abstract != "", abstract != "NA") %>%
-  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
+  distinct(abstract, .keep_all = TRUE) %>% # remove entries with duplicate abstracts
+  mutate(id = X)
 
 nudging["test", ] <- data_descr(nudging_test)
 ```
@@ -193,7 +194,7 @@ ptsd_test[indices, "included"] <- 0
 ``` r
 # finalize dataset  
 ptsd_test <- ptsd_test %>%
-  select(authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
+  select(id, authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
 
 ptsd["test", ] <- data_descr(ptsd_test)
 ```
@@ -246,8 +247,11 @@ hall["asreview", ] <- data_descr(hall_asr)
 hall_test <- hall_asr %>%
    drop_na(abstract) %>% # drop entries with missing abstracts
    filter(abstract != "") %>%
-   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
+hall_test <- hall_test %>% # add id
+  mutate(id = 1:nrow(hall_test))
+   
 hall["test", ] <- data_descr(hall_test)
 ```
 
@@ -380,26 +384,6 @@ the dataset.
     ## Warning in kable_markdown(x = structure(c("Dataset", "candidates_paper", : The
     ## table should have a header (column names)
 
-    ## Warning in kable_styling(., full_width = TRUE): Please specify format in
-    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
-    ## Warning in pack_rows(., "Paper", 2, 5): Please specify format in kable.
-    ## kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
-    ## Warning in pack_rows(., "Raw data", 6, 9): Please specify format in
-    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
-    ## Warning in pack_rows(., "ASReview data", 10, 13): Please specify format in
-    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
-    ## Warning in pack_rows(., "Test data set", 14, 17): Please specify format in
-    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
 |                   |      |         |      |          |        |
 | :---------------- | :--- | :------ | :--- | :------- | :----- |
 | Dataset           | ace  | nudging | ptsd | software | wilson |
@@ -423,10 +407,6 @@ the dataset.
 Descriptives on missingness and duplicate abstracts in the ASReview test
 data set.
 
-    ## Warning in kable_styling(., full_width = TRUE): Please specify format in
-    ## kable. kableExtra can customize either HTML or LaTeX outputs. See https://
-    ## haozhu233.github.io/kableExtra/ for details.
-
 |          |    n |   NA | NA rate (%) | duplicates | duplicate rate (%) |
 | :------- | ---: | ---: | ----------: | ---------: | -----------------: |
 | ace      | 2544 |  309 |       12.15 |          0 |               0.00 |
@@ -440,39 +420,39 @@ data set.
 
 ``` r
 # ace
-write.csv(ace_test %>%  select(authors, title, abstract, keywords, label_included), "test_datasets/ace.csv")
+write.csv(ace_test %>%  select(pubmedID, authors, title, abstract, keywords, label_included), "test_datasets/ace.csv", row.names = FALSE)
 
 # nudging (no keywords available)
-write.csv(nudging_test %>% select(title, abstract, included), "test_datasets/nudging.csv")
+write.csv(nudging_test %>% select(id, title, abstract, included), "test_datasets/nudging.csv", row.names = FALSE)
 
 # ptsd
-write.csv(ptsd_test %>% select(authors, title, abstract, keywords, included), "test_datasets/ptsd.csv")
+write.csv(ptsd_test %>% select(id, authors, title, abstract, keywords, included), "test_datasets/ptsd.csv", row.names = FALSE)
 
 # hall (no keywords available )
-write.csv(hall_test, "test_datasets/software.csv")
+write.csv(hall_test, "test_datasets/software.csv", row.names = FALSE)
 
 # virus 
-write.csv(v_test %>% select(authors, title, abstract, keywords, included), "test_datasets/virus.csv")
+write.csv(v_test %>% select(id, authors, title, abstract, keywords, included), "test_datasets/virus.csv", row.names = FALSE)
 
 # wilson
-write.csv(w_test %>% select(authors, title, abstract, keywords, included), "test_datasets/wilson.csv")
+write.csv(w_test %>% select(id, authors, title, abstract, keywords, included), "test_datasets/wilson.csv", row.names = FALSE)
 ```
 
 # write test dataset files for simulation (removing keywords)
 
 ``` r
 # ace
-write.csv(ace_test %>%  select(authors, title, abstract, label_included), "sim_datasets/ace.csv")
+write.csv(ace_test %>%  select(pubmedID, title, abstract, label_included), "sim_datasets/ace.csv", row.names = FALSE)
 # nudging (no keywords available)
-write.csv(nudging_test %>% select(title, abstract, included), "sim_datasets/nudging.csv")
+write.csv(nudging_test %>% select(id, title, abstract, included), "sim_datasets/nudging.csv", row.names = FALSE)
 # ptsd
-write.csv(ptsd_test %>% select(authors, title, abstract, included), "sim_datasets/ptsd.csv")
+write.csv(ptsd_test %>% select(id, title, abstract, included), "sim_datasets/ptsd.csv", row.names = FALSE)
 # hall (no keywords available )
-write.csv(hall_test, "sim_datasets/software.csv")
+write.csv(hall_test, "sim_datasets/software.csv", row.names = FALSE)
 # virus 
-write.csv(v_test %>% select(authors, title, abstract, included), "sim_datasets/virus.csv")
+write.csv(v_test %>% select(id, title, abstract, included), "sim_datasets/virus.csv", row.names = FALSE)
 # wilson
-write.csv(w_test %>% select(authors, title, abstract, included), "sim_datasets/wilson.csv")
+write.csv(w_test %>% select(id, title, abstract, included), "sim_datasets/wilson.csv", row.names = FALSE)
 ```
 
 To check:
