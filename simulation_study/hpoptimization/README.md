@@ -1,12 +1,10 @@
----
-title: "Hyperparameter optimization log"
-output: github_document
----
+Hyperparameter optimization log
+================
 
-Per day, all commands sent to surfsara
-After a command is sent, save that todo checklist file! 
+Per day, all commands sent to surfsara After a command is sent, save
+that todo checklist file\!
 
-```{r}
+``` r
 hpsets <- readRDS("../R/01_hyperparameter_sets.RDS")
 
 d <- colnames(hpsets)
@@ -17,9 +15,11 @@ names(classifier) <- c("B", "R", "S", "L", "N")
 
 # one on one optimization
 
-## classifiers 
+## classifiers
+
 BCTD on all datasets
-```{r}
+
+``` r
 # BCTD
 script <- noquote(sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d %s -r 23", d))
 write.table(script, file = "scripts/one/nb_classifier.txt", sep = "\t", quote = FALSE,
@@ -28,14 +28,15 @@ write.table(script, file = "scripts/one/nb_classifier.txt", sep = "\t", quote = 
 names(script) <- c("7846991", "7846993", "7846994", "7846997", "7846998", "7846999")
 ```
 
-```{r}
+``` r
 # check off to do list. 
 hpsets["NCTD", , ] <- 9 # impossible model
 hpsets["BCTD", , "one"] <- 1 # finish nb one-one-one simulations
 ```
 
-The other 3 classifiers 
-```{r}
+The other 3 classifiers
+
+``` r
 cons <- expand.grid(c = classifier[2:4], d = d, stringsAsFactors = FALSE)
 # all models
 class1 <- sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m %s -b double -e tfidf -q max -d %s -r 23", cons$c, cons$d)
@@ -48,19 +49,24 @@ names(class1) <- c(7847065,7847066,7847067,7847068,7847069, 7847070, 7847071,784
 hpsets[condition[2:4], , "one"] <- 1
 ```
 
+## now with doc2vec feature extraction
 
-## now with doc2vec feature extraction 
-```{r}
+``` r
 cons <- expand.grid(c = classifier[2:5], d = d, stringsAsFactors = FALSE)
 
 # a test run first maybe
 # NCDD
 noquote("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e doc2vec -q max -d ace -r 23") # 7847109
+```
+
+    ## [1] ./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e doc2vec -q max -d ace -r 23
+
+``` r
 # todo list
 hpsets[condition[6], , ] <- 9 # multinomial nb cannot deal with doc2vec (negative values!!)
 ```
 
-```{r}
+``` r
 # then all classifier * dataset combinations. 
 t <- rep(c("12", "42", "42", "5-00"), length(d))
 d2v1 <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m %s -b double -e doc2vec -q max -d %s -r 23", t, cons$c, cons$d)
@@ -78,7 +84,8 @@ hpsets[condition[7:10], ,"one"] <- 1
 ```
 
 # n
-```{r}
+
+``` r
 t <- c("12:00:00", "24:00:00", "48:00:00", "24:00:00")
 # optimize hyperparams over all datasets
 allc <- sprintf("./cart_hyper_run.py hyper-active -t %s -m %s -b double -e tfidf -q max -r 23", t, classifier[1:4])
@@ -91,9 +98,9 @@ names(allc) <- c("7848203", "7848204", "7848205", "7848206")
 hpsets[condition[1:4], , "all"] <- 1
 ```
 
+## doc2vec models
 
-## doc2vec models 
-```{r}
+``` r
 t <- rep(c("42", "42", "42", "5-00"))
 cons <- expand.grid(c = classifier[2:5], stringsAsFactors = FALSE)
 
@@ -104,42 +111,44 @@ write.table(d2vall, file = "scripts/n/doc2vec.txt", sep = "\t", quote = FALSE,
 names(d2vall) <- c("7854227",  "7854228", "7854229", "7854230")
 
 hpsets[condition[7:10], ,"all"] <- 1
-
-
 ```
 
 # n-1
 
+-----
 
-
-
---- 
-# Visual inspection 30-03-2020 
+# Visual inspection 30-03-2020
 
 ## classifiers
-```{bash, eval = FALSE}
+
+``` bash
 # script to show all lisa.err files to see if processes done yes/no
 .catlisaerr.sh
 ```
-- svm 
-  - ace (3x) 3 times the time. 
-  - nudging 7x
-  - ptsd 7x 
-  - software 3x (of 4)
-  - virus 5x
-  - wilson 3x
-    - all 10x
-- rf 
-  - software 2x 
-  - all 3x
-- rest is fine, over 1000 runs and seems not to improve much. 
-```{r}
+
+  - svm
+      - ace (3x) 3 times the time.
+      - nudging 7x
+      - ptsd 7x
+      - software 3x (of 4)
+      - virus 5x
+      - wilson 3x
+          - all 10x
+  - rf
+      - software 2x
+      - all 3x
+  - rest is fine, over 1000 runs and seems not to improve much.
+
+<!-- end list -->
+
+``` r
 hpsets[condition[c(1,4)], , c("one", "all")] <- 2
 hpsets[condition[c(2,3)],  d[c(1:2, 5:6)], "one"] <- 2
 ```
 
 Sent in around 13 pm (30.03.2020)
-```{r}
+
+``` r
 # svm extra time 
 cons <- expand.grid(c = classifier[3], stringsAsFactors = FALSE, d= d)
 cons$t <- c("36", rep("84", 2), "48", "60", "36")
@@ -167,15 +176,19 @@ write.table(extraall, file = "scripts/n/extratime_classifier.txt", sep = "\t", q
             row.names = FALSE)
 ```
 
-## doc2vec 
-```{bash, eval = FALSE}
+## doc2vec
+
+``` bash
 # bash script to print all hyperopt results. 
 ./show.sh
 ```
 
-- nn-2-layer - try again with -r 11.  (for all datasets still doesn't work )
+  - nn-2-layer - try again with -r 11. (for all datasets still doesn’t
+    work )
 
-```{r}
+<!-- end list -->
+
+``` r
 # redo nn-2-layer with doc2vec. 
 #./cart_hyper_run.py hyper-active -t 01:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 11 7867616 test for an hour 
 hpsets[condition[10], , "one"] <- 8 # error
@@ -194,15 +207,17 @@ write.table(nn2d2vall, file = "scripts/n/nn2d2v.txt", sep = "\t", quote = FALSE,
 names(nn2d2vall) <- "7873511"
 ```
 
-- rf is done 
-  - ace 3x? 
-  - nudging 2x 
-  - ptsd 6x
-  - software 10 x
-  - virus 1.5 x 
-  - wilson 1x 
-  
-```{r}
+  - rf is done
+      - ace 3x?
+      - nudging 2x
+      - ptsd 6x
+      - software 10 x
+      - virus 1.5 x
+      - wilson 1x
+
+<!-- end list -->
+
+``` r
 # redo random forest d2v
 t <- rep(c("36", "24", "72", "5-00", "18", "12"))
 x_d2v_rf <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m rf -b double -e doc2vec -q max -d %s -r 23", t, d)
@@ -212,13 +227,13 @@ write.table(x_d2v_rf, file = "scripts/one/x_d3v_rf.txt", sep = "\t", quote = FAL
 names(x_d2v_rf) <- c("7867607", "7867608", "7867609", "7867610", "7867611", "7867612")
 ```
 
- 
-# asreview create-config 
+# asreview create-config
 
-# export config files 
-(from all files in output :) ) 
+# export config files
 
-```{r}
+(from all files in output :) )
+
+``` r
 d4 <- c(paste(d[1:5], collapse=","), 
         paste(d[2:6], collapse=","), 
         paste(d[c(3:6,1)], collapse = ","), 
@@ -254,12 +269,23 @@ names(n_1) <- c("7873344", "7873345", "7873346", "7873347", "7873348",
 hpsets[c(1:5, 6:10),,"four"] <- 1
 ```
 
-31.03.2020
-### all 
-all SCDD, LCDD RCDD, resend for 5 days 
-```{r}
+31.03.2020 \#\#\# all all SCDD, LCDD RCDD, resend for 5 days
+
+``` r
 # more time for doc2vec all datasets - svm + logistic 
 d2vall
+```
+
+    ##                                                                                          7854227 
+    ##           "./cart_hyper_run.py hyper-active -t 42:00:00 -m rf -b double -e doc2vec -q max -r 23" 
+    ##                                                                                          7854228 
+    ##          "./cart_hyper_run.py hyper-active -t 42:00:00 -m svm -b double -e doc2vec -q max -r 23" 
+    ##                                                                                          7854229 
+    ##     "./cart_hyper_run.py hyper-active -t 42:00:00 -m logistic -b double -e doc2vec -q max -r 23" 
+    ##                                                                                          7854230 
+    ## "./cart_hyper_run.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -r 23"
+
+``` r
 cons <- expand.grid(c = classifier[2:4], stringsAsFactors = FALSE)
 d2vall_x <- sprintf("./cart_hyper_run.py hyper-active -t 5-00:00:00 -m %s -b double -e doc2vec -q max -r 23", cons$c)
 write.table(d2vall_x, file = "scripts/n/d2v_all_x.txt", sep = "\t", quote = FALSE,
@@ -267,14 +293,15 @@ write.table(d2vall_x, file = "scripts/n/d2v_all_x.txt", sep = "\t", quote = FALS
 names(d2vall_x) <- c("7873497", "7873499","7873500")
 ```
 
-try nn2 with tfidf -r 11 
+try nn2 with tfidf -r 11
 
 checkout nn 2 layer tfidf
 
 ### one
-one LCDD, for 2x the time 
-one SCDD for 1x the time 
-```{r}
+
+one LCDD, for 2x the time one SCDD for 1x the time
+
+``` r
 cons <- expand.grid(c = classifier[3:4], d = d, stringsAsFactors = FALSE)
 cons$t <- ifelse(cons$c=="logistic", "96", "48")
 d2v1_x <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m %s -b double -e doc2vec -q max -d %s -r 23", cons$t, cons$c, cons$d)
@@ -285,13 +312,13 @@ names(d2v1_x) <- c("7877706", "7877707", "7877708", "7877709", "7877710",
                    "7877717")
 ```
 
-```{r}
+``` r
 hpsets[condition[2], d[4] , "one"] <- 2
 ```
 
-01.04
-nn-2-layer retry r-1 
-```{r}
+01.04 nn-2-layer retry r-1
+
+``` r
 cons <- expand.grid(c = classifier[5], fe = c("tfidf", "doc2vec"), d = d, stringsAsFactors = FALSE)
 
 nn_test <- sprintf("./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m %s -b double -e %s -q max -d %s -r 2", cons$c, cons$fe, cons$d)
@@ -310,44 +337,47 @@ write.table(nn_test2, file = "scripts/one/nn_test2.txt", sep="\t", quote = FALSE
 names(nn_test2) <- c("7904508", "7904509", "7904510", "7904511", "7904512", "7904513", "7904514", "7904515", "7904516",
                     "7904518", "7904519", "7904520")
 ```
- 
 
-```{r}
+``` r
 # cancel all logistic 4-1 sets 
 #  7873347, 7873448, 7873460, 7873464, 7873469, 7873473
 hpsets["LCTD", , "four"] <- 2
 ```
 
 03.04.2020
-```{r}
+
+``` r
 # svm d2v one are done! 
 hpsets["SCDD",, "one"] <- 2
 ```
 
-```{r}
+``` r
 # all - BCTD gets a few extra
 hpsets["BCTD",, "all"] <- 1 # 7893274 (12 hours)
 # all - LCTD is done
 ```
 
 04.04.2020
-```{r}
+
+``` r
 # rf all is done 
 hpsets["RCTD",,"all"] <- 2 
 hpsets["BCTD",, "all"] <- 2 
 ```
 
 05.05.2020
-```{r}
+
+``` r
 # all 
 # LCDD 24 more hours
 # ./cart_hyper_run.py hyper-active -t 24:00:00 -m logistic -b double -e doc2vec -q max -r 23 
 # 7904435
 ```
 
-send in 'one' nn-2-layer models again (see above)
-send in 'all' for nn-2-layer models.
-```{r}
+send in ‘one’ nn-2-layer models again (see above) send in ‘all’ for
+nn-2-layer models.
+
+``` r
 cons <- expand.grid(c = classifier[5], fe = c("tfidf", "doc2vec"), stringsAsFactors = FALSE)
 nn_test_all <- sprintf("./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m %s -b double -e %s -q max -r 31", cons$c, cons$fe)
 write.table(nn_test_all, file = "scripts/n/nn_test_all.txt", sep="\t", quote = FALSE, row.names = FALSE)
@@ -357,69 +387,17 @@ hpsets[condition[c(5,10)], , "all"] <- 1
 ```
 
 06.05.2020
-```{r}
+
+``` r
 # SCTD optimization
 hpsets[condition[3], c("ptsd", "software"), "one"] <- 2
 hpsets[condition[3], , "all" ] <- 2
 hpsets[condition[3], , "four"] <- 2
-```
 
-```{r}
 # RCDD 
 hpsets[condition[7], "wilson","one"] <- 2 
-
 # other sent for a bit more 
 x_d2v_rf_3 <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m rf -b double -e doc2vec -q max -d %s -r 23", rep("24",5), d[1:5])
 
 write.table(x_d2v_rf_3, file = "scripts/one/d2v_rf_3.txt", sep="\t", quote = FALSE, row.names = FALSE)
-
-names(x_d2v_rf_3) <- c("7911083", "7911084", "7911085", "7911086", "7911087")
 ```
-
-```{r}
-#SCDD
-hpsets[condition[8],,] 
-# all again: 7911104
-# n_1 again 
-cons <- expand.grid(c = "svm", d = d4, f=c("doc2vec"), stringsAsFactors = FALSE)
-
-# all models
-n_1_svmdx <- sprintf("./cart_hyper_run.py hyper-active -t 5-00:00:00 -m %s -b double -e %s -q max -d %s -r 23", cons$c, cons$f, cons$d)
-write.table(n_1_svmdx, file = "scripts/n-1/n_1_xsvmd2v.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(n_1_svmdx) <- c("7911112", "7911113", "7911114", "7911115", "7911116", "7911117")
-```
-
-
-```{r}
-#LCDD
-hpsets[condition[9], , c("one", "all")] <- 2
-
-# n-1 send in again
-cons <- expand.grid(c = "logistic", d = d4, f=c("doc2vec"), stringsAsFactors = FALSE)
-
-n_1x_ld <- sprintf("./cart_hyper_run.py hyper-active -t 5-00:00:00 -m %s -b double -e %s -q max -d %s -r 23", cons$c, cons$f, cons$d)
-write.table(n_1x_ld, file = "scripts/n-1/n_1x_ld.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(n_1x_ld) <- c("7911092", "7911093", "7911094", "7911095", "7911096", "7911097")
-```
-
-```{r}
-# n-2
-#RCTD
-hpsets[condition[2], , "four"] <- 2
-
-# BCTD 
-n_1_nbx <- sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d %s -r 23", d4)
-write.table(n_1_nbx, file = "scripts/n-1/n_1_nbx.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(n_1_nbx) <- c("7911126", "7911127", "7911128", "7911129", "7911130", "7911131")
-
-# all doc2vec models 
-# cons <- expand.grid(c = classifier[2:4], d = d4, stringsAsFactors = FALSE)
-# n_1_d2vx <- sprintf("./cart_hyper_run.py hyper-active -t 5-00:00:00 -m %s -b double -e doc2vec -q max -d %s -r 23", cons$c, cons$d)
-# write.table(n_1_d2vx, file = "scripts/n-1/d2vx.txt", sep = "\t", quote = FALSE,
-#             row.names = FALSE)
-# names(n_1_d2vx)
-```
-

@@ -3,8 +3,9 @@ title: "Manuscript drafts"
 author: "Gerbrich Ferdinands"
 date: "1/14/2020"
 output:
-   pdf_document:
-     citation_package: biblatex
+  word_document: default
+  pdf_document:
+    citation_package: biblatex
 bibliography: asreview.bib
 ---
 
@@ -168,6 +169,9 @@ We're building active learning model who takes X as an input an predicts class u
 Model improves by deciding asking more information from the reviewer (oracle), 
 accounting for imbalance. 
 
+The researcher has some prior knowledge about the pool, some papers ought to be included in the SR. 
+
+
 #### Assumptions 
 1) decisions of the original SR are **ground truth** (benchmark) (oracle)
 
@@ -230,22 +234,23 @@ Goal: evaluate performance of different models of the ASReview tool.
 The screening process is simulated using ASReview, seeing if the original inclusions replicate. 
 What would happen if the citation screening would have been performed using asreview? 
 All datasets accompanying the systematic reviews are openly published. 
+We built several machine learning models to perform aautomated systematic reviews, 
+who are then applied on existing systematic reviews. 
 
 
 ## Models 
-Five different active learning models were build. 
-Every model $m$ was used to perform an automated systematic review on SR dataset $d$. 
-The models all apply a different classifier $c$ with its own set of (hyper)parameters $h$. 
+To perform automated systematic reviews, x machine learning models ($M$) were built. 
+The machine learning models consists of four main components. 
 
 #### Classifiers
-The classifier predicts the class of all papers, given the training dataset/labeled data set $\mathcal{L}$. 
+Every model applies a classifier $c$ to predict the relevance of publications in the data. 
+The classfiier predicts the class of a publication in the dataset expediting a training dataset $\mathcal{L}$,
+predicts the class of an instance given input features $\mathbf{X}$
 
-Given the labels and some features from all abstracts in the pool, the classifier 
-To predict whether a paper should be an exclusion or an inclusion, different classifiers
-
-Logistic Regression (L) - 
-
-Naive Bayes (B) - predicts the class of an instance given input features $\mathbf{X}$. Naive Bayes assumes all features are independent given the class value. This is obviously not the case but still the algorithm performs impressively [@Zhang2004]. Especially at ... tasks. 
+Logistic Regression (L) - L2-regularized logistic regression. 
+Logistic models the posterior directly, naive bayes has higher bias but lower variance, 
+logistic might perform better when trainign set increases. [@Ng2002]
+Naive Bayes (B) - Naive Bayes assumes all features are independent given the class value. This is obviously not the case but still the algorithm performs impressively [@Zhang2004]. Especially at ... tasks. 
 
 Random Forests (R) is where a large number of decision trees are fit on bootstrapped samples of the original data.
 All trees cast a vote on the class, which are aggregated into a class prediciton for each input $\mathbf{X}$ [@Breiman2001]. 
@@ -256,12 +261,6 @@ Support Vecor Machine (S) - finds a multidimensional hyperplane to separate clas
 Dense Neural Network (N) - 
 
 Besides $c$, components of $m$ are fea
-
-To summarize, every model $m$ consists of the following key components: 
-classifier, feature extraction strategy, query strategy, balance strategy. 
-
-For example $M_1$ BCTD (naive bayes, certainty sampling, tf-idf, dynamic supersampling)
-STMD 
 
 #### Word representation 
 To predict the class of a publication class (e.g. whether a publication should be included or excluded), the classifier uses information from the publications in the dataset. 
@@ -294,31 +293,17 @@ A reweighting strategy is applied where inclusions (the minority class) are weig
 
 When no balancing is applied, the training data set = labeled data set $\mathcal{L}$
 
-Dynamic Supersampling (D) 
+Dynamic Supersampling (D) - Dynamic supersampling is similar to undersampling in the sense that it decreases the imbalance of de training data. In the case of dynamic supersampling, the number of exclusions is decreased, whereas the number of inclusions are increased (by copy) such that the total number of samples remains the same. The ratio between inclusions and exclusions is not fixed, but dynamically updated and depends on the number of training samples, the total number of papers and the ratio between inclusions and exclusions. (by Raoul)
 
-## Simulations
-A simulation is of one model on one dataset. 
-The simulation is repeated for 15 trials $t$. 
+To summarize, every model $m$ consists of four components. 
+In the current study, the classifier and the feature extraction strategy are varied, whereas the query and balance strategy remain fixed. 
+In the current study only a fraction of all possible configurations are tested for the sake of brevity. 
+There are many more options available and open to exploration.
 
-The starting point of the active learning model in the simulation is one prior included publication and one prior excluded publication. 
-The training set is randomly sampled from the data. 
-Every simulation study consists of 15 trials, to account for the randomness of prior inclusions and exclusions.
-So every trial the prior inclusions and exclusions are randomly selected. 
-Results are aggregated (?)
-
-#### Controlled Variables
-Starting point
-The initial training set consists of 1 inclusion and 1 exclusion, randomly sampled from the dataset. 
-Demonstrate 'worst case scenario' where reviewer has minimal prior knowledge on publications in the data. 
-The researcher has some prior knowledge about the pool, some papers ought to be included in the SR. 
-
-Retraining
-We can choose to retrain the model after labeling $n$ instances. 
-- n_instances=1 (number of papers each query)
 
 ## Datasets
 Six Systematic Reviews from various research areas were used to simulate the automated systematic review process.
-The data from the original source were preprocessed into a test dataset, containing all publications obtained in the systematic search, with labels indicating the publications included in the systematic review. 
+Data from the original source were preprocessed into a test dataset, containing all publications obtained in the systematic search.  with labels indicating the publications included in the systematic review. 
 
 The test datasets contain title information on all publications obtained in the search strategy. 
 The instances in the data consist of a title, an abstract and were labeled to indicate which publications were included in the systematic review. 
@@ -400,9 +385,23 @@ datastats %>%
 ```
 
 
+## Simulations
+To demonstrate the models, simulations are performed of the models on six original systematic reviews.  
+With the labeled datasets, the systematic review can be reproduced but with now using a machine learning model to optimize the reviewing process. 
+
+The initial training set of the active learning model in the simulation is one prior included publication and one prior excluded publication, randomly sampled from the data. 
+This demonstrates a 'worst case scenario' where the reviewer has minimal prior knowledge on publications in the data. 
+
+For this simulations there is no need for a human reviewer since the labels in the data can be queried. 
+The oracle is not the reviewer but the labels in the data. 
+The model retrains every time after a label is provided by the oracle. 
+The simulation ends when all publications in the dataset have been queried. 
+
+To account for variance, every simulation is repeated for 15 trials $t$. 
 
 
 ### Optimizing hyperparameters
+with its own set of (hyper)parameters $h$. 
 For every model*data combination, 3 sets of hyperparameters are generated to ... 
 parallel
 Every model has its own hyperparameters. 
@@ -411,8 +410,9 @@ For every model, the hyperparameters are optimized three times, arriving at thre
 We now have 75 combinations. 
 for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
-
 ### Statistical analysis 
+Results are aggregated over 15 runs of every simulation.
+
 #### measures
 #### comparison over conditions 
 
@@ -453,6 +453,11 @@ tabbie %>%
 
 ### Hyperparameters
 Every model has its own set of hyperparameters:
+Model hyperparameters were optimized for every dataset. 
+Optimization was done through … (what kind of statistic is optimized on?) 
+by the asreview-hyperopt extension. 
+Optimization was visually inspected. 
+
 
 ### Optimization
 The hyperparameters are optimized on the 5 datasets in three different ways: 
@@ -518,6 +523,12 @@ Is performance related to some characteristic (n, inclusion rate, ...)
 \newpage
 
 # Results
+
+```{r}
+simulations <- readRDS("../../simulation_study/R/01_hyperparameter_sets.RDS")[,,1]
+
+kable(simulations)
+```
 
 \newpage
 # Discussion

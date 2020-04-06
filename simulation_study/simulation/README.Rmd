@@ -145,7 +145,13 @@ transfer("one", condition[8])
 #sims[condition[8], , "one"] <- 3 # output is on harddrive
 ```
 
-all - LCTD hyperparameters 
+
+06.04.2020
+### all 
+RCTD all
+BCTD all 
+LCTD all
+
 ```{r}
 # manually transform
 # push to github 
@@ -162,7 +168,6 @@ names(lctd_n) <- c()
 transfer("n", condition[4])
 #sims[condition[8], , "one"] <- 3 # output is on harddrive
 ```
-
 
 ---
 
