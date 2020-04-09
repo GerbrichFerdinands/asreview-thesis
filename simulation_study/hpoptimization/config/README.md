@@ -3,11 +3,13 @@ Results hyperparameter optimization
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
 ![](README_files/figure-gfm/eval-1.png)<!-- -->
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 statistics for random forest + tf-idf
 

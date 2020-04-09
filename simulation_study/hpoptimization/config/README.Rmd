@@ -25,6 +25,18 @@ hpsets <- readRDS("hpresults.RDS")
 ```
 
 ```{r}
+php(hpsets$nb_tfidf) + 
+  labs(title = "Hyperparameters Naive Bayes + TF-IDF")
+```
+
+```{r, eval = FALSE}
+hpsets$svm_tfidf %>%
+   mutate(value = as.numeric(value)) %>%
+  php() +
+  labs(title = "Hyperparameters SVM + TF-IDF")
+```
+
+```{r}
 php(hpsets$lr_tfidf) + 
   labs(title = "Hyperparameters Logistic Regression + TF-IDF")
 ```
