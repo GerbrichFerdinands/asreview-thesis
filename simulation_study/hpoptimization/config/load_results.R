@@ -117,7 +117,7 @@ lctd <- prepData(lctd)
 lcdd <- prepData(lcdd)
 
 # bctd
-#bctd <- prepData(bctd)
+bctd <- prepData(bctd)
 
 # rctd
 rctd <- prepData(rctd)
@@ -126,10 +126,12 @@ rctd <- prepData(rctd)
 rcdd <- prepData(rcdd)
 
 # sctd
-
+sctd <- prepData(sctd)
 # scdd
-
+scdd <- prepData(scdd)
 # inspect 
+
+#
 
 
 # put al results in a list 

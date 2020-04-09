@@ -29,8 +29,8 @@ php(hpsets$lr_tfidf) +
   labs(title = "Hyperparameters Logistic Regression + TF-IDF")
 ```
 
-```{r, eval = FALSE}
-php(hpsets$lr_doc2vec) + 
+```{r, eval}
+php(hpsets$lr_d2v) + 
   labs(title = "Hyperparameters Logistic Regression + Doc2Vec")
 ```
 
@@ -39,9 +39,14 @@ php(hpsets$rf_tfidf) +
   labs(title = "Hyperparameters Random Forest + TF-IDF")
 ```
 
+
+```{r}
+php(hpsets$rf_d2v) + 
+  labs(title = "Hyperparameters Random Forest + Doc2Vec")
+```
+
 statistics for random forest + tf-idf
 ```{r}
-
 hpsets$rf_tfidf %>%
    group_by(param, group) %>%
     summarise(variance = var(value), 
@@ -51,13 +56,5 @@ hpsets$rf_tfidf %>%
               median = median(value),
               max = max(value)) %>%
   kable("markdown")
-
-```
-
-
-
-```{r}
-php(hpsets$rf_d2v) + 
-  labs(title = "Hyperparameters Random Forest + Doc2Vec")
 ```
 

@@ -3,6 +3,10 @@ Results hyperparameter optimization
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
+![](README_files/figure-gfm/eval-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 statistics for random forest + tf-idf
@@ -36,5 +40,3 @@ statistics for random forest + tf-idf
 | model\_param.n\_estimators   | n     |         NA |        NA | 100.0000000 | 100.0000000 | 100.0000000 | 100.0000000 |
 | model\_param.n\_estimators   | n-1   |  1.2000000 | 1.0954451 |  98.0000000 |  99.0000000 |  99.0000000 | 100.0000000 |
 | model\_param.n\_estimators   | one   |  5.4666667 | 2.3380904 |  94.0000000 |  97.6666667 |  98.0000000 | 100.0000000 |
-
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
