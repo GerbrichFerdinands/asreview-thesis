@@ -1,0 +1,63 @@
+---
+title: "Results hyperparameter optimization"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+
+php <- function(data){
+  data %>%
+    ggplot(aes(x = value, y = "", color = group)) +
+    geom_jitter(height = 0.2) +
+    facet_wrap(vars(param), nrow = 8, scales = "free_x") +
+    geom_vline(aes(xintercept = lb), color = "grey") +
+    geom_vline(aes(xintercept = ub), color = "grey") 
+}
+
+```
+
+```{r, figure.heigth = 12}
+hpsets <- readRDS("hpresults.RDS")
+```
+
+```{r}
+php(hpsets$lr_tfidf) + 
+  labs(title = "Hyperparameters Logistic Regression + TF-IDF")
+```
+
+```{r, eval = FALSE}
+php(hpsets$lr_doc2vec) + 
+  labs(title = "Hyperparameters Logistic Regression + Doc2Vec")
+```
+
+```{r}
+php(hpsets$rf_tfidf) + 
+  labs(title = "Hyperparameters Random Forest + TF-IDF")
+```
+
+statistics for random forest + tf-idf
+```{r}
+
+hpsets$rf_tfidf %>%
+   group_by(param, group) %>%
+    summarise(variance = var(value), 
+              sd = sd(value),
+              min = min(value), 
+              mean = mean(value),
+              median = median(value),
+              max = max(value)) %>%
+  kable("markdown")
+
+```
+
+
+
+```{r}
+php(hpsets$rf_d2v) + 
+  labs(title = "Hyperparameters Random Forest + Doc2Vec")
+```
+

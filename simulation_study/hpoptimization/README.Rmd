@@ -3,17 +3,32 @@ title: "Hyperparameter optimization log"
 output: github_document
 ---
 
-Per day, all commands sent to surfsara
-After a command is sent, save that todo checklist file! 
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
 
-```{r}
+```{r, echo = FALSE}
 hpsets <- readRDS("../R/01_hyperparameter_sets.RDS")
-
 d <- colnames(hpsets)
 condition <- rownames(hpsets)
 classifier <- c("nb", "rf", "svm", "logistic", "nn-2-layer")
 names(classifier) <- c("B", "R", "S", "L", "N")
 ```
+
+```{r, echo = FALSE}
+log <- readRDS("log.RDS")
+kable(log[,,1], format = "markdown")
+
+kable(log[,,2], format = "markdown")
+
+kable(log[,,3], format = "markdown")
+```
+
+### hyperparameter optimization results 
+
+
+---
 
 # one on one optimization
 
@@ -49,7 +64,7 @@ hpsets[condition[2:4], , "one"] <- 1
 ```
 
 
-## now with doc2vec feature extraction 
+now with doc2vec feature extraction 
 ```{r}
 cons <- expand.grid(c = classifier[2:5], d = d, stringsAsFactors = FALSE)
 
@@ -421,5 +436,9 @@ names(n_1_nbx) <- c("7911126", "7911127", "7911128", "7911129", "7911130", "7911
 # write.table(n_1_d2vx, file = "scripts/n-1/d2vx.txt", sep = "\t", quote = FALSE,
 #             row.names = FALSE)
 # names(n_1_d2vx)
+```
+
+```{r}
+saveRDS(hpsets, file = "log.RDS")
 ```
 

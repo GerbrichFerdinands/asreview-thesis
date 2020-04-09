@@ -1,7 +1,7 @@
 x
-./cart_hyper_run.py hyper-active -t 5-00:00:00 -m svm -b double -e doc2vec -q max -d ace,nudging,ptsd,software,virus -r 23
-./cart_hyper_run.py hyper-active -t 5-00:00:00 -m svm -b double -e doc2vec -q max -d nudging,ptsd,software,virus,wilson -r 23
-./cart_hyper_run.py hyper-active -t 5-00:00:00 -m svm -b double -e doc2vec -q max -d ptsd,software,virus,wilson,ace -r 23
-./cart_hyper_run.py hyper-active -t 5-00:00:00 -m svm -b double -e doc2vec -q max -d software,virus,wilson,ace,nudging -r 23
-./cart_hyper_run.py hyper-active -t 5-00:00:00 -m svm -b double -e doc2vec -q max -d virus,wilson,ace,nudging,ptsd -r 23
-./cart_hyper_run.py hyper-active -t 5-00:00:00 -m svm -b double -e doc2vec -q max -d wilson,ace,nudging,ptsd,software -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m logistic -b double -e doc2vec -q max -d ace,nudging,ptsd,software,virus -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m logistic -b double -e doc2vec -q max -d nudging,ptsd,software,virus,wilson -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m logistic -b double -e doc2vec -q max -d ptsd,software,virus,wilson,ace -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m logistic -b double -e doc2vec -q max -d software,virus,wilson,ace,nudging -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m logistic -b double -e doc2vec -q max -d virus,wilson,ace,nudging,ptsd -r 23
+./cart_hyper_run.py hyper-active -t 5-00:00:00 -m logistic -b double -e doc2vec -q max -d wilson,ace,nudging,ptsd,software -r 23

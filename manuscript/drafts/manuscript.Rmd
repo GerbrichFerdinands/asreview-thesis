@@ -227,40 +227,42 @@ Our extensions is that we try different classifiers, on more datasets.
 This study was approved by the Ethics Committee of the Faculty of Social and Behavioural Sciences of Utrecht University, filed as an amendement under study 20-104.
 
 All simulations were run using through cartesius EINF-156 
-
-\newpage
-# Methods
 Goal: evaluate performance of different models of the ASReview tool. 
 The screening process is simulated using ASReview, seeing if the original inclusions replicate. 
 What would happen if the citation screening would have been performed using asreview? 
 All datasets accompanying the systematic reviews are openly published. 
-We built several machine learning models to perform aautomated systematic reviews, 
+We built several machine learning models to perform automated systematic reviews, 
 who are then applied on existing systematic reviews. 
 
+When no balancing is applied, the training data set = labeled data set $\mathcal{L}$
+The model can query the labels, who serve as the reviewer, active learning then perform active learning to detect inclusions.
+
+a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
+Using a perceptron classifier, WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
+The data
+
+\newpage
+# Methods
+Performance of several machine learning models was demonstrated on six systematic review datasets.  
 
 ## Models 
-To perform automated systematic reviews, x machine learning models ($M$) were built. 
-The machine learning models consists of four main components. 
+_x_ machine learning models ($M$) were built. 
+The models consist of multiple components, of which the classifier and the feature extraction strategy varied over the models. 
 
 #### Classifiers
 Every model applies a classifier $c$ to predict the relevance of publications in the data. 
 The classfiier predicts the class of a publication in the dataset expediting a training dataset $\mathcal{L}$,
 predicts the class of an instance given input features $\mathbf{X}$
 
-Logistic Regression (L) - L2-regularized logistic regression. 
+Logistic Regression (LR) - L2-regularized logistic regression. 
 Logistic models the posterior directly, naive bayes has higher bias but lower variance, 
 logistic might perform better when trainign set increases. [@Ng2002]
-Naive Bayes (B) - Naive Bayes assumes all features are independent given the class value. This is obviously not the case but still the algorithm performs impressively [@Zhang2004]. Especially at ... tasks. 
+Naive Bayes (NB) - Naive Bayes assumes all features are independent given the class value. This is obviously not the case but still the algorithm performs impressively [@Zhang2004]. Especially at ... tasks. 
 
-Random Forests (R) is where a large number of decision trees are fit on bootstrapped samples of the original data.
-All trees cast a vote on the class, which are aggregated into a class prediciton for each input $\mathbf{X}$ [@Breiman2001]. 
+Random Forests (RF) is where a large number of decision trees are fit on bootstrapped samples of the original data. All trees cast a vote on the class, which are aggregated into a class prediction for each input $\mathbf{X}$ [@Breiman2001]. 
 
-Support Vecor Machine (S) - finds a multidimensional hyperplane to separate classes.
+Support Vecor Machine (SVM) - finds a multidimensional hyperplane to separate classes.
 [@Tong2001]
-
-Dense Neural Network (N) - 
-
-Besides $c$, components of $m$ are fea
 
 #### Word representation 
 To predict the class of a publication class (e.g. whether a publication should be included or excluded), the classifier uses information from the publications in the dataset. 
@@ -280,65 +282,33 @@ Based on features of the previously labeled inclusions and exclusions, the model
 
 The features used are title and abstract from every publication. - this is what is prescribed by prisma, (check!) 
 
-(T) (D)
+(TF-IDF) (Doc2Vec)
 
-#### The next abstract to be queried  
-The model has various ways of deciding which instance should be queried next. 
-(C) but other methods, here only C 
+#### Fixed components  
+All models $M$ apply the same query strategy of certainty sampling, in which the presented publication is always the one of which the model is most certain for it to be relevant. 
 
-#### Rebalancing the training set
-To account for class imbalance in the data, the model can apply several strategies to rebalance the training set. 
-
-A reweighting strategy is applied where inclusions (the minority class) are weighted more heavily than the exclusions. 
-
-When no balancing is applied, the training data set = labeled data set $\mathcal{L}$
-
-Dynamic Supersampling (D) - Dynamic supersampling is similar to undersampling in the sense that it decreases the imbalance of de training data. In the case of dynamic supersampling, the number of exclusions is decreased, whereas the number of inclusions are increased (by copy) such that the total number of samples remains the same. The ratio between inclusions and exclusions is not fixed, but dynamically updated and depends on the number of training samples, the total number of papers and the ratio between inclusions and exclusions. (by Raoul)
-
-To summarize, every model $m$ consists of four components. 
-In the current study, the classifier and the feature extraction strategy are varied, whereas the query and balance strategy remain fixed. 
-In the current study only a fraction of all possible configurations are tested for the sake of brevity. 
-There are many more options available and open to exploration.
-
+To decrease the class imbalance in the training data, the model rebalances the training set by Dynamic Supersampling (DS). DS decreases the number of irrelevant papers in the training data, whereas the number of relevant papers are increased (by copy) such that the total number of samples remains the same. The ratio between relevant and irrelevant papers is not fixed, but dynamically updated and depends on the number of training samples, the total number of publications and the ratio between relevant and irrelevant publications.
 
 ## Datasets
-Six Systematic Reviews from various research areas were used to simulate the automated systematic review process.
-Data from the original source were preprocessed into a test dataset, containing all publications obtained in the systematic search.  with labels indicating the publications included in the systematic review. 
+Six Systematic Reviews from various research areas were used to simulate the automated systematic review process. Data were preprocessed from the original source into a test dataset, containing all publications obtained in the systematic search. The test datasets are labelled indicating the relevant and irrelevant publications. Using these labels, a computer simulation of an automated systematic review can be performed on the systematic review data. 
 
 The test datasets contain title information on all publications obtained in the search strategy. 
-The instances in the data consist of a title, an abstract and were labeled to indicate which publications were included in the systematic review. 
-Instances with missing abstracts were removed. 
-Duplicate instances were removed. 
-Preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis]
-
-test datasets serve as systematic search results, then perform active learning to detect inclusions.
+The instances in the data consist of a title and an abstract and were labeled to indicate which publications were included in the systematic review. Instances with missing abstracts and duplicate instances were removed from the data. The data preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis]
 
 Cohen et al. collected systematic review datasets from the medical sciences [@Cohen2006]. 
-All systematic reviews in this database are on drug efficacy. 
-The _ace_ dataset used in the current study comes from a systematic review on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors.
+All systematic reviews in this database are on drug efficacy. The _ace_ dataset used in the current study comes from a systematic review on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors.
 
-a machine learning-based citation classification tool to reduce workload in systematic reviews of drug class efficacy. 
-Using a perceptron classifier, WSS@95% = 56.61 in [@Cohen2006]. (5x2 crossvalidation). Can we beat this? 
-The data
+The _software_ dataset is retrieved from [@Yu2018a], who collected datasets on literature reviews from the software engineering field. This dataset is on fault prediction in software engineering by [@Hall2012]. 
 
-The _software_ dataset is retrieved from [@Yu2018a], who collected datasets on literature reviews from the software engineering field. 
-This dataset is on fault prediction in software engineering by [@Hall2012]. 
+The _nudging_ dataset comes from a review from the behavioural public administration area. The SR includes studies on nudging healthcare professionals [@Nagtegaal2019]. The data was stored on the Harvard Dataverse [@Nagtegaal2019a]. 
 
-The _nudging_ dataset comes from a review from the behavioural public administration area. 
-The SR includes studies on nudging healthcare professionals [@Nagtegaal2019]. 
-The data was stored on the Harvard Dataverse [@Nagtegaal2019a]. 
-
-A literature review from field of psychology, _ptsd_. 
-The SR is on studies applying latent trajectory analyses on posttraumatic stress after exposure to trauma [@vandeSchoot2017]. 
-The corresponding data can be found on the Open Science Framework [...]. 
+A literature review from field of psychology, _ptsd_. The SR is on studies applying latent trajectory analyses on posttraumatic stress after exposure to trauma [@vandeSchoot2017]. The corresponding data can be found on the Open Science Framework [...]. 
 
 _wilson_, a dataset from the medical sciences [@Appenzeller-Herzog2020]. 
 TA review on effectiveness treatments of Wilson disease [@Appenzeller-Herzog2019]. 
 
 All datasets started with an initial pool of thousands of papers. 
 A fraction of these papers where deemed relevant for the SR, with inclusion rates around 1-2 percent with one outlier of about 5 percent (`r table_nums("datasets", display = "cite")`).
-
-
 
 ```{r}
 # datasets table
@@ -384,6 +354,142 @@ datastats %>%
   add_header_above(c("", "Original study" = 3, "Test collection" = 3))
 ```
 
+### Optimizing hyperparameters
+Every model component contains hyperparameters, leading to a unique set of hyperparameters for each model. To maximize model performance, we need to find optimal values for the hyperparameters. 
+For every model the optimal hyperparameter values are determined by optimizing on the data $d$.
+The hyperparameters are optimized by running several hundreds of optimization trials, in which hyperparameter values are sampled from their possible parameter space.
+A description of all hyperparameters and their sample space can be found in the appendix. 
+
+Maximum model performance is defined as the average time it takes to find an inclusion in the data, or more specific: the loss function minimizes the average number of papers needed to screen to find an inclusion (e.g. the area above the curve in the inclusion plot).
+
+The optimization data $d$ consists of (a subset from) the six systematic review datasets $D$ mentioned above. 
+Three different approaches in composing $d$ are explored: 
+
+- __one__, where hyperparameters are optimized on only one of the six datasets, $d \in D$. Such hyperparameters are expected to lead to maximum performance in the same dataset $d$.
+- __n__, where hyperparameters are optimized on all six data sets, $d = D$. This optimization approach intends to serve in producing the most optimal hyperparameters overall. 
+- __n-1__, where hyperparameters are optimized on all six datasets but one, $d \subset D$. Serving as a sensitivity analysis for the former condition, e.g. how sensitive are the hyperparamters. also as a cross-validation later on: hyperparameters obtained by training data, test data is never seen before.
+where d are all datasets but the one where we want to simulate later on. 
+This results in $6+6+1=13$ sets of hyperparameters for every model. 
+
+Results were visually inspected to check if an optimum (minimal loss) has been reached. 
+More trials were run if the loss still seemed to go down at a quick pace. 
+
+The hyperparameter values that were found to lead to a minimum loss value were visually inspected. 
+
+### Optimization results
+For every model, 13 sets of hyperparameters were optimized.
+
+*to include: plotting the loss reduction over trials* 
+
+Optimal values of the hyperparameters were visually inspected.
+
+As an example, the hyperparameters of the RF_TF-IDF model are presented in Figure 1. 
+A panel displays the optimal values for a certain hyperparameter, where the blue colored dots represent the __one__ condition, the green dots the __n-1__ condition and the orange dot represents the optimal hyperparameter value when optmizing over all datasets (__n__). The x-axis represents the possible parameter space where the vertical grey lines mark the boundaries of the hyperparameter space (if possible). Note that the feature parameters ngram_max, split_ta, use_keywords and model parameters max_features and n_estimators are categorical. 
+
+Overall, the optimal values are distributed over the parameter space. Outlying values all belong to the __one__ condition where optimization was dependent on one dataset only. Fore example, the class_weight parameter has an outlying value of 11.3 that belongs to the nudging dataset. (Why this is the case I can only speculate, but it is worth mentioning that this dataset has a relatively high inclusion rate  of 5.41%, compared to the other datasets). 
+
+```{r}
+include_graphics(
+  "figs/rf_tfidf.eps",
+)
+```
+
+## Appendix x - Hyperparameters and their sample space 
+
+Classifier hyperparameters
+
+    class_weight: normal(0,1) constrained to be > 0
+    class weight of the inclusions.
+                     
+  Logistic Regression
+  
+    c: float. normal(0,1), constrained to be > 0
+
+  Support Vector Machine
+                     
+    gamma: ["auto", "scale"],
+    Gamma parameter of the SVM model.
+    
+    C: 
+    C parameter of the SVM model.
+
+    kernel:
+    SVM kernel type.["linear", "rbf", "poly", "sigmoid"]
+
+  Naive Bayes
+  
+    "model_param.alpha", # exp(normal(0,1))
+             
+  Random Forest 
+  
+    max_features: int (between 6 and 10)
+        Number of features in the model.
+
+    n_estimators: int between 10 and 100 
+        Number of estimators.
+    
+    model_param.n_estimators" #quniform(10,100,1)
+
+Balance strategy hyperparameters:
+    Dynamic supersampling:
+    
+    a: float
+        Governs the weight of the 1's. Higher values mean linearly more 1's
+        in your training sample.
+    alpha: float
+        Governs the scaling the weight of the 1's, as a function of the
+        ratio of ones to zeros. A positive value means that the lower the
+        ratio of zeros to ones, the higher the weight of the ones.
+    b: float
+        Governs how strongly we want to sample depending on the total
+        number of samples. A value of 1 means no dependence on the total
+        number of samples, while lower values mean increasingly stronger
+        dependence on the number of samples.
+        
+
+Feature extraction strategy hyperparameters
+
+    split_ta: 0 or 1
+       whether titles and abstracts are split 
+       
+    use_keywords: 0 or 1
+        whether keywords should be used
+       
+  TF-IDF
+      
+    ngram_max: 1, 2 or 3
+        Can use up to ngrams up to ngram_max. For example in the case of 
+        ngram_max=2, monograms and bigrams could be used.
+
+
+  Doc2Vec
+    
+    vector_size: int (between 32 and 127)
+        Output size of the vector.
+
+    epochs: int (between 20 and 50)
+        Number of epochs to train the doc2vec model.
+    
+
+    min_count: int (between 1 and 3)
+        Minimum number of occurences for a word in the corpus for it to be 
+        included in the model.
+
+    window: int (between 5 and 9)
+        Maximum distance over which word vectors influence each other.
+    
+    dm_concat: int 0 or 1
+        Whether to concatenate word vectors or not.
+                     
+    dm: int 
+        Model to use.
+        0: Use distribute bag of words (DBOW).
+        1: Use distributed memory (DM).
+        2: Use both of the above with half the vector size and concatenate them.
+
+    dbow_words: int 0 or 1
+        Whether to train the word vectors using the skipgram method.
+
 
 ## Simulations
 To demonstrate the models, simulations are performed of the models on six original systematic reviews.  
@@ -391,7 +497,6 @@ With the labeled datasets, the systematic review can be reproduced but with now 
 
 The initial training set of the active learning model in the simulation is one prior included publication and one prior excluded publication, randomly sampled from the data. 
 This demonstrates a 'worst case scenario' where the reviewer has minimal prior knowledge on publications in the data. 
-
 For this simulations there is no need for a human reviewer since the labels in the data can be queried. 
 The oracle is not the reviewer but the labels in the data. 
 The model retrains every time after a label is provided by the oracle. 
@@ -399,27 +504,16 @@ The simulation ends when all publications in the dataset have been queried.
 
 To account for variance, every simulation is repeated for 15 trials $t$. 
 
-
-### Optimizing hyperparameters
-with its own set of (hyper)parameters $h$. 
-For every model*data combination, 3 sets of hyperparameters are generated to ... 
-parallel
-Every model has its own hyperparameters. 
-For every model, the hyperparameters are optimized three times, arriving at three versions of the model: 
-
-We now have 75 combinations. 
-for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
-
 ### Statistical analysis 
 Results are aggregated over 15 runs of every simulation.
 
 #### measures
 #### comparison over conditions 
 
-
 # The software 
 ASReview takes the following parameters/arguments: 
-
+ We now have 75 combinations. 
+for every for every model (5), for every dataset (5) and for every set of optimized hyperparameters (3), a simulation study consisting trials is performed. From these $5*5*3=75$ simulation studies, performance of the different models is evaluated.
 
 ```{r}
 tab %>%
@@ -451,30 +545,6 @@ tabbie %>%
         booktabs = TRUE)
 ```
 
-### Hyperparameters
-Every model has its own set of hyperparameters:
-Model hyperparameters were optimized for every dataset. 
-Optimization was done through … (what kind of statistic is optimized on?) 
-by the asreview-hyperopt extension. 
-Optimization was visually inspected. 
-
-
-### Optimization
-The hyperparameters are optimized on the 5 datasets in three different ways: 
-
-- 1 on 1: maximum performance 
-
-$$ d = D $$
-- 4 on 1: cross-validation 
-$$ d \notin D$$ 
-
-$$ D = {1, 2, 3, 4}$$
-
-- 5 on 1: more data = more better? 
-
-$$ d \in D $$
-
-This results $(5+5+1)*5$ sets of hyperparameters. 
 
 #### Performance metrics 
 For each model, 
@@ -698,5 +768,9 @@ combins %>%
 
 Running on Cartesius is charged in System Billing Units (SBUs), and charging is based on the wall clock time of a job. On fat and thin nodes, an SBU is equal to using 1 core for 1 hour (a core hour), or 1 core for 20 minutes on a GPU node. Since compute nodes are allocated exclusively to a single job at a time, you will be charged for all cores on that node - even if you are using less. 
 
+
+In the current study, the classifier and the feature extraction strategy are varied, whereas the query and balance strategy remain fixed. 
+In the current study only a fraction of all possible configurations are tested for the sake of brevity. 
+There are many more options available and open to exploration.
 
 # References 

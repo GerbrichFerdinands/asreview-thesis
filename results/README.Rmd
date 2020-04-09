@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(rjson)
+```
+
+
+Script for reading simulation files
+```{python}
+
+```
+
+Script for reading results 
+```{r}
+data <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
+statspath <- paste0("statistics/one/RCTD/", "testoutput_RCTD_one_", data, ".json")
+
+ace <- fromJSON(file = statspath[1])
+
+```
+
