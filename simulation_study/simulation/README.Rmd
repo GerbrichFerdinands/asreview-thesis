@@ -163,6 +163,7 @@ lcdd <- createLines(condition[8], d, "one")
 10.04.2020
 
 ```{r}
+
 # transfer to harddrive 
 transfer("one", condition[8])
 #sims[condition[8], , "one"] <- 3 # output is on harddrive
