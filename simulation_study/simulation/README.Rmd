@@ -83,10 +83,10 @@ names(bctd) <- c("7883184", "7883202", "7883207", "7883209", "7883213", "7883214
 #### RCTD, LCTD
 ```{r}
 rctd_lctd <- createLines(condition[c(2,4)], d=d, hp = "one")
-write.table(rctd_lctd, file = "scripts/one/rctd_lcdt.txt", sep = "\t", quote = FALSE,
+write.table(rctd_lctd, file = "scripts/one/rctd_lctd.txt", sep = "\t", quote = FALSE,
             row.names = FALSE)
 #one_rctd_virus etc 
-names(rctd_lctd) <- c("7883218", "7883219", "7883220", "7883221", "7883223", "7883224",
+names(rctd_lctd) <- c("7949940", "7949952", "7949953", "7949954", "7949956", "7949959",
                      "7883228", "7883229", "7883231", "7883233", "7883234", "7883236")
 ```
 
