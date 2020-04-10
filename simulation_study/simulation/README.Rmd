@@ -140,13 +140,38 @@ write.table(scdd, file = "scripts/one/scdd.txt", sep = "\t", quote = FALSE,
 names(scdd) <- c("7893237", "7893241", "7893243", "7893244", "7893246", "7893247")
 sims[condition[8], d, "one"] <- 2 # simulations are running 
 
+
+```
+
+```{r}
+sctd <- createLines(condition[3], d, "one")
+write.table(sctd, file = "scripts/one/sctd.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+names(sctd) <- c("7945897", "7945899", "7945902", "7945903", "7945910", "7945912")
+sims[condition[3], d, "one"] <- 2 # simulations are running 
+
+rcdd <- createLines(condition[7], d, "one")
+write.table(rcdd, file = "scripts/one/rcdd.txt", sep = "\t", quote = FALSE,
+            row.names = FALSE)
+names(rctd) <- c("")
+sims[condition[7], d, "one"] <- 2 # simulations are running 
+
+lcdd <- createLines(condition[8], d, "one")
+
+```
+
+10.04.2020
+
+```{r}
 # transfer to harddrive 
 transfer("one", condition[8])
 #sims[condition[8], , "one"] <- 3 # output is on harddrive
+transfer("one", condition[4])
+
+# simulations both failed? 
 ```
 
 
-06.04.2020
 ### all 
 RCTD all
 BCTD all 
@@ -157,12 +182,17 @@ LCTD all
 # push to github 
 sims[condition[4], , "all"] <- 1 # configs are on github 
 
+```
+
+
+```{r}
 # run simulations 
 lctd_n <- createLines(condition[4], d, "all")
 write.table(lctd_n, file = "scripts/n/lctd_n.txt", sep = "\t", quote = FALSE,
             row.names = FALSE)
 names(lctd_n) <- c()
 #sims[condition[4], d, "all"] <- 2 # simulations are running 
+
 
 # transfer to harddrive 
 transfer("n", condition[4])
