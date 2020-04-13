@@ -1,16 +1,35 @@
 ---
-title: "Hyperparamter optimization"
+title: "Hyperparamter Optimization"
 output:   
   md_document:
     variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r packages}
 library(tidyverse)
 library(ggplot2)
 library(knitr)
+library(directlabels)
+```
 
+To every model belongs a unique set of hyperparameters. To maximize model performance, we need to find optimal values for the hyperparameters. For every model the optimal hyperparameter values are determined by optimizing on data $d$. The hyperparameters are optimized by running several hundreds of optimization trials, in which hyperparameter values are sampled from their possible parameter space.
+
+Maximum model performance is defined as the average time it takes to find an inclusion in the data, or more specific: the loss function minimizes the average number of papers needed to screen to find an inclusion (eg the area above the curve in the inclusion plot).
+
+The optimization data d consists of (a subset from) the six systematic review datasets D mentioned above. Three different approaches in composing d are explored:
+
+- __one__, where hyperparameters are optimized on only one of the six datasets. Such hyperparameters are expected to lead to maximum performance in the same dataset d.
+- __n__, where hyperparameters are optimized on all six data sets. This optimization approach intends to serve in producing the most optimal hyperparameters overall. 
+- __n-1__, where hyperparameters are optimized on all six datasets but one. Serving as a sensitivity analysis for the former condition, eg how sensitive are the hyperparamters. also as a cross-validation later on: hyperparameters obtained by training data, test data is never seen before.
+where d are all datasets but the one where we want to simulate later on. 
+
+This results in 6+6+1=13 sets of hyperparameters for every model. Optimization trials were visually inspected to check if an optimum (minimal loss) has been reached. More trials were run if the loss still seemed to go down at a quick pace. The hyperparameter sets that were found to lead to a minimum loss value were visually inspected.
+
+```{r functions}
 php <- function(data){
   data %>%
     filter(param %in% numericalvars) %>%
@@ -19,7 +38,8 @@ php <- function(data){
     geom_jitter(height = 0.2) +
     facet_wrap(vars(param), nrow = 2, scales = "free_x") +
     geom_vline(aes(xintercept = lb), color = "grey") +
-    geom_vline(aes(xintercept = ub), color = "grey") 
+    geom_vline(aes(xintercept = ub), color = "grey") +
+    theme_minimal()
 }
 
 php_c <- function(data){
@@ -29,41 +49,57 @@ php_c <- function(data){
     ggplot(aes(x = value, color = group, fill = group, group = group)) +
     geom_bar(position="dodge") +
     facet_wrap(vars(param), nrow = 2, scales = "free_x") +
-    labs(title = "(optimal) categorical hyperparameters", y = "", x = "Parameter values")
+    labs(title = "(optimal) categorical hyperparameters", y = "", x = "Parameter values")+
+    theme_minimal()
 }
 ```
 
-```{r, figure.heigth = 12}
+```{r}
 hpsets <- readRDS("config/hpresults.RDS")
 numericalvars <- c("balance_param.a", "balance_param.alpha", "balance_param.b", "model_param.alpha", "model_param.c", "model_param.class_weight", "feature_param.vector_size", "feature_param.epochs", "model_param.n_estimators")
 categoricalvars <-c("feature_param.ngram_max", "feature_param.split_ta", "feature_param.use_keywords", "model_param.gamma", "feature_param.dbow_words", "feature_param.dm", "feature_param.dm_concat", "feature_param.min_count", "feature_param.window", "model_param.max_features") 
 ```
 
+```{r loss_function}
 
-```{r}
-library(tidyverse)
-trials <- read_csv("trials/trials.csv")
-```
+# loss i where x is index, a.k.a. loss plot sorted from high to low loss.
+loss_i <- function(trials){
+  trials %>%
+  ggplot(aes(x = index, y = loss)) +
+  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
+  labs(title = "Loss plot", x = "Trials sorted from high to low loss") +
+    theme_minimal()
+}
 
-```{r}
-lossp <- function(trials, sort = TRUE){
-  if(sort){
-  p <-  trials %>%
-    ggplot(aes(x = nrow(trials):1, y = loss))
-  } else {
-  p <- trials %>%
-    ggplot(aes(x = trial, y = loss))
-  }
-  p + geom_line()
-   
+# loss t where x is trials, loss plot is sorted over time
+loss_t <- function(trials){
+  trials %>%
+    ggplot(aes(x = trial, y = loss)) +
+    geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+    geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
+    labs(title = "Loss plot", x = "Over trials") +
+    theme_minimal()
 }
 ```
 
 # Naive Bayes + TF-IDF 
 
 ## Loss plots
+Two times the same data, first plot is over trials, second sorted from highest to lowest loss.
 ```{r}
+nbtfidftrials <- readRDS("trials/nb_tfidf_trials.RDS")
 
+nbtfidftrials <- nbtfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+nbtfidftrials %>% loss_i
+
+# loss plot sorted by trial numbers 
+nbtfidftrials %>%
+  loss_t()
 ```
 
 
@@ -74,8 +110,7 @@ php(hpsets$nb_tfidf) +
 
 # plot feature_param.ngram_max
 hpsets$nb_tfidf %>%
-  php_c()
-
+  php_c() 
 ```
 
 
@@ -89,6 +124,7 @@ hpsets$svm_tfidf %>%
   php_c() 
 ```
 
+# Logistic Regression + TF-IDF 
 ```{r LR_TFIDF}
 php(hpsets$lr_tfidf) + 
   labs(title = "Hyperparameters Logistic Regression + TF-IDF")
@@ -97,7 +133,9 @@ hpsets$lr_tfidf %>%
   php_c()
 ```
 
-```{r LR_D2V, eval}
+
+# Logistic Regression + Doc2Vec
+```{r LR_D2V}
 php(hpsets$lr_d2v) + 
   labs(title = "Hyperparameters Logistic Regression + Doc2Vec")
 
@@ -105,7 +143,8 @@ hpsets$lr_d2v %>%
   php_c()
 ```
 
-```{r}
+# Random Forest + TF-IDF
+```{r rf_tfidf}
 php(hpsets$rf_tfidf) + 
   labs(title = "Hyperparameters Random Forest + TF-IDF")
 
@@ -113,25 +152,34 @@ hpsets$rf_tfidf %>%
   php_c()
 ```
 
+# Random Forest + Doc2Vec
+## Loss plot
+```{r rf_d2v_loss}
+rfd2vtrials <- readRDS("trials/rf_d2v_trials.RDS")
 
-```{r}
+rfd2vtrials <- rfd2vtrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+rfd2vtrials %>%
+  ggplot(aes(x = index, y = loss)) +
+  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
+  labs(title = "Loss plot", x = "Trials sorted from high to low loss")
+
+rfd2vtrials %>%
+  ggplot(aes(x = index, y = loss)) +
+  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
+  labs(title = "Loss plot", x = "Over trials")
+```
+
+## Hyperparameter Values
+```{r rf_d2v}
 php(hpsets$rf_d2v) + 
   labs(title = "Hyperparameters Random Forest + Doc2Vec")
 
 hpsets$rf_d2v %>%
   php_c()
-```
-
-statistics for random forest + tf-idf
-```{r}
-hpsets$rf_tfidf %>%
-   group_by(param, group) %>%
-    summarise(variance = var(value), 
-              sd = sd(value),
-              min = min(value), 
-              mean = mean(value),
-              median = median(value),
-              max = max(value)) %>%
-  kable("markdown")
 ```
 
