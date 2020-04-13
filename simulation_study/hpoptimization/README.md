@@ -1,3 +1,6 @@
+Optimizing Hyperparameters
+==========================
+
 To every model belongs a unique set of hyperparameters. To maximize
 model performance, we need to find optimal values for the
 hyperparameters. For every model the optimal hyperparameter values are
@@ -22,10 +25,7 @@ composing d are explored:
     optimal hyperparameters overall.
 -   **n-1**, where hyperparameters are optimized on all six datasets but
     one. Serving as a sensitivity analysis for the former condition, eg
-    how sensitive are the hyperparamters. also as a cross-validation
-    later on: hyperparameters obtained by training data, test data is
-    never seen before. where d are all datasets but the one where we
-    want to simulate later on.
+    how sensitive are the hyperparamters to different data sets.
 
 This results in 6+6+1=13 sets of hyperparameters for every model.
 Optimization trials were visually inspected to check if an optimum

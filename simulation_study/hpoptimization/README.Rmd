@@ -4,7 +4,7 @@ output:
   md_document:
     variant: markdown_github
 ---
-
+# Optimizing Hyperparameters
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
@@ -24,8 +24,7 @@ The optimization data d consists of (a subset from) the six systematic review da
 
 - __one__, where hyperparameters are optimized on only one of the six datasets. Such hyperparameters are expected to lead to maximum performance in the same dataset d.
 - __n__, where hyperparameters are optimized on all six data sets. This optimization approach intends to serve in producing the most optimal hyperparameters overall. 
-- __n-1__, where hyperparameters are optimized on all six datasets but one. Serving as a sensitivity analysis for the former condition, eg how sensitive are the hyperparamters. also as a cross-validation later on: hyperparameters obtained by training data, test data is never seen before.
-where d are all datasets but the one where we want to simulate later on. 
+- __n-1__, where hyperparameters are optimized on all six datasets but one. Serving as a sensitivity analysis for the former condition, eg how sensitive are the hyperparamters to different data sets. 
 
 This results in 6+6+1=13 sets of hyperparameters for every model. Optimization trials were visually inspected to check if an optimum (minimal loss) has been reached. More trials were run if the loss still seemed to go down at a quick pace. The hyperparameter sets that were found to lead to a minimum loss value were visually inspected.
 
@@ -162,16 +161,10 @@ rfd2vtrials <- rfd2vtrials %>%
   mutate(index = rev(index))
 
 rfd2vtrials %>%
-  ggplot(aes(x = index, y = loss)) +
-  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
-  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
-  labs(title = "Loss plot", x = "Trials sorted from high to low loss")
+  loss_t()
 
 rfd2vtrials %>%
-  ggplot(aes(x = index, y = loss)) +
-  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
-  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
-  labs(title = "Loss plot", x = "Over trials")
+  loss_i()
 ```
 
 ## Hyperparameter Values
