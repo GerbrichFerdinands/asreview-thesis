@@ -58,7 +58,6 @@ table_nums(name = "datasets", caption = "Statistics on datasets from original sy
 ```
 
 
-
 #### Introduction 
 #### Methods
 A convenience sample of 5 existing systematic reviews on varying topics was collected.
@@ -111,8 +110,6 @@ input:
   M = train($\mathcal{L}$)
   Query x \isin \mathcal{U} (<x, y=?)
   oracle <x, y>
-  
-  
   
 
 ```
@@ -767,7 +764,6 @@ combins %>%
 500,000 SBU
 
 Running on Cartesius is charged in System Billing Units (SBUs), and charging is based on the wall clock time of a job. On fat and thin nodes, an SBU is equal to using 1 core for 1 hour (a core hour), or 1 core for 20 minutes on a GPU node. Since compute nodes are allocated exclusively to a single job at a time, you will be charged for all cores on that node - even if you are using less. 
-
 
 In the current study, the classifier and the feature extraction strategy are varied, whereas the query and balance strategy remain fixed. 
 In the current study only a fraction of all possible configurations are tested for the sake of brevity. 

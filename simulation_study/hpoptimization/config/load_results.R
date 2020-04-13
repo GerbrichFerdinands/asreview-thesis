@@ -90,15 +90,6 @@ prepData <- function(data){
   return(data)
 }
 
-php <- function(data){
-  data %>%
-    ggplot(aes(x = value, y = "", color = group)) +
-    geom_jitter(height = 0.2) +
-    facet_wrap(vars(param), nrow = 8, scales = "free_x") +
-    geom_vline(aes(xintercept = lb), color = "grey") +
-    geom_vline(aes(xintercept = ub), color = "grey") 
-}
-
 # compute variance of hyperparameters 
 paramstats <- function(data){
   data %>% 
@@ -110,14 +101,14 @@ paramstats <- function(data){
 }
 
 
-## plot for lctd 
+# bctd
+bctd <- prepData(bctd)
+
+# plot for lctd 
 lctd <- prepData(lctd)
 
 # lcdd 
 lcdd <- prepData(lcdd)
-
-# bctd
-bctd <- prepData(bctd)
 
 # rctd
 rctd <- prepData(rctd)
@@ -131,15 +122,12 @@ sctd <- prepData(sctd)
 scdd <- prepData(scdd)
 # inspect 
 
-#
-
-
 # put al results in a list 
-hps <- list(svm_tfidf = sctd, svm_d2v = scdd,
+hps <- list(svm_tfidf = sctd, 
+            svm_d2v = scdd,
             nb_tfidf = bctd, 
             lr_tfidf = lctd, 
             lr_d2v = lcdd, 
             rf_tfidf = rctd, 
-            rf_d2v = rcdd, all.names = TRUE)
-
+            rf_d2v = rcdd)
 saveRDS(hps, file = "simulation_study/hpoptimization/config/hpresults.RDS")

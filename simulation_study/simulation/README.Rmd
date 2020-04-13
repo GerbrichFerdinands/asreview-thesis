@@ -86,8 +86,7 @@ rctd_lctd <- createLines(condition[c(2,4)], d=d, hp = "one")
 write.table(rctd_lctd, file = "scripts/one/rctd_lctd.txt", sep = "\t", quote = FALSE,
             row.names = FALSE)
 #one_rctd_virus etc 
-names(rctd_lctd) <- c("7949940", "7949952", "7949953", "7949954", "7949956", "7949959",
-                     "7883228", "7883229", "7883231", "7883233", "7883234", "7883236")
+names(rctd_lctd) <- c(rep("0", 6), "7949940", "7949952", "7949953", "7949954", "7949956", "7949959")
 ```
 
 ```{r}
@@ -113,7 +112,6 @@ sims[condition[1], , "one"] <- 3
 ```
 
 
-
 #### 02.04.2020
 get config files 'all' BCTD, LCTD. 
 
@@ -136,48 +134,65 @@ sims[condition[8], d, "one"] <- 1 # simulation configs are up
 # run simulations 
 scdd <- createLines(condition[8], d, "one")
 write.table(scdd, file = "scripts/one/scdd.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(scdd) <- c("7893237", "7893241", "7893243", "7893244", "7893246", "7893247")
-sims[condition[8], d, "one"] <- 2 # simulations are running 
-
-
+           row.names = FALSE)
+ names(scdd) <- c("7950186", "7950187", "7950188", "7950189", "7950190", "7950191")
+ sims[condition[8], d, "one"] <- 2 # simulations are running 
 ```
 
 ```{r}
-sctd <- createLines(condition[3], d, "one")
-write.table(sctd, file = "scripts/one/sctd.txt", sep = "\t", quote = FALSE,
+ sctd <- createLines(condition[3], d, "one")
+ write.table(sctd, file = "scripts/one/sctd.txt", sep = "\t", quote = FALSE,
             row.names = FALSE)
-names(sctd) <- c("7945897", "7945899", "7945902", "7945903", "7945910", "7945912")
-sims[condition[3], d, "one"] <- 2 # simulations are running 
+names(sctd) <- c("7950483", "7950484", "7950485", "7950487", "7950489", "7950490")
+sims[condition[3], d, "one"] <- 2 # simulations are running
+```
 
+```{r}
 rcdd <- createLines(condition[7], d, "one")
 write.table(rcdd, file = "scripts/one/rcdd.txt", sep = "\t", quote = FALSE,
             row.names = FALSE)
-names(rctd) <- c("")
-sims[condition[7], d, "one"] <- 2 # simulations are running 
+names(rcdd) <- c("7950491", "7950493", "7950495", "7950496", "7950497", "7950499")
+sims[condition[7], d, "one"] <- 2 # simulations are running
+```
 
-lcdd <- createLines(condition[8], d, "one")
-
+```{r}
+lcdd <- createLines(condition[9], d, "one")
+write.table(lcdd, file = "scripts/one/lcdd.txt", sep = "\t", quote = FALSE, row.names = FALSE)
+names(lcdd) <- c("7965136", "7965141", "7965143", "7965145", "7965146", "7965147")
+sims[condition[9], d, "one"] <- 2 # simulations are running
 ```
 
 10.04.2020
 
 ```{r}
+# LCTD and SCDD both failedsimulations both failed? 
+# ran again 
+# transfer to harddrive
+transfer("one", condition[c(4,7:9)])
+# sctd is not finished yet! 
+sims[condition[4],,"one"] <- 3 # output is on harddrive 
 
+# sims[condition[7],,"one"] <- 3 # output is on harddrive 
+# sims[condition[8],,"one"] <- 3 # output is on harddrive 
+# too little space for 9, so run again 
+
+sims[condition[9],,"one"] <- 3 # output is on harddrive 
+# but ace wasn't finished yet! 
+
+```
+
+Repeat all failed simulations 
+
+```{r}
+# run again 
 # transfer to harddrive 
 transfer("one", condition[8])
-#sims[condition[8], , "one"] <- 3 # output is on harddrive
-transfer("one", condition[4])
 
-# simulations both failed? 
+#sims[condition[8], , "one"] <- 3 # output is on harddrive
 ```
 
 
 ### all 
-RCTD all
-BCTD all 
-LCTD all
-
 ```{r}
 # manually transform
 # push to github 
@@ -185,18 +200,16 @@ sims[condition[4], , "all"] <- 1 # configs are on github
 
 ```
 
-
 ```{r}
 # run simulations 
-lctd_n <- createLines(condition[4], d, "all")
-write.table(lctd_n, file = "scripts/n/lctd_n.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(lctd_n) <- c()
-#sims[condition[4], d, "all"] <- 2 # simulations are running 
-
-
-# transfer to harddrive 
-transfer("n", condition[4])
+# lctd_n <- createLines(condition[4], d, "all")
+# write.table(lctd_n, file = "scripts/n/lctd_n.txt", sep = "\t", quote = FALSE,
+#             row.names = FALSE)
+# names(lctd_n) <- c()
+# #sims[condition[4], d, "all"] <- 2 # simulations are running 
+# 
+# # transfer to harddrive 
+# transfer("n", condition[4])
 #sims[condition[8], , "one"] <- 3 # output is on harddrive
 ```
 

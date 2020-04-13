@@ -33,8 +33,8 @@ check <- function(x){switch(x,
 # 8 = not going to do 
 # 9 = problems
  
-apply(hpsets[,1,1], check)
-
-check(hpsets[1,1,1])
-
-sapply(hpsets, check, FUN.VALUE = hpsets)
+# apply(hpsets[,1,1], check)
+# 
+# check(hpsets[1,1,1])
+# 
+# sapply(hpsets, check, FUN.VALUE = hpsets)
