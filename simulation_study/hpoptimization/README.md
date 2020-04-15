@@ -48,23 +48,52 @@ Hyperparameter values
 
 ![](README_files/figure-markdown_github/NB_TFIDF-1.png)![](README_files/figure-markdown_github/NB_TFIDF-2.png)
 
+Inspect outliers:
+
+    ## # A tibble: 2 x 4
+    ## # Groups:   param [2]
+    ##   datasets     group param              value
+    ##   <chr>        <chr> <chr>              <dbl>
+    ## 1 ace.ini      one   balance_param.a    1250.
+    ## 2 software.ini one   model_param.alpha 98353.
+
 SVM + TF-IDF
 ============
+
+![](README_files/figure-markdown_github/SVM_TFIDF-1.png)![](README_files/figure-markdown_github/SVM_TFIDF-2.png)![](README_files/figure-markdown_github/SVM_TFIDF-3.png)![](README_files/figure-markdown_github/SVM_TFIDF-4.png)
 
 Logistic Regression + TF-IDF
 ============================
 
-![](README_files/figure-markdown_github/LR_TFIDF-1.png)![](README_files/figure-markdown_github/LR_TFIDF-2.png)
+![](README_files/figure-markdown_github/LR_TFIDF-1.png)![](README_files/figure-markdown_github/LR_TFIDF-2.png)![](README_files/figure-markdown_github/LR_TFIDF-3.png)![](README_files/figure-markdown_github/LR_TFIDF-4.png)
+
+Inspect outliers
+
+    ## # A tibble: 3 x 4
+    ## # Groups:   param [2]
+    ##   datasets     group param            value
+    ##   <chr>        <chr> <chr>            <dbl>
+    ## 1 ace.ini      one   balance_param.a 1139. 
+    ## 2 software.ini one   model_param.c     45.4
+    ## 3 software.ini one   model_param.c     45.4
+
+    ## # A tibble: 3 x 4
+    ## # Groups:   param [1]
+    ##   datasets                               group param                     value
+    ##   <chr>                                  <chr> <chr>                     <dbl>
+    ## 1 ptsd_virus_ace_wilson_nudging.ini      n-1   model_param.class_weight  7434.
+    ## 2 ptsd_virus_software_wilson_nudging.ini n-1   model_param.class_weight  5506.
+    ## 3 software.ini                           one   model_param.class_weight 50289.
 
 Logistic Regression + Doc2Vec
 =============================
 
-![](README_files/figure-markdown_github/LR_D2V-1.png)![](README_files/figure-markdown_github/LR_D2V-2.png)
+![](README_files/figure-markdown_github/LR_D2V-1.png)![](README_files/figure-markdown_github/LR_D2V-2.png)![](README_files/figure-markdown_github/LR_D2V-3.png)![](README_files/figure-markdown_github/LR_D2V-4.png)
 
 Random Forest + TF-IDF
 ======================
 
-![](README_files/figure-markdown_github/rf_tfidf-1.png)![](README_files/figure-markdown_github/rf_tfidf-2.png)
+![](README_files/figure-markdown_github/rf_tfidf-1.png)![](README_files/figure-markdown_github/rf_tfidf-2.png)![](README_files/figure-markdown_github/rf_tfidf-3.png)![](README_files/figure-markdown_github/rf_tfidf-4.png)
 
 Random Forest + Doc2Vec
 =======================

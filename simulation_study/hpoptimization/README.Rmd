@@ -35,7 +35,7 @@ php <- function(data){
     mutate(value = as.numeric(value)) %>% 
     ggplot(aes(x = value, y = "", color = group)) +
     geom_jitter(height = 0.2) +
-    facet_wrap(vars(param), nrow = 2, scales = "free_x") +
+    facet_wrap(vars(param), ncol = 3, scales = "free_x") +
     geom_vline(aes(xintercept = lb), color = "grey") +
     geom_vline(aes(xintercept = ub), color = "grey") +
     theme_minimal()
@@ -60,7 +60,6 @@ categoricalvars <-c("feature_param.ngram_max", "feature_param.split_ta", "featur
 ```
 
 ```{r loss_function}
-
 # loss i where x is index, a.k.a. loss plot sorted from high to low loss.
 loss_i <- function(trials){
   trials %>%
@@ -87,14 +86,15 @@ loss_t <- function(trials){
 ## Loss plots
 Two times the same data, first plot is over trials, second sorted from highest to lowest loss.
 ```{r}
-nbtfidftrials <- readRDS("trials/nb_tfidf_trials.RDS")
+nbtfidftrials <- readRDS("trials/nb_tfidf-trials.RDS")
 
 nbtfidftrials <- nbtfidftrials %>%
   group_by(datasets) %>%
   mutate(index = rev(index))
 
 # loss plot by index 
-nbtfidftrials %>% loss_i
+nbtfidftrials %>% 
+  loss_i()
 
 # loss plot sorted by trial numbers 
 nbtfidftrials %>%
@@ -112,9 +112,30 @@ hpsets$nb_tfidf %>%
   php_c() 
 ```
 
+Inspect outliers: 
+```{r}
+# inspect outliers
+hpsets$nb_tfidf %>% filter(param %in% c("balance_param.a", "model_param.alpha")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb)
+```
 
 # SVM + TF-IDF 
-```{r SVM_TFIDF, eval = FALSE}
+
+```{r SVM_TFIDF}
+svmtfidftrials <- readRDS("trials/svm_tfidf-trials.RDS")
+
+svmtfidftrials <- svmtfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+svmtfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+svmtfidftrials %>%
+  loss_t()
+
+# parameter values numerical 
 hpsets$svm_tfidf %>%
   php() +
   labs(title = "Hyperparameters SVM + TF-IDF")
@@ -125,6 +146,21 @@ hpsets$svm_tfidf %>%
 
 # Logistic Regression + TF-IDF 
 ```{r LR_TFIDF}
+lrtfidftrials <- readRDS("trials/lr_tfidf-trials.RDS")
+
+lrtfidftrials <- lrtfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+lrtfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+lrtfidftrials %>%
+  loss_t()
+
+
 php(hpsets$lr_tfidf) + 
   labs(title = "Hyperparameters Logistic Regression + TF-IDF")
 
@@ -132,9 +168,30 @@ hpsets$lr_tfidf %>%
   php_c()
 ```
 
+Inspect outliers
+```{r}
+hpsets$lr_tfidf %>% filter(param %in% c("balance_param.a", "model_param.c")) %>% group_by(param) %>% filter(value > 40) %>% select(-ub, -lb)
+hpsets$lr_tfidf %>% filter(param %in% c("model_param.class_weight")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb)
+```
+
 
 # Logistic Regression + Doc2Vec
 ```{r LR_D2V}
+lrd2vtrials <- readRDS("trials/lr_d2v-trials.RDS")
+
+lrd2vtrials <- lrd2vtrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+lrd2vtrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+lrd2vtrials %>%
+  loss_t()
+
+
 php(hpsets$lr_d2v) + 
   labs(title = "Hyperparameters Logistic Regression + Doc2Vec")
 
@@ -144,6 +201,21 @@ hpsets$lr_d2v %>%
 
 # Random Forest + TF-IDF
 ```{r rf_tfidf}
+rftfidftrials <- readRDS("trials/rf_tfidf-trials.RDS")
+
+rftfidftrials <- rftfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+rftfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+rftfidftrials %>%
+  loss_t()
+
+
 php(hpsets$rf_tfidf) + 
   labs(title = "Hyperparameters Random Forest + TF-IDF")
 
@@ -154,17 +226,20 @@ hpsets$rf_tfidf %>%
 # Random Forest + Doc2Vec
 ## Loss plot
 ```{r rf_d2v_loss}
-rfd2vtrials <- readRDS("trials/rf_d2v_trials.RDS")
+rfd2vtrials <- readRDS("trials/rf_d2v-trials.RDS")
 
 rfd2vtrials <- rfd2vtrials %>%
   group_by(datasets) %>%
   mutate(index = rev(index))
 
+# loss plot by index 
+rfd2vtrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
 rfd2vtrials %>%
   loss_t()
 
-rfd2vtrials %>%
-  loss_i()
 ```
 
 ## Hyperparameter Values
