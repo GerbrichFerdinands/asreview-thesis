@@ -46,7 +46,7 @@ php_c <- function(data){
     filter(param %in% categoricalvars) %>%
     mutate(value = as.factor(value)) %>% 
     ggplot(aes(x = value, color = group, fill = group, group = group)) +
-    geom_bar(position="dodge") +
+    geom_bar(position="stack") +
     facet_wrap(vars(param), nrow = 2, scales = "free_x") +
     labs(title = "(optimal) categorical hyperparameters", y = "", x = "Parameter values")+
     theme_minimal()
@@ -81,10 +81,22 @@ loss_t <- function(trials){
 }
 ```
 
+
+## Results
+Loss plots: Two times the same data, first plot is over trials, second sorted from highest to lowest loss.
+
+Hyperparameters on a continuous scale are plotted as dots in a scatterplot. 
+Discrete hyperparameters are displayed in a barplot
+
+Conclusions: 
+- loss is going down over trials 
+- some datasets go down faster
+- some datasets go down more 
+
 # Naive Bayes + TF-IDF 
 
 ## Loss plots
-Two times the same data, first plot is over trials, second sorted from highest to lowest loss.
+
 ```{r}
 nbtfidftrials <- readRDS("trials/nb_tfidf-trials.RDS")
 
@@ -115,7 +127,8 @@ hpsets$nb_tfidf %>%
 Inspect outliers: 
 ```{r}
 # inspect outliers
-hpsets$nb_tfidf %>% filter(param %in% c("balance_param.a", "model_param.alpha")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb)
+hpsets$nb_tfidf %>% filter(param %in% c("balance_param.a", "model_param.alpha")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb) %>%
+  kable(format = "markdown")
 ```
 
 # SVM + TF-IDF 
@@ -133,6 +146,31 @@ svmtfidftrials %>%
 
 # loss plot sorted by trial numbers 
 svmtfidftrials %>%
+  loss_t()
+
+# parameter values numerical 
+hpsets$svm_tfidf %>%
+  php() +
+  labs(title = "Hyperparameters SVM + TF-IDF")
+
+hpsets$svm_tfidf %>%
+  php_c() 
+```
+# SVM + Doc2Vec
+
+```{r SVM_D2V}
+svmd2vtrials <- readRDS("trials/svm_d2v-trials.RDS")
+
+svmd2vtrials <- svmd2vtrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+svmd2vtrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+svmd2vtrials %>%
   loss_t()
 
 # parameter values numerical 
@@ -170,8 +208,10 @@ hpsets$lr_tfidf %>%
 
 Inspect outliers
 ```{r}
-hpsets$lr_tfidf %>% filter(param %in% c("balance_param.a", "model_param.c")) %>% group_by(param) %>% filter(value > 40) %>% select(-ub, -lb)
-hpsets$lr_tfidf %>% filter(param %in% c("model_param.class_weight")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb)
+hpsets$lr_tfidf %>% filter(param %in% c("balance_param.a", "model_param.c")) %>% group_by(param) %>% filter(value > 40) %>% select(-ub, -lb) %>%
+  kable(format = "markdown")
+hpsets$lr_tfidf %>% filter(param %in% c("model_param.class_weight")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb) %>%
+  kable(format = "markdown")
 ```
 
 

@@ -50,17 +50,18 @@ Hyperparameter values
 
 Inspect outliers:
 
-    ## # A tibble: 2 x 4
-    ## # Groups:   param [2]
-    ##   datasets     group param              value
-    ##   <chr>        <chr> <chr>              <dbl>
-    ## 1 ace.ini      one   balance_param.a    1250.
-    ## 2 software.ini one   model_param.alpha 98353.
+| datasets     | group | param              |     value|
+|:-------------|:------|:-------------------|---------:|
+| ace.ini      | one   | balance\_param.a   |   1249.91|
+| software.ini | one   | model\_param.alpha |  98353.37|
 
 SVM + TF-IDF
 ============
 
 ![](README_files/figure-markdown_github/SVM_TFIDF-1.png)![](README_files/figure-markdown_github/SVM_TFIDF-2.png)![](README_files/figure-markdown_github/SVM_TFIDF-3.png)![](README_files/figure-markdown_github/SVM_TFIDF-4.png)
+\# SVM + Doc2Vec
+
+![](README_files/figure-markdown_github/SVM_D2V-1.png)![](README_files/figure-markdown_github/SVM_D2V-2.png)![](README_files/figure-markdown_github/SVM_D2V-3.png)![](README_files/figure-markdown_github/SVM_D2V-4.png)
 
 Logistic Regression + TF-IDF
 ============================
@@ -69,21 +70,17 @@ Logistic Regression + TF-IDF
 
 Inspect outliers
 
-    ## # A tibble: 3 x 4
-    ## # Groups:   param [2]
-    ##   datasets     group param            value
-    ##   <chr>        <chr> <chr>            <dbl>
-    ## 1 ace.ini      one   balance_param.a 1139. 
-    ## 2 software.ini one   model_param.c     45.4
-    ## 3 software.ini one   model_param.c     45.4
+| datasets     | group | param            |       value|
+|:-------------|:------|:-----------------|-----------:|
+| ace.ini      | one   | balance\_param.a |  1138.85322|
+| software.ini | one   | model\_param.c   |    45.39681|
+| software.ini | one   | model\_param.c   |    45.39681|
 
-    ## # A tibble: 3 x 4
-    ## # Groups:   param [1]
-    ##   datasets                               group param                     value
-    ##   <chr>                                  <chr> <chr>                     <dbl>
-    ## 1 ptsd_virus_ace_wilson_nudging.ini      n-1   model_param.class_weight  7434.
-    ## 2 ptsd_virus_software_wilson_nudging.ini n-1   model_param.class_weight  5506.
-    ## 3 software.ini                           one   model_param.class_weight 50289.
+| datasets                                   | group | param                      |      value|
+|:-------------------------------------------|:------|:---------------------------|----------:|
+| ptsd\_virus\_ace\_wilson\_nudging.ini      | n-1   | model\_param.class\_weight |   7434.110|
+| ptsd\_virus\_software\_wilson\_nudging.ini | n-1   | model\_param.class\_weight |   5505.882|
+| software.ini                               | one   | model\_param.class\_weight |  50289.387|
 
 Logistic Regression + Doc2Vec
 =============================
