@@ -3,9 +3,9 @@ title: "Manuscript drafts"
 author: "Gerbrich Ferdinands"
 date: "22/04/2020"
 output:
+  word_document: default
   pdf_document:
     citation_package: biblatex
-#  word_document: default
 bibliography: asreview.bib
 ---
 
@@ -74,56 +74,78 @@ Systematic reviews are top of the bill in building evidence in research. A syste
 <!-- PRISMA definition:  -->
 <!-- > "A systematic review attempts to collate all relevant evidences that fits pre-specified eligibility criteria to answer a specific research -->
 <!-- question. 
+add that this is a systematic/rigorous process?-->
 
-add that htis is a systematic/rigorous process?-->
-
-Systematic reviews are costly. Conducting a systematic review involves the manual screening of thousands of titles and abstracts, identifying publications relevant to asnwering the research question. This process typically requires over a year of work from a team of researchers [@Borah2017]. Besides time-consuming, the process of title and abstract screening is also prone to human error [@Wang2020].
+Systematic reviews are costly. Conducting a systematic review involves the manual screening of thousands of titles and abstracts, identifying publications relevant to answering the research question. An experienced reviewer takes on average 30 seconds to screen one title and abstract, whereas an inexperienced reviewer takes even longer [@Wallace2010]. Conducting a systematic review typically requires over a year of work from a team of researchers [@Borah2017]. 
+<!-- Besides time-consuming, the process of title and abstract screening is prone to human error [@Wang2020]. -->
 <!-- (14 to 77,910, trimmed mean 1,286).  -->
 <!-- Need to be screened by multiple researchers.  -->
 
-<!-- As the number of scientific publications is growing at an increasing rate [source], the workload in SR is getting heavier.  -->
-
-As time and resources are limited, it is often impossible to meet the strict criteria of a systematic review. 
-Currently, the demand for systematic reviews exceeds the available capacity by far [@Lau2019].
-Moreover, the required resources for a systematic review is making it difficult to timely respond to urgent matters.
-An example of this is the need for clinical guidelines in the current covid-19 crisis. 
+Systematic reviewers face competing demands. The production of a systematic review is a time-consuming process, but is often bound to a limited budget and timeframe. 
+Currently, the demand for systematic reviews exceeds the available time and resources by far [@Lau2019].
+Especially when the need for guidelines is urgent - such as in the context of the current COVID-19 crisis - it is almost impossible to provide a review that is both timely and comprehensive.
 To ensure a timely review, reducing workload in systematic reviews is imperative. 
 
-With advances in Artificial Intelligence (AI), a plethora of methods have been proposed to reduce workload in systematic reviews [@Harrison2020]. More specifically, the field of AI-aided title and abstract screening is rapidly evolving [@OMara-Eves2015].
-Machine Learning (ML) models have been proposed, aiming to assist the reviewer by detecting whether a given publication is relevant or irrelevant to the systematic review. Findings suggest such models potentially reduce workload with 30-70% at the cost of losing 5% of relevant publications (95% recall) [@OMara-Eves2015].
-Screening prioritization is a well-established approach in increasing efficiency in title and abstract screening [@Yu2018] [moresources].
-The publications to be screened are ordered by their likeliness of relevance, seeing all relevant publicatoins much earlier on in the screening process when they would have been read in a random order. 
+<!-- As the number of scientific publications is growing at an increasing rate [source], the workload in SR is getting heavier.  -->
 
-Screening prioritization reorders   
-Their objective is to assist the reviewer in the screening process by prioritizing publications most likely to be relevant. 
+With advances in Artificial Intelligence (AI), there has been wide interest in tools to reduce workload in systematic reviews [@Harrison2020]. More specifically, the field of AI-aided title and abstract screening is rapidly evolving. Various learning models have been proposed, aiming to detect whether a given publication is relevant or irrelevant to the systematic review. Findings suggest that such models potentially reduce workload with 30-70% at the cost of losing 5% of relevant publications (95% recall) [@OMara-Eves2015].
+<!-- To date, several studies have begun to examine the use of learning algorithms for screening prioritization. -->
 
-recent research/promising Active Learning. 
+Screening prioritization is a well-established approach in increasing efficiency in title and abstract screening [@Cohen2009; @Shemilt2014]. 
+In screening prioritization, the learning model reorders publications to be screened by their likeliness to be relevant, aiming to present the reviewer with the most relevant publications first.
+Such an approach allows for substantial time-savings in the screening process:
+Reviewing relevant publications early facilitates a faster transition of those publications to the next steps in the review process [@Cohen2009].  
+Moreover, when combined with a stopping criterion, screening prioritization can be used to reduce the number of publications needed to screen. 
+Additionally, several studies report increasing efficiency beyond reducing workload [@OMara-Eves2015]. 
 
-The current study focus is on reducing workload by prioritizing the most relevant abstracts. Presenting the abstracts orders the abstracts by likelihood of relevance, e.g. th The reviewer sees the most relevant abstracts first, If the model performs well all relevent abstracts will be seen much earlier than when abstracts are read at a random order.
+<!-- assist the reviewer in the screening process -->
+<!-- Several studies have proposed active learning models for screening prioritization -->
+Recent studies have demonstrated the effectiveness of screening prioritization by means of active learning models [@Yu2019; @Yu2018; @Miwa2014].
+Active learning is when the model can iteratively improve its predictions by allowing the model to choose the data from which it can learn [@Settles2012].
+Active learning has proven to be an efficient strategy in large datasets where labels are scarce, which makes identifying relevant publications an ideal candidate for such models.  
+When applied in the screening process, an active learning model can iteratively improve its relevancy predictions by interacting with the reviewer.
+The model decides which publication it wants the reviewer to screen next, who then provides the model with a label ('relevant', 'irrelevant'). 
+In this active learning cycle, the model can incrementally improve its predictions on the relevancy of the remaining unlabeled publications. 
+Based on previous labelling decisions by the reviewer, the model constantly reorders the remaining publications in the dataset. 
 
-The algorithm aims to compute which papers in the pool need to be excluded and which need to be included, based on the reviewers decisions. It learns from the reviewers decisions and asks the reviewer to provide more labels, incrementally improving its class predictions.
+<!-- The latest state-of-the-art methods implement active learning, where the model improves  -->
+<!-- The algorithm aims to compute which papers in the pool need to be excluded and which need to be included, based on the reviewers decisions.  -->
 
-In most recent studies, 
-The latest state-of-the-art methods implement active learning, where the model improves its prediction of relevance based on the reviewers latest decisions in the screening process [@Yu2018; @Miwa2014]. 
-The ML-model, where the ML-model orders the most
+<!-- The algorithm aims to detect whether a given publication is relevant or irrelevant to the systematic review and reorders the publications by their likeliness of relevance; the reviewer sees most relevant papers first!  -->
+<!-- thereby its predictions can be  is allowed to choose the data points it would like to learn from, thus allowing it to learn more efficiently.  -->
+<!-- Active learning systems attempt to overcome the labeling bottleneck by asking -->
+<!-- queries in the form of unlabeled instances to be labeled by an oracle (e.g., a human -->
+<!-- annotator). -->
+<!--  that a machine learning algorithm can perform better with less training if it is allowed to choose the data from which it learns. An active learner may pose "queries," usually in the form of unlabeled data instances to be labeled by an "oracle" (e.g., a human annotator) that already understands the nature of the problem -->
+<!-- in which a model can choose the data points it would like to learn from, thus allowing it to learn more efficiently -->
+<!-- its predictions by interactively querying the user to provide labels to unlabeled data .  -->
+<!-- In title and abstract screening this means that the active learning -->
+<!-- is allowed to improve its predictions by choosing the data it wants to learn from.  -->
 
-In most recent studies, X has been measured in four different ways.
-The use of qualitative case studies is a well-established approach in …
+<!-- Although the effectiveness of active learning models in reducing workload in title and abstract screening has been extensively studied,  -->
+Although the application of learning models in reducing workload of systematic reviews has been extensively studied, the complex nature of the field is making it difficult to draw overarching conclusions about best practice. Moreover, the lack of replication on data outside the biomedical sciences makes it impossible to draw conclusions about the general effectiveness of such technologies [@OMara-Eves2015; @Marshall2020]. 
+Up to now only few studies have investigated active learning models for screening prioritization, with promising results. The question remains how different active learning models for screening prioritization perform across different review contexts. Hence, additional evaluations of active learning models are required. 
 
-Their objective is 
+The purpose of this paper is to increase the evidence base of active learning models for reducing workload in title and abstract screening in systematic reviews. 
+Combining latest insights from this area, we present a pipeline of active learning for prioritization screening, called `ASReview`.
+`ASReview` is an open source and generic tool such that users can adapt and add modules as they like, encouraging fellow researchers to replicate findings from previous studies. 
+Working towards a general consensus in this emerging field, this study implements various active learning models (in `ASReview`). Models are evaluated by performing a simulation on data from six existing systematic reviews from various research areas.
+All data presented in this study are openly published, hoping to facilitate usability and acceptability of AI-assisted title and abstract screening in the field of systematic review.
 
-"Screening is performed in two steps, first preliminarily based on title and abstract,
-then based on full-text." 
-Screening a title + abstracts takes 30 seconds on average, for an experienced reviewer, and longer for inexperienced ones [@Wallace2010].
+The remaining part of this paper is organized as follows. The Technical Details section will cover the workings of active learning models for study selection in systematic reviews on a conceptual level. 
+The method section describes ... The results section reports ... The discusssion section summarises the findings, comments on them and  summarises the main findings, discusses 
+discuss limitations, draw conclusion and 
+
+<!-- We demonstrate effectiveness of a generic/flexible tool for assisting researchers in the screening phase..? -->
+<!-- To allow comparison of different models they need to be applied on the same dataset.  -->
+
+<!-- "Screening is performed in two steps, first preliminarily based on title and abstract, -->
+<!-- then based on full-text."  -->
 
 <!-- add: current consensus active learning are state of the art: how do they woroK; by prioritizatio (put in a picture)  -->
 
 <!-- #### identifying the niche  -->
-Although considerable research has been devoted to the effectiveness of ML-models in reducing workload in title and abstract screening, the complex nature of the field makes it difficult to draw overarching conclusions about best practice [@OMara-Eves2015]. The lack of replication on data outside the biomedical sciences makes it impossible to draw conclusions about the general effectiveness of such technologies [@OMara-Eves2015]. 
-Taken together, these issues prohibit the adoptation of AI-aided title and abstract screening by systematic reviewers.  
 
-
-[@Marshall2020]
 
 <!-- By evaluating different configurations of an active learning model on different review contexts.  -->
 <!-- status quo: prioritization + active learning? + certainty [@Miwa2014], but classifier  -->
@@ -137,14 +159,9 @@ Taken together, these issues prohibit the adoptation of AI-aided title and abstr
 
 <!-- #### Occupying -->
 <!-- ##### (listing purpose of new research,  -->
-The current study aims to address these concerns in the following ways:
 
-1) Combining latest insights from the field of AI-aided title and abstract screening, various ML-models for screening prioritization are built.
-2) To evaluate model performance across different review contexts, the models are simulated on multiple datasets from various research areas, of which the data is openly accessible.
-3) To ensure replication and transparency, the simulations are implemented in an open source pipeline called `ASReview`. 
 <!-- The tool is generic such that any researcher can adjust modules to increase efficiency in this field.   -->
 
-This study set out to increase the evidence base of ML-models aiming to reduce workload in title and abstract screening in systematic reviews. Working towards a general consensus in this emerging field, performance of state-of-the art ML-models is evaluated over various research contexts. To further increase usability and acceptability of such models amongst systematic reviewers, the study presents a reproducible workflow. 
 
  <!-- [@OConnor2019] -->
 
@@ -161,13 +178,8 @@ This study set out to increase the evidence base of ML-models aiming to reduce w
 <!-- Furthermore, this study makes a contribution to ...  by demonstrating a reproducible and flexible tool,  -->
 <!-- Furthermore, a generic and reproducible workflow is presented to facilitate, hopefully to increase acceptability and usability by researchers performing systematic reviews.  -->
 
-The remaining part of this paper is organized as follows: first, a short review of state-of-the art methods is given. Second, the proposed ML-models will be explained on a conceptual level. Third, the methods section gives a detailed description of the study design. The results section ... and last, the results will be discussed. 
 
 --- 
-
-Active learning is the approach where   [@Settles2002]
-
-Study selection in systematic review process
 
 
 #### summarise models used
@@ -192,7 +204,7 @@ abstrackr
 SVM + Weighting + uncertainty (bow) produced good methods  [@Miwa2014]
 Also include social sciences data besides medical data. 
 
-[@Cohen2006] perceptron-based classifier (neural network)
+[@Cohen2006] perceptron-based classifier (neural network) 
 
 SVM on legal documents (no balancing, certainty ) [@Cormack2014] 
 in limitations section mentions that LR yields about same results, nb inferior results. 

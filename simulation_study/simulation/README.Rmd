@@ -256,11 +256,13 @@ names(seed_ace) <- c(".", "8119459", "8119460", "8119461", "8119462", "8119463",
 
 seed_nudging <- createLines(condition[c(1, 2, 3,4,7,8,9)], "nudging", "one", seed = TRUE) %>%
   noquote()
-names(seed_nudging) <- c("8119472", "8119472", "sctd", "")
+names(seed_nudging) <- c("8119472", "8119472", "8121720", "8121721", "8121722", "8121723", "8121725")
 
 # transfer sctd's later!(3)
 noquote(transfer("one", condition[c(1, 2,4,7,8,9)], seed = TRUE))
 # ace: scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/simoutput/one/SCTD/ace /Volumes/Gerbrich/asreview/simoutput/one_seed/SCTD
+
+
 
 ```
 
