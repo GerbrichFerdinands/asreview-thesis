@@ -287,11 +287,11 @@ seed_ptsd <- createLines(condition[c(1, 2, 3,4,7,8,9)], "ptsd", "one", seed = TR
 seed_software <- createLines(condition[c(1, 2, 3,4,7,8,9)], "software", "one", seed = TRUE) %>%
   noquote()
 # sctd later
-names(seed_software) <- c("8129589", "8129732", "8129588", ".", ".", ".", ".")
+seed_software
+names(seed_software) <- c("8129589", "8129732", "8129588", "8131305", "8133472", "8134718", "8149271")
 
-# ptsd sctd 
-
-
+# ptsd sctd
+seed_ptsd # 8149296
 ```
 
 

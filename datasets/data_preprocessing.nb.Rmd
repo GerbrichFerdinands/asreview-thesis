@@ -121,10 +121,10 @@ nudging["paper", ] <- c(2006, 377, 100)
 # raw --------------------------------------------------------------------------
 n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
 n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
-n_rr <- read.csv2("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
-                  sep = ",")
-n_rr <- fread("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
-                  sep = ",", encoding = "UTF-8")
+#n_rr <- read.csv2("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
+                 # sep = ",")
+#n_rr <- fread("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
+              #    sep = ",", encoding = "UTF-8")
 # missing statistics
 drops["nudging",] <- n_raw %>%
           summarise(n = length(abstract),
@@ -236,7 +236,7 @@ hall["raw", ] <- c(length(h_raw$Document.Title),
                    sum(h_raw$label == "yes"))
                           
 # asreview ---------------------------------------------------------------------
-hall_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/Software%20Engineering%201%20Hall.csv",
+hall_asr <- read.csv("https://raw.githubusercontent.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/output/Software_Engineering_Hall.csv",
                      header=T)
 
 hall["asreview", ] <- data_descr(hall_asr)
@@ -346,11 +346,12 @@ wilson
 
 ```{r eval = TRUE}
 # put everything together in list. 
-all <- list(ace = ace,
-            nudging = nudging,
-            ptsd = ptsd,
-            software = hall,
-            wilson = wilson)
+all <- list(Ace = ace,
+            Nudging = nudging,
+            PTSD = ptsd,
+            Software = hall,
+            Virus = virus,
+            Wilson = wilson)
 
 # save datafile, to serve as data for descriptive table in manuscript
 saveRDS(all, file = "data_statistics/all.RDS")
@@ -410,7 +411,7 @@ drops %>%
 
 
 # Write all test dataset files 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 # ace
 write.csv(ace_test %>%  select(pubmedID, authors, title, abstract, keywords, label_included), "test_datasets/ace.csv", row.names = FALSE)
 
@@ -431,7 +432,7 @@ write.csv(w_test %>% select(id, authors, title, abstract, keywords, included), "
 ```
 
 # write test dataset files for simulation (removing keywords)
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 # ace
 write.csv(ace_test %>%  select(pubmedID, title, abstract, label_included), "sim_datasets/ace.csv", row.names = FALSE)
 # nudging (no keywords available)

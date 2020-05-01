@@ -91,8 +91,12 @@ nudging["paper", ] <- c(2006, 377, 100)
 
 # raw --------------------------------------------------------------------------
 n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
-
-# missing statistics 
+n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
+#n_rr <- read.csv2("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
+                 # sep = ",")
+#n_rr <- fread("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
+              #    sep = ",", encoding = "UTF-8")
+# missing statistics
 drops["nudging",] <- n_raw %>%
           summarise(n = length(abstract),
                     na = sum(is.na(abstract)),
@@ -235,7 +239,7 @@ hall["raw", ] <- c(length(h_raw$Document.Title),
                    sum(h_raw$label == "yes"))
                           
 # asreview ---------------------------------------------------------------------
-hall_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/Software%20Engineering%201%20Hall.csv",
+hall_asr <- read.csv("https://raw.githubusercontent.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/output/Software_Engineering_Hall.csv",
                      header=T)
 
 hall["asreview", ] <- data_descr(hall_asr)
@@ -363,11 +367,12 @@ wilson
 
 ``` r
 # put everything together in list. 
-all <- list(ace = ace,
-            nudging = nudging,
-            ptsd = ptsd,
-            software = hall,
-            wilson = wilson)
+all <- list(Ace = ace,
+            Nudging = nudging,
+            PTSD = ptsd,
+            Software = hall,
+            Virus = virus,
+            Wilson = wilson)
 
 # save datafile, to serve as data for descriptive table in manuscript
 saveRDS(all, file = "data_statistics/all.RDS")
@@ -384,25 +389,25 @@ the dataset.
     ## Warning in kable_markdown(x = structure(c("Dataset", "candidates_paper", : The
     ## table should have a header (column names)
 
-|                   |      |         |      |          |        |
-| :---------------- | :--- | :------ | :--- | :------- | :----- |
-| Dataset           | ace  | nudging | ptsd | software | wilson |
-| candidates\_paper | 2544 | 2006    | 6185 | 8911     | 3453   |
-| fulltext\_paper   | NA   | 377     | 363  | NA       | 174    |
-| incl\_paper       | 41   | 100     | 38   | 104      | 26     |
-| inclrate\_paper   | 1.61 | 4.99    | 0.61 | 1.17     | 0.75   |
-| candidates\_raw   | 2544 | 0       | 0    | 8911     | 3453   |
-| fulltext\_raw     | NA   | 0       | 0    | NA       | 174    |
-| incl\_raw         | 41   | 0       | 0    | 104      | 26     |
-| inclrate\_raw     | 1.61 | NA      | NA   | 1.17     | 0.75   |
-| candidates\_asr   | 2544 | 0       | 5782 | 8911     | 3437   |
-| fulltext\_asr     | NA   | 0       | 356  | NA       | 174    |
-| incl\_asr         | 41   | 0       | 38   | 104      | 26     |
-| inclrate\_asr     | 1.61 | NA      | 0.66 | 1.17     | 0.76   |
-| candidates\_test  | 2235 | 1847    | 5031 | 8896     | 2333   |
-| fulltext\_test    | NA   | 382     | 328  | NA       | 155    |
-| incl\_test        | 41   | 100     | 38   | 104      | 23     |
-| inclrate\_test    | 1.83 | 5.41    | 0.76 | 1.17     | 0.99   |
+|                   |      |         |      |          |       |        |
+| :---------------- | :--- | :------ | :--- | :------- | :---- | :----- |
+| Dataset           | Ace  | Nudging | PTSD | Software | Virus | Wilson |
+| candidates\_paper | 2544 | 2006    | 6185 | 8911     | 2481  | 3453   |
+| fulltext\_paper   | NA   | 377     | 363  | NA       | 132   | 174    |
+| incl\_paper       | 41   | 100     | 38   | 104      | 120   | 26     |
+| inclrate\_paper   | 1.61 | 4.99    | 0.61 | 1.17     | 4.84  | 0.75   |
+| candidates\_raw   | 2544 | 0       | 0    | 8911     | 2481  | 3453   |
+| fulltext\_raw     | NA   | 0       | 0    | NA       | NA    | 174    |
+| incl\_raw         | 41   | 0       | 0    | 104      | 120   | 26     |
+| inclrate\_raw     | 1.61 | NA      | NA   | 1.17     | 4.84  | 0.75   |
+| candidates\_asr   | 2544 | 0       | 5782 | 8911     | 0     | 3437   |
+| fulltext\_asr     | NA   | 0       | 356  | NA       | 0     | 174    |
+| incl\_asr         | 41   | 0       | 38   | 104      | 0     | 26     |
+| inclrate\_asr     | 1.61 | NA      | 0.66 | 1.17     | NA    | 0.76   |
+| candidates\_test  | 2235 | 1847    | 5031 | 8896     | 2304  | 2333   |
+| fulltext\_test    | NA   | 382     | 328  | NA       | NA    | 155    |
+| incl\_test        | 41   | 100     | 38   | 104      | 114   | 23     |
+| inclrate\_test    | 1.83 | 5.41    | 0.76 | 1.17     | 4.95  | 0.99   |
 
 Descriptives on missingness and duplicate abstracts in the ASReview test
 data set.

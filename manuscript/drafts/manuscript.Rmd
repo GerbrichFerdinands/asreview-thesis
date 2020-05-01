@@ -3,11 +3,13 @@ title: "Manuscript drafts"
 author: "Gerbrich Ferdinands"
 date: "22/04/2020"
 output:
-  pdf_document:
-    citation_package: biblatex
   word_document: default
+  citation_package: biblatex
+  pdf_document:
 bibliography: asreview.bib
+csl: systematic-reviews.csl
 ---
+
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -69,39 +71,32 @@ Keywords: Human-Machine interaction, active learning, systematic reviews, text c
 #### Discussion
 
 \newpage
+
 # Introduction
-Systematic reviews are top of the bill in building evidence in research. A systematic review attempts to bring together all studies relevant to answer a specific research question [@PRISMA-PGroup2015]. Systematic reviews inform practice and policy [@Gough2002] and are key in developing clinical guidelines [@Chalmers2007]. 
+Systematic reviews are top of the bill in building evidence in research. A systematic review brings together all studies relevant to answer a specific research question [@PRISMA-PGroup2015]. Systematic reviews inform practice and policy [@Gough2002] and are key in developing clinical guidelines [@Chalmers2007]. 
 <!-- PRISMA definition:  -->
 <!-- > "A systematic review attempts to collate all relevant evidences that fits pre-specified eligibility criteria to answer a specific research -->
 <!-- question. 
 add that this is a systematic/rigorous process?-->
-
-Systematic reviews are costly. Conducting a systematic review involves the manual screening of thousands of titles and abstracts, identifying publications relevant to answering the research question. An experienced reviewer takes on average 30 seconds to screen one title and abstract, whereas an inexperienced reviewer takes even longer [@Wallace2010]. Conducting a systematic review typically requires over a year of work from a team of researchers [@Borah2017]. 
+However, systematic reviews are costly because they involve the manual screening of thousands of titles and abstracts, identifying publications relevant to answering the research question. An experienced reviewer takes on average 30 seconds to screen one title and abstract, whereas an inexperienced reviewer takes even longer [@Wallace2010]. Conducting a systematic review typically requires over a year of work by a team of researchers [@Borah2017]. 
 <!-- Besides time-consuming, the process of title and abstract screening is prone to human error [@Wang2020]. -->
 <!-- (14 to 77,910, trimmed mean 1,286).  -->
 <!-- Need to be screened by multiple researchers.  -->
 
-Systematic reviewers face competing demands. The production of a systematic review is a time-consuming process, but is often bound to a limited budget and timeframe. 
-Currently, the demand for systematic reviews exceeds the available time and resources by far [@Lau2019].
-Especially when the need for guidelines is urgent - such as in the context of the current COVID-19 crisis - it is almost impossible to provide a review that is both timely and comprehensive.
-To ensure a timely review, reducing workload in systematic reviews is imperative. 
+Moreover, systematic reviewers are often bound to a limited budget and timeframe. Currently, the demand for systematic reviews exceeds the available time and resources by far [@Lau2019]. Especially when the need for guidelines is urgent - such as in the context of the current COVID-19 crisis - it is almost impossible to provide a review that is both timely and comprehensive. To ensure a timely review, reducing workload in systematic reviews is imperative. 
 
-<!-- As the number of scientific publications is growing at an increasing rate [source], the workload in SR is getting heavier.  -->
-
-With advances in Artificial Intelligence (AI), there has been wide interest in tools to reduce workload in systematic reviews [@Harrison2020]. More specifically, the field of AI-aided title and abstract screening is rapidly evolving. Various learning models have been proposed, aiming to detect whether a given publication is relevant or irrelevant to the systematic review. Findings suggest that such models potentially reduce workload with 30-70% at the cost of losing 5% of relevant publications (95% recall) [@OMara-Eves2015].
+With advances in Artificial Intelligence (AI), there has been wide interest in tools to reduce workload in systematic reviews [@Harrison2020]. Various learning models have been proposed, aiming to predict whether a given publication is relevant or irrelevant to the systematic review. Findings suggest that such models potentially reduce workload with 30-70% at the cost of losing 5% of relevant publications (95% recall) [@OMara-Eves2015].
 <!-- To date, several studies have begun to examine the use of learning algorithms for screening prioritization. -->
 
-Screening prioritization is a well-established approach in increasing efficiency in title and abstract screening [@Cohen2009; @Shemilt2014]. 
-In screening prioritization, the learning model reorders publications to be screened by their likeliness to be relevant, aiming to present the reviewer with the most relevant publications first.
-Such an approach allows for substantial time-savings in the screening process:
-Reviewing relevant publications early facilitates a faster transition of those publications to the next steps in the review process [@Cohen2009].  
-Moreover, when combined with a stopping criterion, screening prioritization can be used to reduce the number of publications needed to screen. 
-Additionally, several studies report increasing efficiency beyond reducing workload [@OMara-Eves2015]. 
+Screening prioritization is a well-established approach in increasing efficiency in title and abstract screening [@Cohen2009; @Shemilt2014]. In screening prioritization, the learning model reorders publications to be screened by their likeliness to be relevant. The model presents the reviewer with the publications which are most likely to be relevant first, thereby expediting the process of finding all of the relevant publications. Such an approach allows for substantial time-savings in the screening process. Reviewing relevant publications early facilitates a faster transition of those publications to the next steps in the review process [@Cohen2009]. Additionally, several studies report increasing efficiency beyond saving time [@OMara-Eves2015]. 
 
 <!-- assist the reviewer in the screening process -->
 <!-- Several studies have proposed active learning models for screening prioritization -->
-Recent studies have demonstrated the effectiveness of screening prioritization by means of active learning models [@Yu2019; @Yu2018; @Miwa2014].
-Active learning is when the model can iteratively improve its predictions by allowing the model to choose the data from which it can learn [@Settles2012]. Active learning has proven to be an efficient strategy in large datasets where labels are scarce, which makes identifying relevant publications an ideal candidate for such models. When applied in screening prioritization, an active learning model can decide which publication it wants the reviewer to screen next. Based on the reviewers screening decision ('relevant', 'irrelevant'), the model can incrementally improve its relevancy predictions on the remaining publications, and again select the next publication to be screened.  
+Recent studies have demonstrated the effectiveness of screening prioritization by means of active learning models [@Yu2018; @Yu2018; @Miwa2014; @Cormack2014; @Cormack2015; @Wallace2010]. Active learning is when the model can iteratively improve its predictions by allowing the model to choose the data from which it can learn [@Settles2012]. Active learning has proven to be an efficient strategy in large datasets where labels are scarce, which makes title and abstract screening an ideal candidate for such models. When applied in screening prioritization, the reviewer screens publications that are presented by an active learning model. Subsequently, the active learning model learns from the reviewers' decision ('relevant', 'irrelevant') and uses this knowledge in selecting the next publication to be screened by the reviewer. 
+
+Although prior studies on the application of active learning models in title and abstract screening have addressed important issues [@Yu2018; @Yu2019; @Miwa2014; @Wallace2010], the complex nature of the field is making it difficult to draw overarching conclusions about best practice [@OMara-Eves2015]. First, whilst there exists a scala of classification techniques, research to date has not yet evaluated techniques other than Support Vector Machines (SVM) [@Yu2018; @Yu2018; @Miwa2014; @Wallace2010]. Second, Miwa et al. [@Miwa2014] were the only study so far to make a direct comparison of model performance across research areass and found that active learning was more difficult on data from the social sciences compared to data from the medical sciences. The lack of replication on data from varying research contexts makes it impossible to draw conclusions about the general effectiveness of such techniques [@OMara-Eves2015; @Marshall2020]. The question remains how active learning models for screening prioritization perform across different (1) classification techniques and (2) review contexts. Hence, additional evaluations of active learning models are required.
+
+<!-- on the reviewers screening decision ('relevant', 'irrelevant'), the model can incrementally improve its relevancy predictions on the remaining publications, and again select the next publication to be screened.   -->
 
 <!-- The latest state-of-the-art methods implement active learning, where the model improves  -->
 <!-- The algorithm aims to compute which papers in the pool need to be excluded and which need to be included, based on the reviewers decisions.  -->
@@ -118,12 +113,9 @@ Active learning is when the model can iteratively improve its predictions by all
 <!-- is allowed to improve its predictions by choosing the data it wants to learn from.  -->
 
 <!-- Although the effectiveness of active learning models in reducing workload in title and abstract screening has been extensively studied,  -->
-Although the application of learning models in reducing workload of systematic reviews has been extensively studied, the complex nature of the field is making it difficult to draw overarching conclusions about best practice. Moreover, the lack of replication on data outside the biomedical sciences makes it impossible to draw conclusions about the general effectiveness of such technologies [@OMara-Eves2015; @Marshall2020]. 
-Up to now only few studies have investigated active learning models for screening prioritization, with promising results. The question remains how different active learning models for screening prioritization perform across different review contexts. Hence, additional evaluations of active learning models are required. 
 
-The purpose of this paper is to increase the evidence base of active learning models for reducing workload in title and abstract screening in systematic reviews. Combining latest insights from this area, we present a pipeline of active learning for prioritization screening, called `ASReview`.
-`ASReview` is an open source and generic tool such that users can adapt and add modules as they like, encouraging fellow researchers to replicate findings from previous studies. Working towards a general consensus in this emerging field, this study implements various active learning models (in `ASReview`). Models are evaluated by performing a simulation on data from six existing systematic reviews from various research areas.
-All data presented in this study are openly published, hoping to facilitate usability and acceptability of AI-assisted title and abstract screening in the field of systematic review.
+The purpose of the current paper is to increase the evidence base of active learning models for reducing workload in title and abstract screening in systematic reviews. Combining latest insights from this area, we propose seven different active learning models for the purpose of identifying relevant publications in systematic review datasets. The models were chosen to maximize the number of identified relevant publications, while minimizing the number of publications needed to screen. 
+Working towards a general consensus in this emerging field, model performance was asessed by conducting a retrospective simulation on six systematic review datasets. Datasets were collected from the fields of medicine, software engineering, psychology, behavioural public administration, and virology to assess generalizability of the models across research contexts. The models, datasets and simulations are implemented in a pipeline of active learning for prioritization screening, called $\texttt{ASReview}$ [@ASReview2020]. $\texttt{ASReview}$ is an open source and generic tool such that users can adapt and add modules as they like, encouraging fellow researchers to replicate findings from previous studies. All scripts and data used are openly published to facilitate usability and acceptability of AI-assisted title and abstract screening in the field of systematic review.
 
 The remaining part of this paper is organized as follows. The Technical Details section will cover the workings of active learning models for study selection in systematic reviews on a conceptual level. 
 The method section describes ... The results section reports ... The discusssion section summarises the findings, comments on them and  summarises the main findings, discusses 
@@ -168,221 +160,190 @@ discuss limitations, draw conclusion and
 <!-- Furthermore, this study makes a contribution to ...  by demonstrating a reproducible and flexible tool,  -->
 <!-- Furthermore, a generic and reproducible workflow is presented to facilitate, hopefully to increase acceptability and usability by researchers performing systematic reviews.  -->
 
+# Methods 
+## Task Description
+The screening process of a systematic review starts with all publications obtained in the search. The task is to identify which of these publications are relevant, by screening the publications at the title and abstract level.  In active learning for screening prioritiztaion, the screening process proceeds as follows:
 
---- 
+- Start with the set of all publications $x$ with an unknown label, $\mathcal{U}$.
+- The reviewer provides a label for a few publications $x \in \mathcal{U}$, creating an set of labeled publications $\mathcal{L}$. The publications can be labeled as relevant $x_R$ or irrelevant $x_I$.
+- The active learning cycle starts: 
+
+  1. A classifier is trained on the labeled publications, $C = \texttt{train}(\mathcal{L})$
+    
+  2. The classifier predicts labels for all unlabelled publications, $C(\mathcal{U})$
+    
+  3. Based on the predictions by $C$, the model selects the most relevant publication $x \in \mathcal{U}$ 
+    
+  4. The model asks the reviewer to screen this publication, $x_?$
+    
+  5. The reviewer screens the publication and provides a label, $x_R$ or $x_I$
+    
+  6. The labeled publication is added to the training data, $\mathcal{L}$
+  
+  7. Back to step 1. 
+    
+- In this active learning cycle, the model can incrementally improve its predictions on the remaining unlabeled publications. The relevant publications are identified as early in the process as possible. The reviewer and the model keep interacting until the reviewer decides to stop or until all publications in $\mathbf{U}$ have been labelled. 
+
+<!-- Active learning for screening prioritization denotes the scenario in which the reviewer is labeling references that are presented by a machine learning model. The machine learning model learns from the reviewers' decision and uses this knowledge in selecting the next reference that will be presented to the reviewer. -->
+
+<!-- - then active learning cycle starts in which the user makes a decision after each iteration of the model which is then used to re-train the model. -->
+
+<!-- - instance $x$, label $y$ -->
+<!-- - utility measure $\phi_A(\cdot)$ -->
+<!-- - $x^*_A$ best query instance according to $\phi_A(\cdot)$ -->
+
+<!-- The reviewer starts labeling some instances in $\mathcal{U}$, creating labeled data set $\mathcal{L}$. -->
+<!-- This is the starting point for the active learning model. -->
+<!-- The model trains a classifier who predicts ...  -->
+<!-- The reviewer and the are interacting in the active learning cycle. -->
+<!-- Based on previous labelling decisions by the reviewer, the model constantly reorders the remaining publications in the dataset. -->
+
+
+
+<!-- # Algorithm 1 -->
+<!-- Just a sample algorithmn -->
+<!-- \begin{algorithm}[H] -->
+<!-- \DontPrintSemicolon -->
+<!-- \SetAlgoLined -->
+<!-- \KwResult{Write here the result} -->
+<!-- \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output} -->
+<!-- \Input{Write here the input} -->
+<!-- \Output{Write here the output} -->
+<!-- \BlankLine -->
+<!-- \While{While condition}{ -->
+<!--     instructions\; -->
+<!--     \eIf{condition}{ -->
+<!--         instructions1\; -->
+<!--         instructions2\; -->
+<!--     }{ -->
+<!--         instructions3\; -->
+<!--     } -->
+<!-- } -->
+<!-- \caption{While loop with If/Else condition} -->
+<!-- \end{algorithm}  -->
+
+
+
+<!-- meaning the reviewer the reviewer screens as little as possible while inclusion rate = high (not true but is nice statistic?) -->
+<!-- The model is balancing two goals: obtain all relevant publications with as little as reviewing possible. -->
+<!-- Active learning for screening prioritization denotes the scenario in which the reviewer is labeling references that are presented by a machine learning model. The machine learning model learns from the reviewers' decision and uses this knowledge in selecting the next reference that will be presented to the reviewer. -->
+
+<!-- #### Assumptions  -->
+<!-- 1) decisions of the original SR are **ground truth** (benchmark) (oracle) -->
+<!-- study assumptions: -->
+<!-- - simulation mode  -->
+<!-- - assumptions (prior knowledge etc, oracle = reviewer). -->
+
+<!-- A SR can be divided into phases.  -->
+<!-- Everything starts with a **systematic search**, leading to -->
+<!-- then citation screening is performed, then full-text screening -->
+<!-- [@PRISMA-PGroup2015] -->
+
+<!-- Selecting papers is a two-step process: abstract & fulltext screening -->
+
+<!-- x -->
+
+
+<!-- Now there are a few technical details. Many different versions of such algorithms exist. Many of such algorithms have been described in the active learning literature and have been applied in the systematic reviewing process.  Not exhaustive, but the algorithm can apply many different strategies to arrive at its predictions, which can be divided in following parameters: classifier, feature extraction strategy, balancing, query strateg y.  -->
+
+<!-- The current section describes how common issues in identifying relevant publication can be dealt with.  -->
+<!-- key components  -->
+
 ## Technical details
-In this section, the workings of an active learning model for screening prioritization will be explained in more detail. 
+A more detailed account of the active learning models is given in the following section.
+The structure and functions of the key components of the models will be introduced to clarify the choices made in the design of the current study.  
 
-### Active learning cycle
-Active learning has proven to be an efficient strategy in large datasets where labels are scarce, which makes identifying relevant publications an ideal candidate for such models.  
-The goal of the technique is to identify the sparse relevant publications as early as possible / present for labelling.
-There is a lot of data, but not a lot of labels. 
+#### Classification
+To make predictions on the unlabeled publications, a classifier is trained on features from the set of previously labeled publications. 
+<!-- The classifier predicts class of a given unlabeled publication.  -->
+A technique widely used in classification tasks is the Support Vector Machine (SVM). SVMs separate the data into classes by finding a multidimensional hyperplane [@Tong2001; @Kremer2014]. SVMs have been proven to be effective in active learning models for screening prioritization [@Yu2018; Miwa2014]. Moreover, SVMs are the currently the only classifier implemented in ready-to-use software tools implementing active learning for screening prioritization (Abstrackr [@Wallace2012b], Colandr [@Cheng2018], FASTREAD [@Yu2018], Rayyan [@Ouzzani2016], and RobotAnalyst [@Przybyla2018]). 
 
-When applied in the screening process, an active learning model can iteratively improve its relevancy predictions by interacting with the reviewer.
-The model decides which publication it wants the reviewer to screen next, who then provides the model with a label ('relevant', 'irrelevant'). 
-In this active learning cycle, the model can incrementally improve its predictions on the relevancy of the remaining unlabeled publications. 
-Based on previous labelling decisions by the reviewer, the model constantly reorders the remaining publications in the dataset. 
+Whilst performance several classification techniques have been investigated in the AI-aided title and abstract screening field in general [SOURCE], the relatively new subfield of active learning for screening prioritization has not yet studied the performance of classifiers other than SVMs [@Yu2018; @Yu2018; @Cormack2014; @Cormack2015; @Miwa2014; @Wallace2010]. 
+<!-- Whilst the SVM is a well-known technique, also classifiers have been employed in class prediction tasks in systematic reviews.  -->
+<!-- In fact, research in this area to date has not yet determined the performance of classifiers other than SVMs. -->
+The current study aims to address this gap by exploring performance of three classifiers besides SVM:
 
-All publications obtained in the search $x$ form a pool of unlabelled instances $\mathcal{U}$. 
-To conduct a systematic review the reviewer needs to identify which publications are relevant, 
-The reviewer starts labeling some instances in $\mathcal{U}$, creating labeled data set $\mathcal{L}$.
-This is the starting point for the active learning model.
-The model trains a model who predicts 
+ - L2-regularized Logistic Regression (LR)  models the probabilities describing the possible outcomes by a logistic function. The L2 penalty is imposed on the coefficients to reduce the number of features upon which the given solution is dependent [@scikit-learn].
+ - Naive Bayes (NB) is a supervised learning algorithm often used in text classification. Based on Bayes' Theorem, with the 'naive' assumption that all features are independent given the class value [@Zhang2004].
+- Random Forests (RF) is a supervised learning algorithm where a large number of decision trees are fit on bootstrapped samples of the original data. All trees cast a vote on the class, which are aggregated into a class prediction for each instance [@Breiman2001]. 
 
-- instance $x$, label $y$
-- utility measure $\phi_A(\cdot)$
-- $x^*_A$ best query instance according to $\phi_A(\cdot)$ 
+These three classification techniques were selected because they are all widely adopted in previous studies on text classifcation [source]. Moreover, the amount of processing power is relatively low. They can run on a personal computer.  
 
-```
-input:  
-    a pool of unlabeled abstracts $\mathcal{U}$ 
-    oracle labels a few initial papers, from $\mathcal{U}$, $\mathcal{L}$, 
+ <!-- Logistic models the posterior directly, naive bayes has higher bias but lower variance,  -->
+ <!-- logistic might perform better when trainign set increases. [@Ng2002] -->
+<!-- To carry out classification of publications, a classifier takes given input features $\mathbf{X}$ -->
+<!-- The model utilizes features of previously labeled publications and  -->
+<!-- The model utilizes L to predict labels for all abstracts (classifier). (training) -->
+<!-- a new paper is selected (query) the one that is most likely to be relevant. & queried  -->
+<!-- The reviewer is asked to label the query (relevant, irrelevant), which is then added to the training set.  -->
+<!-- Now the model can update in (retraining) its predictions based on the new training dataset. This is caled retraining.  -->
+<!-- The cycle starts over again..  -->
+<!-- As the cycle repeats itselfs, labeled dataset grows, predicitons improve hopefully and soon (or sooner than at random) the relevant publications will we identified. s -->
+<!-- We want to classify based on some features from the instances $x$, feature vector $\mathbf{X}$.  -->
 
-  M = train($\mathcal{L}$)
-  Query x isin mathcal{U} (<x, y=?)
-  oracle <x, y>
+#### Class imbalance problem
+There are two classes in the dataset: relevant and irrelevant publications. Typically, only a fraction of the publications in the data belong to the relevant class. This poses a problem for training a classifier as there are far fewer examples of relevant than irrelevant publications to train on [@OMara-Eves2015]. Moreover, classifiers are well-suited to separate data into classes, but not to correctly identifying one class [@Wallace2010]. This is evident in the case of a dataset where only one percent of publications are relevant. A model would achieve 99% accuracy when classifying all publications as irrelevant, even though none of the relevant papers would have been identified. Therefore, the class imbalance problem causes the classifier to miss relevant publications. 
 
-```
+Previous studies have addressed the class imbalance problem by rebalancing the training data in different ways [@OMara-Eves2015]. To decrease the class imbalance in the training data, the models in the current study rebalance the training set by Dynamic Supersampling (DS). DS decreases the number of irrelevant publications in the training data, whereas the number of relevant publications are increased (by copy) such that the size of the training data remains the same. The ratio between relevant and irrelevant publications is not fixed, but dynamically updated and depends on the size of the training data, the total number of publications, and the ratio between total number of relevant and irrelevant publications. 
 
-All instances x need to be classified, e.g. we want to give them a label y. 
-Binary classification, either inclusion or exclusion. 
-we start out with a pool of unlabelled abstracts U.
+#### Word embeddings 
+To predict publication class, the classifier uses information from the publications in the dataset. 
+Examples of such information are titles and abstracts. However, a model cannot predict class from the titles and abstracts as they are; their textual content needs to be repressented numerically. The textual information needs to be mapped to feature vectors. This process of numerically representing textual content is called 'word embeddings'.
 
-The model utilizes L to predict labels for all abstracts (classifier). (training)
-a new paper is selected (query) the one that is most likely to be relevant. & queried 
-The reviewer is asked to label the query (relevant, irrelevant), which is then added to the training set. 
-Now the model can update in (retraining) its predictions based on the new training dataset. This is caled retraining. 
-The cycle starts over again.. 
-As the cycle repeats itselfs, labeled dataset grows, predicitons improve hopefully and soon (or sooner than at random) the relevant publications will we identified. s
+A classical example of word embeddings is a 'bag of words' (bow) representation. For each text in the data set, the number of occurrences of each word is stored. This leads to $n$ features, where $n$ is the number of distinct words in the texts [@scikit-learn]. The bag-of-words method is simplistic and will highly value often occuring but otherwise meaningless words such as "and". A more sophisticated approach is Term-frequency Inverse Document Frequency (TF-IDF). TF-IDF circumvents this problem by adjusting the term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire data set [@Ramos2003]. A downside of TF-IDF and other bow methods is that they do not take into account the ordering of the words, thereby ignoring semantics. An example of an approach that aims to overcome this weakness is Doc2Vec (D2V), capable of grasping the relations between words by learning to predict the words in the texts [@Le2014].
+
+Miwa et al. found that active learning was more difficult on data from the social sciences compared to data the medical sciences and were able to link this difficulty to a natural difference in text complexity between these research areas [@Miwa2014]. As the study by Miwa et al. adopted a bow approach [@Miwa2014], we hypothesize that a more sophisticated word embeddings strategy has the potential to bridge the performance gap between these research areas. 
+
+#### Query strategy
+The active learning model can adopt different strategies in selecting the next publication to be screened by the reviewer. 
+A strategy mentioned before is selecting the publication with the highest probability of being relevant. In the active learning literature this is referred to as certainty-based active learning [@Settles2012]. Another well-known strategy is uncertainty-based active learning, where the instances that will be presented next will be those instances on which on which the model's classifications are the least certain, i.e. close to 0.5 probability [@Settles2012]. Traditionally, this strategy trains the most accurate model because the model can learn the most from instances it is uncertain about. 
+
+Even though uncertainty-based active learning generally leads to a more accurate model in the end, certainty-based active learning is the preferred strategy for the task at hand. The main reason is that this strategy is far better suited to the goal of prioritizing the relevant publications. Moreover, a study comparing performance of both strategies in found that the accuracy gain of uncertainty-based screening was not significant [@Miwa2014]. Furthermore, uncertainty-based active learning is far better equipped at dealing with imbalanced data in active learning [@Fu2011]. 
+Therefore, certainty-based sampling is most equipped to the current scenario in which we are dealing with highly imbalanced datasets and where the goal is to identify all relevant publications as soon as possible.
 
 
-This is done by using a set of features from the papers called X, for example the text in the abstract (feature extraction method). Now, it made an initial classification. The algorithm now aims to improve its classification by which paper from U will be presented to the reviewer next. By labeling the next paper, the reviewer provides the algorithm with new information which the algorithm uses to update its prediction. 
 
-We want to classify based on some features from the instances $x$, feature vector $\mathbf{X}$. 
-
-By starting of with L, the algorithm utilizes characteristics of X to predict labels in U. 
-We want to classify the papers in 
-Where the whole collection of papers in the systematic search form a pool of instances x, with unknown label y. 
-<x,y>. 
-
-#### details: features, balance, ... / known issues. 
-Now there are a few technical details. Many different versions of such algorithms exist. Many of such algorithms have been described in the active learning literature and have been applied in the systematic reviewing process.  Not exhaustive, but the algorithm can apply many different strategies to arrive at its predictions, which can be divided in following parameters: classifier, feature extraction strategy, balancing, query strateg y. 
 
 ## Models 
-_x_ active learning models ($M$) were built. 
-The models consist of multiple components, of which the classifier and the feature extraction strategy varied over the models. 
+The seven models consist of the components described in the Technical Details section, adopting four different classification techniques and two different word embeddings approaches: 
 
-#### Classifiers
+First, four models combining every classifier with TF-IDF word embeddings were investigated: 
+ - SVM + TF-IDF
+ - NB + TF-IDF
+ - RF + TF-IDF 
+ - SVM + TF-IDF
 
-Every model applies a classifier $c$ to predict the relevance of publications in the data. 
-The classifier predicts the class of a publication in the dataset expediting a training dataset $\mathcal{L}$,
-predicts the class of an instance given input features $\mathbf{X}$
+Second, the classifiers were combined with Doc2Vec word embeddings, leading to the following three models:^[The combination NB + D2V is impossible because NB can only process positive input features, whereas D2V]
 
-#### Word representation 
-For a model to be able to predict relevancies, the title and abstract of the publications need to be represented numerically. 
-To predict the class of a publication class (e.g. whether a publication should be included or excluded), the classifier uses information from the publications in the dataset. 
-Examples of such information are titles and abstracts. 
-However, the classifier cannot predict the publication class from titles and abstracts as they are. 
-Their textual content to needs to be mapped to feature vectors. 
-This process of numerically representing textual content is called 'word embeddings'. 
-
-A classical example of word embeddings a 'bag of words' representation. 
-For each text in the data set, the number of occurrences of each word is stored. 
-This leads to n features, where n is the number of distinct words in the texts [@scikit-learn].
-The bag-of-words method is simplistic and will highly value often occuring but otherwise meaningless words such as "and". 
-Term-frequency Inverse Document Frequency (TF-IDF) [@Ramos2003] circumvents this problem by adjusting a term frequency in a text with the inverse docuement frequency, the frequency of a given word in the entire data set.
-
-The model expedits features of previously labeled publications and 
-Based on features of the previously labeled inclusions and exclusions, the model 
-
-The features used are title and abstract from every publication. - this is what is prescribed by prisma, (check!) 
-
-(TF-IDF) (Doc2Vec)
-
-#### Fixed components  
-Utility measure / query strategy 
-All models $M$ apply the same query strategy of certainty sampling, in which the presented publication is always the one of which the model is most certain for it to be relevant. 
-
-we explore the effect of another feature extraction method, namely doc2vec. This might possibly increase performance as it performs better at grasping structure/hidden relations/hierarchy between words in the texts. So, it could be interesting in more ‘fuzzy’ research areas. A downside is that it takes more computing time.
-
----
-
-\newpage
-
-# Methods
-Several active learning models where developed with the goal of identifying the sparse relevant publications early as possible.
-The aim of this study was to assess performance of screening prioritization by several active learning models on increasing efficiency in title and abstract screening in six systematic reviews, compared to screening at random order/in the conventional process. 
-Model performance was demonstrated by performing a simulation on six systematic review datasets from various research areas. 
-
-To evaluate  retrospective analysis / simulation
-various areas for generalizability 
-
-## Active Learning Models 
-The 7 active learning models tested differ on the classifier and feature extraction they use. 
-Four classifiers and two feature extraction strategies were tested, leading to 7 models* *(nb doesn't do d2v)
-The performance
- - Naive Bayes + TF-IDF
- - Random Forest + TF-IDF 
- - Support Vector Machine + TF-IDF
- - ... 
-
-Logistic Regression (LR) - L2-regularized logistic regression. 
-Logistic models the posterior directly, naive bayes has higher bias but lower variance, 
-logistic might perform better when trainign set increases. [@Ng2002]
-Naive Bayes (NB) - Naive Bayes assumes all features are independent given the class value. This is obviously not the case but still the algorithm performs impressively [@Zhang2004]. Especially at ... tasks. 
-Random Forests (RF) is where a large number of decision trees are fit on bootstrapped samples of the original data. All trees cast a vote on the class, which are aggregated into a class prediction for each input $\mathbf{X}$ [@Breiman2001]. 
-Support Vecor Machine (SVM) - finds a multidimensional hyperplane to separate classes.
-[@Tong2001]
- 
-The following were fixed over models: 
-
-To decrease the class imbalance in the training data, the model rebalances the training set by Dynamic Supersampling (DS). DS decreases the number of irrelevant papers in the training data, whereas the number of relevant papers are increased (by copy) such that the total number of samples remains the same. The ratio between relevant and irrelevant papers is not fixed, but dynamically updated and depends on the number of training samples, the total number of publications and the ratio between relevant and irrelevant publications.
+ - SVM + Doc2Vec
+ - RF + Doc2Vec
+ - SVM + Doc2Vec
 
 ## Simulation study
-To demonstrate the models, simulations are performed of the models on six original systematic reviews. ** asreview has a nice simulation mode. 
-The models were applied on data from existing systematic reviews. 
+For each of the seven models, performance was evaluated by simulating the model on the screening process of six systematic reviews. 
+Performance of the seven models was evaluated by simulating their behaviour in the screening process of six systematic review datasets.
+Put differently, 42 simulations were carried out. For every model - dataset combination, hyperparameters were optimized^[see the Appendix for more information]. To account for variance, every simulation was repeated for 15 trials. 
+Simulations were run using ASReview's simulation mode [@ASReview2020]. There was no need for a human reviewer as the model could query the labels in the data instead.
 
-The screening process was simulated by 
+Every simulation started with an initial training set of one relevant and one irrelevant publication to represent a 'worst case scenario' where the reviewer has minimal prior knowledge on the publications in the data. To account for bias, the initial training set was randomly sampled from the dataset for every of the 15 runs. Although varying over runs, the initial training sets were kept constant over datasets to allow for a direct comparison of models within datasets. A seed value was set to ensure reproducability. 
+The classifier was retrained every time after a publication had been labeled. 
+The simulation ended after all publications in the dataset had been labeled.
 
-For this simulations there is no need for a human reviewer since the labels in the data can be queried. 
-the label column acts as the oracle.
-The oracle is not the reviewer but the labels in the data. 
+<!-- can retrieve the labels from the annotated dataset instead -->
+<!-- The oracle is not the reviewer but the labels in the data.  -->
+<!-- The researcher has some prior knowledge about the pool, some papers ought to be included in the SR.  -->
 
-The model retrains every time after a label is provided by the oracle. 
-The simulation ends when all publications in the dataset have been queried. 
+## Datasets 
+The models were simulated on a convenience sample of six systematic review datasets. The data selection process was driven by two factors. Firstly, datasets were selected based on their background, given the need for datasets from diverse research areas. Secondly, datasets were selected by their availability, given the limited timespan of the current project. The datasets were retrieved from a collection of open systematic review datasets to be used for text mining purposes^[https://github.com/asreview/systematic-review-datasets, [@ASReview2020]]. 
 
-The researcher has some prior knowledge about the pool, some papers ought to be included in the SR. 
+Three out of six datasets originated from the _medical sciences_: Ace, Wilson, and Virus.
+The Wilson dataset [@Appenzeller-Herzog2020] is on a review on effectiveness and safety of treatments of Wilson Disease, a rare genetic disorder of copper metabolism [@Appenzeller-Herzog2019]. The Ace dataset contains publications on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for heart disease [@Cohen2006]. The Virus dataset is from a systematic review on studies that performed viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals [@Kwok2020].
+From the field of _software engineering_, the Software dataset contains publications from a review on fault prediction in source code [@Hall2012]. The Nudging dataset [@Nagtegaal2019a] belongs to a systematic review on nudging healthcare professionals [@Nagtegaal2019], stemming from the area of _behavioural public administration_, 
+The PTSD dataset contains publications from the field of _psychology_. The corresponding systematic review is on studies applying latent trajectory analyses on posttraumatic stress after exposure to trauma [@vandeSchoot2017]. Of these six datasets, Ace, and Software have been used for model simulations in previous studies on AI-aided title and abstract screening, respectively [@Cohen2006] and [@Yu2018]. 
 
-#### Assumptions 
-1) decisions of the original SR are **ground truth** (benchmark) (oracle)
-The initial training set of the active learning model in the simulation is one prior included publication and one prior excluded publication, randomly sampled from the data. 
-This demonstrates a 'worst case scenario' where the reviewer has minimal prior knowledge on publications in the data. this is realistic / lower bound. 
+Data were preprocessed from their original source into a test dataset, containing title and abstract of the publications obtained in the initial search. Candidate studies with missing abstracts and duplicate instances were removed from the data. Test datasets were labelled to indicate which candidate studies were included in the systematic review, thereby indicating relevant publications. All test datasets consisted of thousands of candidate studies, of which only only a fraction was deemed relevant to the systematic review. Inclusion rates were centered around 1-2 percent with one outlier of about 5 percent (`r table_nums("datasets", display = "cite")`). 
+<!-- The data preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis] -->
 
-We're building active learning model who takes X as an input an predicts class using labels from training set. 
-Model improves by deciding asking more information from the reviewer (oracle), 
-accounting for imbalance. 
-
-To account for variance, every simulation is repeated for 15 trials $t$. 
-study assumptions:
-
-- simulation mode 
-- assumptions (prior knowledge etc, oracle = reviewer).
-
-A SR can be divided into phases. 
-Everything starts with a **systematic search**, leading to
-then citation screening is performed, then full-text screening
-[@PRISMA-PGroup2015]
-
-What must be the objective of our tool?:
-It is the tedious task citation screening part where loads of time can be saved. 
-
-Selecting papers is a two-step process: abstract & fulltext screening
-
-Binary classification problem. 
-predict whether a paper in the pool is an inclusion or exclusion, 
-based on labeled instances from $\mathcal{L}$ and use training data to understand how input variables are related to class. 
-
-### Statistical analysis 
-Results are aggregated over 15 runs of every simulation.
-
-#### measures
-#### comparison over conditions 
-The inclusion rate is ... data is imbalanced. 
-what is the philosophy
-False negatives must be avoided ... 
-The cost of a false negative outweighs the cost of a false positive. 
-Note that we assume the oracle/original user to hold the truth. 
-This is of course not always the case. 
-
-There are two classes in the data: exlusions and inclusions.
-The inclusions are clearly the minority class. 
-
-Datasets from the medical and social sciences, software engineering and public administration. 
-Medical sciences SRs are viewed as more 'strict'/'structured' and social sciences more messy. 
-
-
-#### Data selection & preprocessing
-various datasets is necessary cause it is difficult to compare models accross datasets but also model performance is very data dependent! 
-
-Six systematic reviews from various research areas were used to simulate the automated systematic review process. Data were preprocessed from the original source into a test dataset, containing all publications obtained in the systematic search. The test datasets are labelled indicating the relevant and irrelevant publications. Using these labels, a computer simulation of an automated systematic review can be performed on the systematic review data. 
-
-The test datasets contain title information on all publications obtained in the search strategy. 
-The instances in the data consist of a title and an abstract and were labeled to indicate which publications were included in the systematic review. Instances with missing abstracts and duplicate instances were removed from the data. The data preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis]
-
-Cohen et al. collected systematic review datasets from the medical sciences [@Cohen2006]. 
-All systematic reviews in this database are on drug efficacy. The _ace_ dataset used in the current study comes from a systematic review on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors.
-
-The _software_ dataset is retrieved from [@Yu2018a], who collected datasets on literature reviews from the software engineering field. This dataset is on fault prediction in software engineering by [@Hall2012]. 
-
-The _nudging_ dataset comes from a review from the behavioural public administration area. The SR includes studies on nudging healthcare professionals [@Nagtegaal2019]. The data was stored on the Harvard Dataverse [@Nagtegaal2019a]. 
-
-A literature review from field of psychology, _ptsd_. The SR is on studies applying latent trajectory analyses on posttraumatic stress after exposure to trauma [@vandeSchoot2017]. The corresponding data can be found on the Open Science Framework [...]. 
-
-_wilson_, a dataset from the medical sciences [@Appenzeller-Herzog2020]. 
-TA review on effectiveness treatments of Wilson disease [@Appenzeller-Herzog2019]. 
-
-All datasets started with an initial pool of thousands of papers. 
-A fraction of these papers where deemed relevant for the SR, with inclusion rates around 1-2 percent with one outlier of about 5 percent (`r table_nums("datasets", display = "cite")`).
 
 ```{r}
 # datasets table
@@ -398,7 +359,6 @@ nostudies <- function(all, set, stage){
 inclrate <- function(all, set){
   sapply(all, function(x) round(x[set,"incl"]/x[set,"search"]*100,2))
 }
-
 datastats <- 
   tibble(Dataset = names(all), 
        #Citation = NA, # maybe add footnote citation with kableExtra i.o. this.
@@ -422,66 +382,58 @@ datastats %>%
         booktabs = TRUE,
         col.names = c("Dataset", rep(c("Candidate studies", 
                                        #"Studies selected for fulltext screening", 
-                                       "Final inclusions", 
+                                       "Relevant studies", 
                                        "Inclusion rate (%)"),2))) %>%
   kable_styling(full_width = TRUE) %>%
   add_header_above(c("", "Original study" = 3, "Test collection" = 3))
 ```
 
 
-### How will results be analysed/performance will be evaluated? 
-how is 'good' performance defined/quantified? 
+## Evaluating performance
+Model performance was visualized by plotting recall curves and further assessed by three different measures, Work Saved over Sampling (WSS), Relevant References Found (RRF), and Average Time to Discovery (ATD). Results were averaged over 15 trials for every simulation. 
 
-metrics used: 
-#### Performance metrics 
-For each model, 
-Several metrics are used to compare performance of different models over datasets, 
+Plotting recall as a function of the number of screened publications offers insight in model performance throughout the screening process [@Cormack2014; @Yu2018]. The curves give informations in two directions. On the one hand they display the number of publications that need to be screened to achieve a certain level of recall (WSS), but on the other hand they present how many relevant publications are identified after screening a certain proportion of all publications (RRF). 
 
-| Dataset   |   | Naive Bayes | Random Forests | Support Vector Machine | Logistic Regression | Dense Neural Network |  
-| --------- | - | --- | --- | --- | --- | ---|
-| ptsd      |   | ?   |     |     |    |     | 
-| ace       |   | ?   |     |     |    |     | 
-| hall      |   | ?   |     |     |    |     | 
-| nagtegaal |   | ?   |     |     |    |     | 
-| ....      |   | ?   |     |     |    |     |  
+WSS indicates the reduction in publications needed to be screened, at a given level of recall [@Cohen2006]. 
+When measured at the typical recall level of 0.95 [@Cohen2006], WSS yields an estimate of the amount of work that can have be saved at the cost of failing to identify 5% of relevant publications. In the current study, WSS is computed at 0.95 and 1.00 recall level. 
+RRF statistics are computed at 10%, representing the proportion of relevant studies that were identified after screening 10% of all publications.  
 
-The goal is twofold: we want to identify all relevant papers, as fast as we can. 
-Tradeoff: identifying all relevant papers and reducing workload. 
-A good metric to evaluate this is.. 
+Both RRF and WSS are sensitive to random effects as these statistics are strongly dependent on the position of the cutoff value. 
+Moreover, WSS makes assumptions about acceptable recall levels whereas this might depend on the research question at hand [@OMara-Eves2015]. 
+A statistic that is not dependent on some arbitrary cutoff value is the ATD, which is the average number of publications that are screened to find a relevant publication, divided by the total number of publications in the data. The ATD is proportional to the area above the recall curve. 
 
-What is more important: recall or precision? 
+<!-- FN are far more problematic/unwanted/detrimental than FP: a researcher can label the FP as irrelevant whereas the FN are possibly never seen thereby missing relevant studies running the risk of an invalid systematic review.  -->
+<!-- The goal is twofold: we want to identify all relevant papers, as fast as we can.  -->
+<!-- Tradeoff: identifying all relevant papers and reducing workload.  -->
+<!-- what about class imbalance.  -->
 
-Recall more highly valued than precision. 
-
-What about class imbalance? 
-
-#### RRF
-Amount of relevant references found after having screened a certain percentage of the total number of abstracts.
-
-#### Work saved over sampling (WSS)
-Indicates how much time can be saved, at a given level of recall.
-WSS is in terms of the percentage of abstracts that don't have to be screened by the researcher. 
-Typically, WSS is measured at a recall of 0.95. Reasonable because..
-
-$$\texttt{WSS} = \frac{TN + FN}{N} - (1- recall) $$ 
-
-#### Raoul
-#### Utility? 
-#### F-measure 
-#### ROC/AUC
-
-Is performance related to some characteristic (n, inclusion rate, ...)
-
-? How to compare outcomes of 3 different optimization strategies? 
----
-
+Analyses were carried out using R [@RCoreTeam2019], version 3.6.1. 
 All datasets accompanying the systematic reviews are openly published. 
 This study was approved by the Ethics Committee of the Faculty of Social and Behavioural Sciences of Utrecht University, filed as an amendement under study 20-104.
-Simulations were carried out using ASReview ...,
-Statistical analyses were performed using R version ... 
-All simulations were run using through cartesius EINF-156 
+All simulations were run using through Cartesius (EINF-156). 
 
-To perform all these computations the research was carried out using the ASReview software by Utrecht University, which has a simulation mode that you can just input your labelled review file into and perform a simulation study with it. To be found on GitHub. It has many adjustable components/is very versatile. 
+<!-- $$\texttt{WSS} = \frac{TN + FN}{N} - (1- recall) $$  -->
+
+
+<!-- $$\texttt{ATD} = \frac{L}{N}$$ -->
+<!-- $$\texttt{ATD} = \frac{L(relevant) }{N}$$ -->
+
+
+<!-- Is performance related to some characteristic (n, inclusion rate, ...) -->
+
+<!-- ? How to compare outcomes of 3 different optimization strategies?  -->
+
+<!-- The cost of a false negative outweighs the cost of a false positive.  -->
+<!-- Note that we assume the oracle/original user to hold the truth.  -->
+<!-- This is of course not always the case.  -->
+<!-- There are two classes in the data: exlusions and inclusions. -->
+
+<!-- Datasets from the medical and social sciences, software engineering and public administration.  -->
+<!-- Medical sciences SRs are viewed as more 'strict'/'structured' and social sciences more messy.  -->
+<!-- Models are evaluated by performing a simulation on data from six existing systematic reviews from various research areas. -->
+
+
+---
 
 
 ### Optimizing hyperparameters
@@ -510,13 +462,13 @@ The hyperparameter values that were found to lead to a minimum loss value were v
 
 \newpage
 ## Background
-[@Yu2018a], [@Yu2019] simulated 32 svm classifiers, on software engineering. 
+[@Yu2018], [@Yu2018] simulated 32 svm classifiers, on software engineering. 
 A popular classifier is SVM. succes with HUTM (fastread), uncertainty, mix of weighting and agressive undersampling, 
 In terms of Yu et al, we adopt .CT. 
 
 SVM - tf-idf on medical data, uncertainty sampling, agressive undersampling. [@Wallace2010] 
 
-abstrackr
+abstrackr svm certainty 
 
 SVM + Weighting + uncertainty (bow) produced good methods  [@Miwa2014]
 Also include social sciences data besides medical data. 
@@ -586,7 +538,6 @@ The stage of abstract screening where abstracts are systematically screened is w
 
 The goal of the algorithm defined in the current study is to reduce to number of abstracts needed to screen (maybe not right term, bit biomedical). To be more specific, the algorithm aims to present the reader with the primary studies as soon as possible. This means that at some point you probably have seen all relevant abstracts and are only viewing excluded papers, which means you can stop reviewing much earlier (theoretically spoken). Also reviewing is now much more fun. As compared to when you have to review all abstracts and you perhaps see only one relevant abstract every other week/day. 
 
-
 ### Background
 ... starts with a search for potentially relevant publications. 
 This initial set of candidate studies need to be manually screened to identify the publications relevant for answering the research question. 
@@ -596,7 +547,6 @@ To gather the findings relevant to answering the research question, a systematic
 A systematic search starts with collecting all publications that meet pre-specified eligibility criteria.
 From this collection of candidate studies the researcher has to identify the publications relevant for answering the research question. 
 Of all candidate studies only a fraction is relevant [...]. 
-
 As more and more papers are published and reproducibility crisis has emerged, 
 A systematic search often results in thousands of candidate studies.
 Relevant publications are then identified by screening title and abstract of all candidate studies. 
@@ -813,7 +763,6 @@ limitations
 
 future research
 - all models save time, difficult to distinguish performance over datasets, especially when applied on a dataset of which no prior information is known (e.g. inclusions isn't known in practice). Perhaps go for other criteria like the fastest model, replicate study with computation time? 
-
 
 Simulating the title and abstract screening process, models are evaluted on their capability/speed of detecting the final inclusions. 
 However, in a manual SR these final inclusions are selected after reading the fulltext. Information the text mining tool does not have. 

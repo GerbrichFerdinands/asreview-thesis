@@ -6,20 +6,129 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(rjson)
+library(tidyverse)
+library(knitr)
 ```
-
 
 Script for reading simulation files
 ```{python}
-
+# to be found on harddrive results folder
 ```
 
 Script for reading results 
 ```{r}
-data <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
-statspath <- paste0("statistics/one/RCTD/", "testoutput_RCTD_one_", data, ".json")
+data <- readRDS("../simulation_study/R/00_datasets.RDS")
+models <- list.files("/Volumes/Gerbrich/asreview/results/one/statistics/")
+names(models) <- c("NB + TF-IDF", "LR + D2V", "LR + TF-IDF", "RF + D2V", "RF + TF-IDF", "SVM + D2V", "SVM + TF-IDF" )
 
-ace <- fromJSON(file = statspath[1])
+# function that reads results for a model M 
+read_results <- function(m){
+   files = list.files(paste0("/Volumes/Gerbrich/asreview/results/one/statistics/", m), recursive = TRUE)
+  # names of the files are the data
+  names(files) <- str_split(files, "/", simplify = TRUE)[,1]
+  # read data
+  dat <- lapply(files, function(x) fromJSON(file = paste0("/Volumes/Gerbrich/asreview/results/one/statistics/", m, "/", x)))
+  
+  # extract wss, rrf, and loss
+  dat <- map(dat, `[`, c("wss", "rrf", "loss"))
+
+  # transorm into dataframe
+  dat <- map_dfr(dat, ~ as.data.frame(.x), .id = "dataset")
+  
+  # add model name
+  dat <- dat %>% 
+    mutate(model = names(models[models == m]))
+
+  return(dat)
+}
+```
+
+Parse 
+```{r, eval = FALSE}
+dat$virus
+# extract only wss, rrf, and loss values from list
+test <- map(dat, `[`, c("wss", "rrf", "loss"))
+# transorm into dataframe
+test <- map_dfr(test, ~ as.data.frame(.x), .id = "dataset")
+# add model name
+test <- test %>% mutate(model = "NB + TF-IDF")
+```
+
+Apply over all datasets and models 
+```{r}
+# extract results for all models
+# list for models separately
+results <- lapply(models, read_results)
+
+# all in one dataframe
+results <- do.call("rbind", results)
+results %>%
+  group_by(dataset) %>%
+  arrange(loss)
+```
+
+Create table
+```{r}
+library(tables)
+library(data.table)
+library(gt)
+library(tidyr)
+library(tidyverse)
+tabres <- 
+  results %>%
+  pivot_wider(names_from = dataset, values_from = c("wss.95", "wss.99", "wss.100", "rrf.5", "rrf.10", "rrf.20", "loss"))
+
+
+```
+
+```{r}
+library(expss)
+
+test <- results %>% pivot_longer(cols = c(starts_with("wss"), starts_with("rrf"), "loss"), names_to = "stats", values_to = "value")
+  
+tab <- 
+  test %>%
+  tab_rows(model) %>%
+  tab_cells(value) %>%
+  tab_cols(dataset %nest% stats) %>%
+  tab_stat_mean() %>%
+  tab_pivot()
+
+```
+
+```{r}
+tabres %>%
+  select(model, starts_with("wss.95"), starts_with("loss"))
+
+gtest <- tabres %>%
+  gt()
+
+gtest <- results %>%
+  gt() %>%
+  
+  
+```
+```{r}
+library(flextable)
+typology <- data.frame(
+  col_keys = names(results)[2:43],
+  what = rep(data,7),
+  measure = rep(c("WSS@95", "WSS@99", "WSS@100", "RRF@5", "RRF@10", "RRF@20", "ATD"), each = )
+  what = c(rep("WSS", 3), rep("RRF", 3), "loss"),
+  measure = c("95", "99", "100", "5", "10", "20", "0"),
+  stringsAsFactors = FALSE
+)
+
+
+test <- flextable(tabres)
+test <- set_header_df(test, mapping = typology, key = "col_keys")
+merge_h(test, part = "header")
+```
+
+
+Now again for with seed 
+```{r}
+#files = list.files("/Volumes/Gerbrich/asreview/results/one/statistics/", recursive = TRUE)
 
 ```
 
