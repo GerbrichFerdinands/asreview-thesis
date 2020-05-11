@@ -1,110 +1,293 @@
 ---
-title: "log hyperparameter optimization"
-output: html_notebook
+title: "Hyperparamter Optimization"
+output:   
+  md_document:
+    variant: markdown_github
 ---
-
-Per day, all commands sent to surfsara
-
-After a command is sent, save that todo checklist file! 
-
-```{r}
-hpsets <- readRDS("../R/01_hyperparameter_sets.RDS")
-
-d <- colnames(hpsets)
-condition <- rownames(hpsets)
-classifier <- c("nb", "rf", "svm", "logistic", "nn-2-layer")
-names(classifier) <- c("B", "R", "S", "L", "N")
+# Optimizing Hyperparameters
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
-# one on one optimization
-
-## classifiers 
-BCTD on all datasets
-```{r}
-# BCTD
-script <- noquote(sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d %s -r 23", d))
-write.table(script, file = "scripts/one/nb_classifier.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-# job names
-names(script) <- c("7846991", "7846993", "7846994", "7846997", "7846998", "7846999")
+```{r packages}
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(directlabels)
 ```
 
-```{r}
-# check off to do list. 
-hpsets["NCTD", , ] <- 9 # impossible model
-hpsets["BCTD", , "one"] <- 1 # finish nb one-one-one simulations
-```
+To every model belongs a unique set of hyperparameters. To maximize model performance, we need to find optimal values for the hyperparameters. For every model the optimal hyperparameter values are determined by optimizing on data $d$. The hyperparameters are optimized by running several hundreds of optimization trials, in which hyperparameter values are sampled from their possible parameter space.
 
-The other 3 classifiers 
-```{r}
-cons <- expand.grid(c = classifier[2:4], d = d, stringsAsFactors = FALSE)
-# all models
-class1 <- sprintf("./cart_hyper_run.py hyper-active -t 12:00:00 -m %s -b double -e tfidf -q max -d %s -r 23", cons$c, cons$d)
-write.table(class1, file = "scripts/one/three_classifiers.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
+Maximum model performance is defined as the average time it takes to find an inclusion in the data, or more specific: the loss function minimizes the average number of papers needed to screen to find an inclusion (eg the area above the curve in the inclusion plot).
 
-# job names
-names(class1) <- c(7847065,7847066,7847067,7847068,7847069, 7847070, 7847071,7847072, 7847074,7847075, 7847076, 7847077,7847078,7847079,7847080,7847081, 7847082,7847084)
+The optimization data d consists of (a subset from) the six systematic review datasets D mentioned above. Three different approaches in composing d are explored:
 
-hpsets[condition[2:4], , "one"] <- 1
-```
+- __one__, where hyperparameters are optimized on only one of the six datasets. Such hyperparameters are expected to lead to maximum performance in the same dataset d.
+- __n__, where hyperparameters are optimized on all six data sets. This optimization approach intends to serve in producing the most optimal hyperparameters overall. 
+- __n-1__, where hyperparameters are optimized on all six datasets but one. Serving as a sensitivity analysis for the former condition, eg how sensitive are the hyperparamters to different data sets. 
 
+This results in 6+6+1=13 sets of hyperparameters for every model. Optimization trials were visually inspected to check if an optimum (minimal loss) has been reached. More trials were run if the loss still seemed to go down at a quick pace. The hyperparameter sets that were found to lead to a minimum loss value were visually inspected.
 
-## now with doc2vec feature extraction 
-```{r}
-cons <- expand.grid(c = classifier[2:5], d = d, stringsAsFactors = FALSE)
+```{r functions}
+php <- function(data){
+  data %>%
+    filter(param %in% numericalvars) %>%
+    mutate(value = as.numeric(value)) %>% 
+    ggplot(aes(x = value, y = "", color = group)) +
+    geom_jitter(height = 0.2) +
+    facet_wrap(vars(param), ncol = 3, scales = "free_x") +
+    geom_vline(aes(xintercept = lb), color = "grey") +
+    geom_vline(aes(xintercept = ub), color = "grey") +
+    theme_minimal()
+}
 
-# a test run first maybe
-# NCDD
-noquote("./cart_hyper_run.py hyper-active -t 12:00:00 -m nb -b double -e doc2vec -q max -d ace -r 23") # 7847109
-# todo list
-hpsets[condition[6], , ] <- 9 # multinomial nb cannot deal with doc2vec (negative values!!)
+php_c <- function(data){
+  data %>%
+    filter(param %in% categoricalvars) %>%
+    mutate(value = as.factor(value)) %>% 
+    ggplot(aes(x = value, color = group, fill = group, group = group)) +
+    geom_bar(position="stack") +
+    facet_wrap(vars(param), nrow = 2, scales = "free_x") +
+    labs(title = "(optimal) categorical hyperparameters", y = "", x = "Parameter values")+
+    theme_minimal()
+}
 ```
 
 ```{r}
-# then all classifier * dataset combinations. 
-t <- rep(c("12", "42", "42", "5-00"), length(d))
-d2v1 <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m %s -b double -e doc2vec -q max -d %s -r 23", t, cons$c, cons$d)
-# one test of doc2vec 
-write.table(d2v1, file = "scripts/one/doc2vec.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(d2v1) <- c("7854137", "7854187", "7854188", "7854208", 
-                 "7854189", "7854190", "7854191", "7854209", 
-                 "7854192", "7854193", "7854194", "7854210", 
-                 "7854195", "7854196", "7854197", "7854211", 
-                 "7854198", "7854199", "7854200", "7854212", 
-                 "7854201", "7854202", "7854203", "7854213")
-
-hpsets[condition[7:10], ,"one"] <- 1
+hpsets <- readRDS("config/hpresults.RDS")
+numericalvars <- c("balance_param.a", "balance_param.alpha", "balance_param.b", "model_param.alpha", "model_param.c", "model_param.class_weight", "feature_param.vector_size", "feature_param.epochs", "model_param.n_estimators")
+categoricalvars <-c("feature_param.ngram_max", "feature_param.split_ta", "feature_param.use_keywords", "model_param.gamma", "feature_param.dbow_words", "feature_param.dm", "feature_param.dm_concat", "feature_param.min_count", "feature_param.window", "model_param.max_features") 
 ```
 
-# n
+```{r loss_function}
+# loss i where x is index, a.k.a. loss plot sorted from high to low loss.
+loss_i <- function(trials){
+  trials %>%
+  ggplot(aes(x = index, y = loss)) +
+  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
+  labs(title = "Loss plot", x = "Trials sorted from high to low loss") +
+    theme_minimal()
+}
+
+# loss t where x is trials, loss plot is sorted over time
+loss_t <- function(trials){
+  trials %>%
+    ggplot(aes(x = trial, y = loss)) +
+    geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+    geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
+    labs(title = "Loss plot", x = "Over trials") +
+    theme_minimal()
+}
+```
+
+
+## Results
+Loss plots: Two times the same data, first plot is over trials, second sorted from highest to lowest loss.
+
+Hyperparameters on a continuous scale are plotted as dots in a scatterplot. 
+Discrete hyperparameters are displayed in a barplot
+
+Conclusions: 
+- loss is going down over trials 
+- some datasets go down faster
+- some datasets go down more 
+
+# Naive Bayes + TF-IDF 
+
+## Loss plots
+
 ```{r}
-t <- c("12:00:00", "24:00:00", "48:00:00", "24:00:00")
-# optimize hyperparams over all datasets
-allc <- sprintf("./cart_hyper_run.py hyper-active -t %s -m %s -b double -e tfidf -q max -r 23", t, classifier[1:4])
-write.table(allc, file = "scripts/n/fourclassifiers.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
+nbtfidftrials <- readRDS("trials/nb_tfidf-trials.RDS")
 
-# later for more than 12 hours. 
-names(allc) <- c("7848203", "7848204", "7848205", "7848206")
+nbtfidftrials <- nbtfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
 
-hpsets[condition[1:4], , "all"] <- 1
+# loss plot by index 
+nbtfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+nbtfidftrials %>%
+  loss_t()
 ```
 
 
-## doc2vec models 
+## Hyperparameter values
+```{r NB_TFIDF}
+php(hpsets$nb_tfidf) + 
+  labs(title = "Hyperparameters Naive Bayes + TF-IDF")
+
+# plot feature_param.ngram_max
+hpsets$nb_tfidf %>%
+  php_c() 
+```
+
+Inspect outliers: 
 ```{r}
-t <- rep(c("42", "42", "42", "5-00"))
-cons <- expand.grid(c = classifier[2:5], stringsAsFactors = FALSE)
-
-d2vall <- sprintf("./cart_hyper_run.py hyper-active -t %s:00:00 -m %s -b double -e doc2vec -q max -r 23", t, cons$c)
-
-write.table(d2vall, file = "scripts/n/doc2vec.txt", sep = "\t", quote = FALSE,
-            row.names = FALSE)
-names(d2vall) <- c("7854227", "7854228", "7854229", "7854230")
-
-hpsets[condition[7:10], ,"all"] <- 1
+# inspect outliers
+hpsets$nb_tfidf %>% filter(param %in% c("balance_param.a", "model_param.alpha")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb) %>%
+  kable(format = "markdown")
 ```
 
-# n-1
+# SVM + TF-IDF 
+
+```{r SVM_TFIDF}
+svmtfidftrials <- readRDS("trials/svm_tfidf-trials.RDS")
+
+svmtfidftrials <- svmtfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+svmtfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+svmtfidftrials %>%
+  loss_t()
+
+# parameter values numerical 
+hpsets$svm_tfidf %>%
+  php() +
+  labs(title = "Hyperparameters SVM + TF-IDF")
+
+hpsets$svm_tfidf %>%
+  php_c() 
+```
+# SVM + Doc2Vec
+
+```{r SVM_D2V}
+svmd2vtrials <- readRDS("trials/svm_d2v-trials.RDS")
+
+svmd2vtrials <- svmd2vtrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+svmd2vtrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+svmd2vtrials %>%
+  loss_t()
+
+# parameter values numerical 
+hpsets$svm_tfidf %>%
+  php() +
+  labs(title = "Hyperparameters SVM + TF-IDF")
+
+hpsets$svm_tfidf %>%
+  php_c() 
+```
+
+# Logistic Regression + TF-IDF 
+```{r LR_TFIDF}
+lrtfidftrials <- readRDS("trials/lr_tfidf-trials.RDS")
+
+lrtfidftrials <- lrtfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+lrtfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+lrtfidftrials %>%
+  loss_t()
+
+
+php(hpsets$lr_tfidf) + 
+  labs(title = "Hyperparameters Logistic Regression + TF-IDF")
+
+hpsets$lr_tfidf %>%
+  php_c()
+```
+
+Inspect outliers
+```{r}
+hpsets$lr_tfidf %>% filter(param %in% c("balance_param.a", "model_param.c")) %>% group_by(param) %>% filter(value > 40) %>% select(-ub, -lb) %>%
+  kable(format = "markdown")
+hpsets$lr_tfidf %>% filter(param %in% c("model_param.class_weight")) %>% group_by(param) %>% filter(value > 1000) %>% select(-ub, -lb) %>%
+  kable(format = "markdown")
+```
+
+
+# Logistic Regression + Doc2Vec
+```{r LR_D2V}
+lrd2vtrials <- readRDS("trials/lr_d2v-trials.RDS")
+
+lrd2vtrials <- lrd2vtrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+lrd2vtrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+lrd2vtrials %>%
+  loss_t()
+
+
+php(hpsets$lr_d2v) + 
+  labs(title = "Hyperparameters Logistic Regression + Doc2Vec")
+
+hpsets$lr_d2v %>%
+  php_c()
+```
+
+# Random Forest + TF-IDF
+```{r rf_tfidf}
+rftfidftrials <- readRDS("trials/rf_tfidf-trials.RDS")
+
+rftfidftrials <- rftfidftrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+rftfidftrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+rftfidftrials %>%
+  loss_t()
+
+
+php(hpsets$rf_tfidf) + 
+  labs(title = "Hyperparameters Random Forest + TF-IDF")
+
+hpsets$rf_tfidf %>%
+  php_c()
+```
+
+# Random Forest + Doc2Vec
+## Loss plot
+```{r rf_d2v_loss}
+rfd2vtrials <- readRDS("trials/rf_d2v-trials.RDS")
+
+rfd2vtrials <- rfd2vtrials %>%
+  group_by(datasets) %>%
+  mutate(index = rev(index))
+
+# loss plot by index 
+rfd2vtrials %>% 
+  loss_i()
+
+# loss plot sorted by trial numbers 
+rfd2vtrials %>%
+  loss_t()
+
+```
+
+## Hyperparameter Values
+```{r rf_d2v}
+php(hpsets$rf_d2v) + 
+  labs(title = "Hyperparameters Random Forest + Doc2Vec")
+
+hpsets$rf_d2v %>%
+  php_c()
+```
+

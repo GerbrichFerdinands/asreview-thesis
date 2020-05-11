@@ -1,16 +1,14 @@
 ---
-title: "R Notebook"
-output:
-  html_document:
-    df_print: paged
+title: "Dataset preprocessing"
+output: github_document
 ---
-This notebook processes all systematic review datasets into datasets suitable testing asreview. 
+This notebook processes all systematic review datasets into datasets suitable testing ASReview.  
 
 Every dataset is a .csv file with the following columns: 
   - title
   - abstract
   - label_included
-  - keywords? (?) 
+  - keywords? (only for hyperparameter optimization, not for simulation). 
 
 Entries with missing abstracts are removed 
 
@@ -122,8 +120,12 @@ nudging["paper", ] <- c(2006, 377, 100)
 
 # raw --------------------------------------------------------------------------
 n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
-
-# missing statistics 
+n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
+#n_rr <- read.csv2("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
+                 # sep = ",")
+#n_rr <- fread("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
+              #    sep = ",", encoding = "UTF-8")
+# missing statistics
 drops["nudging",] <- n_raw %>%
           summarise(n = length(abstract),
                     na = sum(is.na(abstract)),
@@ -136,7 +138,8 @@ drops["nudging",] <- n_raw %>%
 nudging_test <- n_raw %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
   filter(abstract != "", abstract != "NA") %>%
-  distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
+  distinct(abstract, .keep_all = TRUE) %>% # remove entries with duplicate abstracts
+  mutate(id = X)
 
 nudging["test", ] <- data_descr(nudging_test)
 
@@ -206,7 +209,7 @@ ptsd_test[indices, "included"] <- 0
 ```{r}
 # finalize dataset  
 ptsd_test <- ptsd_test %>%
-  select(authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
+  select(id, authors, title, abstract, keywords, included, inclusion_code) # select relevant columns
 
 ptsd["test", ] <- data_descr(ptsd_test)
 ```
@@ -233,7 +236,7 @@ hall["raw", ] <- c(length(h_raw$Document.Title),
                    sum(h_raw$label == "yes"))
                           
 # asreview ---------------------------------------------------------------------
-hall_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/Software%20Engineering%201%20Hall.csv",
+hall_asr <- read.csv("https://raw.githubusercontent.com/asreview/systematic-review-datasets/master/datasets/Four%20Software%20Engineer%20Data%20Sets/output/Software_Engineering_Hall.csv",
                      header=T)
 
 hall["asreview", ] <- data_descr(hall_asr)
@@ -244,8 +247,11 @@ hall["asreview", ] <- data_descr(hall_asr)
 hall_test <- hall_asr %>%
    drop_na(abstract) %>% # drop entries with missing abstracts
    filter(abstract != "") %>%
-   distinct(abstract, .keep_all = TRUE)# remove entries with duplicate abstracts
+   distinct(abstract, .keep_all = TRUE) # remove entries with duplicate abstracts
 
+hall_test <- hall_test %>% # add id
+  mutate(id = 1:nrow(hall_test))
+   
 hall["test", ] <- data_descr(hall_test)
 ```
 
@@ -340,14 +346,15 @@ wilson
 
 ```{r eval = TRUE}
 # put everything together in list. 
-all <- list(ace = ace,
-            nudging = nudging,
-            ptsd = ptsd,
-            software = hall,
-            wilson = wilson)
+all <- list(Ace = ace,
+            Nudging = nudging,
+            PTSD = ptsd,
+            Software = hall,
+            Virus = virus,
+            Wilson = wilson)
 
 # save datafile, to serve as data for descriptive table in manuscript
-save(all, file = "../manuscript/drafts/data/datasets_table.Rdata")
+saveRDS(all, file = "data_statistics/all.RDS")
 
 saveRDS(drops, file = "data_statistics/drops.RDS")
 ```
@@ -380,22 +387,24 @@ tibble(Dataset = names(all),
        `incl_test` =  nostudies(all, "test", "incl"), 
        `inclrate_test` = inclrate(all, "test")) %>% 
   t() %>% 
-  kable("html") %>%
-  kable_styling(full_width = TRUE) %>%
-  #scroll_box(width = "100%", height = "200px") %>%
-  pack_rows("Paper", 2, 5) %>%
-  pack_rows("Raw data", 6, 9) %>%
-  pack_rows("ASReview data", 10, 13) %>%
-  pack_rows("Test data set", 14, 17)  
+  kable("markdown") 
+# %>%
+#   kable_styling(full_width = TRUE) %>%
+#   #scroll_box(width = "100%", height = "200px") %>%
+#   pack_rows("Paper", 2, 5) %>%
+#   pack_rows("Raw data", 6, 9) %>%
+#   pack_rows("ASReview data", 10, 13) %>%
+#   pack_rows("Test data set", 14, 17)  
 ```
 
 Descriptives on missingness and duplicate abstracts in the ASReview test data set. 
 ```{r, echo = FALSE}
 drops %>%
-  kable("html",
+  kable("markdown",
         col.names = c("n", "NA", "NA rate (%)", "duplicates", "duplicate rate (%)"),
-        digits = 2) %>%
-  kable_styling(full_width = TRUE)
+        digits = 2) 
+# %>%
+#   kable_styling(full_width = TRUE)
 
 
 ```
@@ -404,38 +413,38 @@ drops %>%
 # Write all test dataset files 
 ```{r, eval = FALSE}
 # ace
-write.csv(ace_test %>%  select(authors, title, abstract, keywords, label_included), "test_datasets/ace.csv")
+write.csv(ace_test %>%  select(pubmedID, authors, title, abstract, keywords, label_included), "test_datasets/ace.csv", row.names = FALSE)
 
 # nudging (no keywords available)
-write.csv(nudging_test %>% select(title, abstract, included), "test_datasets/nudging.csv")
+write.csv(nudging_test %>% select(id, title, abstract, included), "test_datasets/nudging.csv", row.names = FALSE)
 
 # ptsd
-write.csv(ptsd_test %>% select(authors, title, abstract, keywords, included), "test_datasets/ptsd.csv")
+write.csv(ptsd_test %>% select(id, authors, title, abstract, keywords, included), "test_datasets/ptsd.csv", row.names = FALSE)
 
 # hall (no keywords available )
-write.csv(hall_test, "test_datasets/software.csv")
+write.csv(hall_test, "test_datasets/software.csv", row.names = FALSE)
 
 # virus 
-write.csv(v_test %>% select(authors, title, abstract, keywords, included), "test_datasets/virus.csv")
+write.csv(v_test %>% select(id, authors, title, abstract, keywords, included), "test_datasets/virus.csv", row.names = FALSE)
 
 # wilson
-write.csv(w_test %>% select(authors, title, abstract, keywords, included), "test_datasets/wilson.csv")
+write.csv(w_test %>% select(id, authors, title, abstract, keywords, included), "test_datasets/wilson.csv", row.names = FALSE)
 ```
 
 # write test dataset files for simulation (removing keywords)
 ```{r, eval = FALSE}
 # ace
-write.csv(ace_test %>%  select(authors, title, abstract, label_included), "sim_datasets/ace.csv")
+write.csv(ace_test %>%  select(pubmedID, title, abstract, label_included), "sim_datasets/ace.csv", row.names = FALSE)
 # nudging (no keywords available)
-write.csv(nudging_test %>% select(title, abstract, included), "sim_datasets/nudging.csv")
+write.csv(nudging_test %>% select(id, title, abstract, included), "sim_datasets/nudging.csv", row.names = FALSE)
 # ptsd
-write.csv(ptsd_test %>% select(authors, title, abstract, included), "sim_datasets/ptsd.csv")
+write.csv(ptsd_test %>% select(id, title, abstract, included), "sim_datasets/ptsd.csv", row.names = FALSE)
 # hall (no keywords available )
-write.csv(hall_test, "sim_datasets/software.csv")
+write.csv(hall_test, "sim_datasets/software.csv", row.names = FALSE)
 # virus 
-write.csv(v_test %>% select(authors, title, abstract, included), "sim_datasets/virus.csv")
+write.csv(v_test %>% select(id, title, abstract, included), "sim_datasets/virus.csv", row.names = FALSE)
 # wilson
-write.csv(w_test %>% select(authors, title, abstract, included), "sim_datasets/wilson.csv")
+write.csv(w_test %>% select(id, title, abstract, included), "sim_datasets/wilson.csv", row.names = FALSE)
 ```
 
 To check:

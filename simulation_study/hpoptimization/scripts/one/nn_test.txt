@@ -1,0 +1,13 @@
+x
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e tfidf -q max -d ace -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e tfidf -q max -d nudging -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -d nudging -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e tfidf -q max -d ptsd -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ptsd -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e tfidf -q max -d software -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -d software -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e tfidf -q max -d virus -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -d virus -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e tfidf -q max -d wilson -r 2
+./cart_hyper_run_asrnn.py hyper-active -t 5-00:00:00 -m nn-2-layer -b double -e doc2vec -q max -d wilson -r 2

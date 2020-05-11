@@ -1,0 +1,28 @@
+---
+title: "11_notes_7apr"
+output: github_document
+---
+
+# Notes - core team meeting - core team meeting
+Questions: 
+
+How to make simulations faster? 
+
+- how come 
+- plot making in lc
+- stats 
+
+- python virtual environment on 
+- logistic regression 
+  - [use saga as solver instead of liblinear?](https://stackoverflow.com/questions/38640109/logistic-regression-python-solvers-defintions/52388406#52388406)
+  - l2 regularization --> why? why not l1? 
+  - [](https://towardsdatascience.com/dont-sweat-the-solver-stuff-aea7cddc3451)
+  
+
+# recap/decisions last week
+
+# Meeting
+
+# To do
+
+

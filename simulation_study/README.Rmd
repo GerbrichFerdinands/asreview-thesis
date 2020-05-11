@@ -14,7 +14,7 @@ The log of the simulation study.
   - scripts for simulation studies 
   
 
-```{r include = FALSE}
+```{r, include = FALSE}
 library(tidyverse)
 library(knitr)
 library(kableExtra)
@@ -22,7 +22,7 @@ source("R/functions.R")
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r eval = FALSE}
+```{r, eval = FALSE}
 # 
 source("R/00_condition_grid.R")
 source("R/01_hyperparameter_sets.R")
@@ -32,8 +32,7 @@ source("R/01_hyperparameter_sets.R")
 There are three stages, we start with the first 5 where we are comparing different classifiers. 
 
 ```{r}
-conditiongrid <- readRDS("00_conditiongrid.RDS")
-
+conditiongrid <- readRDS("R/00_conditiongrid.RDS")
 conditiongrid %>%
   kable(format = "markdown")
 ```
@@ -51,14 +50,8 @@ asreview simulation branch reorganization.
 Comparing five different classifiers
 ```{r}
 emptytodo <- readRDS("R/01_hyperparameter_sets.RDS")
-
-
-
-
+todo <- emptytodo
 ```
-
-
-
 
 
 R - 275 secs 119% - 5 datasets 
@@ -76,14 +69,10 @@ todo <- busy(todo, "SCTW", "one", "ace")
 Optimization run on Cartesius
 ```{bash, eval = FALSE}
 # BCTW
-
 # RCTW
-
 # SCTW 
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m svm -b double -e tfidf -q max -d ace -r 23 # job id 7768402
-
 # LCTW
-
 # NCTW
 ```
 
@@ -126,22 +115,16 @@ asreview create-config trials/BCTW_nudging.pkl -o config/BCTW_nudging.ini
 asreview create-config trials/BCTW_ptsd.pkl -o config/BCTW_ptsd.ini
 asreview create-config trials/BCTW_software.pkl -o config/BCTW_software.ini
 asreview create-config trials/BCTW_wilson.pkl -o config/BCTW_wilson.ini
-
 # RCTW
-
 # SCTW 
-
 # LCTW
-
 # NCTW
-
 ```
 
 ***
 
 ```{r}
 lubridate::date("2020-03-19")
-
 #todo <- check(todo, "BCTW", "one", datasets)
 ```
 
@@ -158,13 +141,9 @@ asreview create-config output/active/nb_max_double_tfidf/wilson/trials.pkl  -o c
 ```{bash, eval = FALSE}
 # run simulations within cartesius
 ./cart_simulate.py data/ace.csv --config_file config/BCTW_ace.ini --state_file "simoutput/bctw/ace/BCTW_ace.h5" -r 23 
-
 ./cart_simulate.py data/nudging.csv --config_file config/BCTW_nudging.ini --state_file "simoutput/bctw/nudging/BCTW_nudging.h5" -r 23 
-
 ./cart_simulate.py data/ptsd.csv --config_file config/BCTW_ptsd.ini --state_file "simoutput/bctw/ptsd/BCTW_ptsd.h5" -r 23 
-
 ./cart_simulate.py data/software.csv --config_file config/BCTW_software.ini --state_file "simoutput/bctw/software/BCTW_software.h5" -r 23 
-
 ./cart_simulate.py data/wilson.csv --config_file config/BCTW_wilson.ini --state_file "simoutput/bctw/wilson/BCTW_wilson.h5" -r 23 
 ```
 
@@ -172,7 +151,6 @@ asreview create-config output/active/nb_max_double_tfidf/wilson/trials.pkl  -o c
 ```{bash, eval = FALSE}
 # transfer files to device 
 scp -r gerbrich@cartesius.surfsara.nl:asreview/simoutput /Users/gerbrich/Documents/MSBBSS/asreviewthesis/asreview-thesis/simulation_output
-
 scp -r /Users/gerbrich/Documents/MSBBSS/asreviewthesis/asreview-thesis/hyperopt/config/one gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-review-simulations/scripts/config
 ```
 
@@ -197,18 +175,13 @@ Sent hyperparameters for optimization
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m svm -b double -e tfidf -q max -d ptsd -r 23 # 7805984
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m svm -b double -e tfidf -q max -d software -r 23 # 7805985
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m svm -b double -e tfidf -q max -d wilson -r 23 # 7805986
-
 # LCTW 
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m lr -b double -e tfidf -q max -d ace -r 23 # 7805987
-
 # RCTW 
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m rf -b double -e tfidf -q max -d ace -r 23 # 7805989
-
-
 # NCTW does not work well with tfidf, save for second round with doc2vec: 
 # NCDW
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m nn-2-layer -b double -e doc2vec -q max -d ace -r 23 # 7806021
-
 ```
 
 ***
@@ -242,7 +215,6 @@ todo <- huh(todo, c("LCTW", "RCTW"), "one", "ace")
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d ptsd -r 23 # 7815155
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d software -r 23 # 7815156
 ./cart_hyper_run.py hyper-active -t 12:00:00 -m logistic -b double -e tfidf -q max -d wilson -r 23 # 7815157
-
 # RCTW, fixed a parameter bug in simulation package. 
 ./cart_hyper_run.py hyper-active -t 03:00:00 -m rf -b double -e tfidf -q max -d ace -r 23 # 7813592
 # evaluated run, now other datasets
@@ -264,9 +236,7 @@ NCDW - loss still going down, sent in for another 12 hours.
 # error 
 # accidentally got killed while downgrading tensorflow at the same time. 
 # run again, 7815147
-
 # NCDW for remaining datasets 
-
 ```
 
 
@@ -290,12 +260,8 @@ Optimize BCTW model 6 datasets (for paper)
 asreview create-config output/active/nb_max_random_triple_tfidf/ptsd_virus_ace_software_wilson_nudging/trials.pkl -o config/BMTW_all.ini
 # move config to device
 scp gerbrich@cartesius.surfsara.nl:asreview/config/BMTW_all.ini ~/
-
 # run simulations (on own device)
-
-
 # see script
-
 ```
 
  
@@ -304,8 +270,6 @@ scp gerbrich@cartesius.surfsara.nl:asreview/config/BMTW_all.ini ~/
 ```{r}
 lubridate::date("2020-03-27")
 # todo <- busy(todo, "SCTW", "one", datasets[2:5])
-
-
 ```
 
 Process BCTW models simulations into table
@@ -349,7 +313,6 @@ scp -r gerbrich@cartesius.surfsara.nl:asreview/simulations/automated-systematic-
 # save the to-do grid in markdown style
 todo[todo==0] <- emo::ji("white square button")
 todo %>% kable(format = "markdown")
-
 saveRDS(todo %>% kable(format = "markdown"), 
         file = "02_todo_hp.RDS")
 ```
@@ -367,7 +330,6 @@ On 17 march 2020:
 
 ```
 ************  ace.csv  ************
-
 Number of papers:            2235
 Number of inclusions:        41 (1.83%)
 Number of exclusions:        2194 (98.17%)
@@ -376,10 +338,7 @@ Average title length:        123
 Average abstract length:     1623
 Number of missing titles:    0 (of which 0 included)
 Number of missing abstracts: 0 (of which 0 included)
-
-
 ************  nudging.csv  ************
-
 Number of papers:            1847
 Number of inclusions:        100 (5.41%)
 Number of exclusions:        1747 (94.59%)
@@ -388,10 +347,7 @@ Average title length:        109
 Average abstract length:     1831
 Number of missing titles:    0 (of which 0 included)
 Number of missing abstracts: 0 (of which 0 included)
-
-
 ************  ptsd.csv  ************
-
 Number of papers:            5031
 Number of inclusions:        38 (0.76%)
 Number of exclusions:        4993 (99.24%)
@@ -400,10 +356,7 @@ Average title length:        104
 Average abstract length:     1537
 Number of missing titles:    1 (of which 0 included)
 Number of missing abstracts: 0 (of which 0 included)
-
-
 ************  software.csv  ************
-
 Number of papers:            8896
 Number of inclusions:        104 (1.17%)
 Number of exclusions:        8792 (98.83%)
@@ -412,10 +365,7 @@ Average title length:        81
 Average abstract length:     896
 Number of missing titles:    0 (of which 0 included)
 Number of missing abstracts: 0 (of which 0 included)
-
-
 ************  wilson.csv  ************
-
 Number of papers:            2333
 Number of inclusions:        23 (0.99%)
 Number of exclusions:        2310 (99.01%)
