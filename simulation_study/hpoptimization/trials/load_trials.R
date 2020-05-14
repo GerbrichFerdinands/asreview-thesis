@@ -1,7 +1,9 @@
 library(tidyverse)
 # load data from trials.csv files and process into dataframe
 
+# This is the storage location of the raw hyperparameter output onmy personal harddrive, the raw data will be published on the OSF when university buildings open again (see the readme file in the root directory).
 losspath <- "/Volumes/Gerbrich/asreview/output/active/"
+
 models <- list.files(losspath)
 # get rid of neural network 2-layer models s
 models <- models[c(-4, -5)]

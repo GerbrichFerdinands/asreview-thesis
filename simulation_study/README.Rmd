@@ -11,21 +11,18 @@ library(tidyverse)
 library(knitr)
 library(kableExtra)
 source("R/functions.R")
+#source("R/00_condition_grid.R")
 ```
 
 # Models 
 We are simulating 7 models on 6 systematic review datasets. Each model has an abbreviation to ease the programming process: 
-```{r, eval = FALSE}
-#  
-# source("R/00_condition_grid.R")
-# source("R/01_hyperparameter_sets.R")
-
+```{r, eval = TRUE}
 conditiongrid <- readRDS("R/00_conditiongrid.RDS")
-
-conditiongrid[c(1:4, 7:9),] %>%
+conditiongrid <- conditiongrid[c(1:4,7:9),]
+conditiongrid %>%
   mutate(Model = c("NB + TF-IDF", "LR + D2V", "LR + TF-IDF", "RF + D2V", "RF + TF-IDF", "SVM + D2V", "SVM + TF-IDF" )) %>%
   mutate(Abbreviation = condition) %>%
-  select(Model, Abbreviation)
+  select(Model, Abbreviation) %>%
   kable(format = "markdown")
 ```
 The first letter denotes the classification strategy, NB, LR, RF, or SVM. The second letter stands for C of certainty sampling. The third letter denotes the feature extraction strategy, TF-IDF or Doc2vec. The fourth letter stands for D of Dynamic Resampling. 
