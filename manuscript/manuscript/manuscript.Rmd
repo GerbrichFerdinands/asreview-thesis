@@ -729,21 +729,7 @@ stabres <- readRDS("../../results/output/tabresults.RDS")
 ```
 
 ```{r}
-# measures for variation within 15 runs 
-#sumruns <- readRDS("../../results/output/sumruns.RDS")
-# tabruns <- sumruns %>%
-#   pivot_wider(names_from = dataset, values_from = c("mean_wss95","sd_wss95", "mean_wss99", "sd_wss99","mean_wss100","sd_wss100", "mean_rrf5","sd_rrf5", "mean_rrf10", "sd_rrf10", "mean_rrf20","sd_rrf20", "mean_loss", "sd_loss")) 
 
-# tabruns <- sumruns %>%
-#   select(dataset, model, mean_wss95, sd_wss95, mean_rrf10, sd_rrf10, mean_loss, sd_loss) 
-# 
-
-# wss95tab <- tabruns %>%
-#   select(dataset, model, mean_wss95, sd_wss95) %>%
-#   pivot_wider(names_from = dataset, values_from = c("mean_wss95","sd_wss95"))
-
-# wss95tab <- stabres %>%
-#   select(model, starts_with("wss.95")) 
 
 # table for in manuscript
 

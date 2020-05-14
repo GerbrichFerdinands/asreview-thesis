@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Processing simulation output"
 output: github_document
 ---
 
@@ -12,24 +12,29 @@ library(flextable)
 library(officer)
 ```
 
-Script for reading simulation files
-```{python}
-# to be found on harddrive results folder
-```
+This directory stores all files used to extract figures and statistics from the simulation study output.
+The directory contains the following:
 
-Script for reading results 
+- `extract_plots.ipynb`, a jupyter notebook producing recall curves from the simulation output (Figure 1 and 2 in the manuscript)
+- `extract_results.ipynb`, a jupyter notebook extracting `.json` files containing statistics from the simulation output (WSS, RRF, ATD in table 2, 3, and 4 in the manuscript)
+- `one_seed`, containing all plots and data produced by the two jupyter notebooks above.
+- `README.Rmd` containing R-code to transform the .json files into readable tables for the manuscript.
+- `output` contains the abovementioned tables, stored as .RDS files.  
+
+
+## Define functions for reading simulation output 
 ```{r}
 data <- readRDS("../simulation_study/R/00_datasets.RDS")
-models <- list.files("/Volumes/Gerbrich/asreview/results/one_seed/statistics/")
+models <-c("BCTD", "LCDD", "LCTD", "RCDD", "RCTD", "SCDD", "SCTD")
 names(models) <- c("NB + TF-IDF", "LR + D2V", "LR + TF-IDF", "RF + D2V", "RF + TF-IDF", "SVM + D2V", "SVM + TF-IDF" )
 
-# function that reads results for a model M 
+# function that reads results for all 15 runs
 read_results <- function(m){
-   files = list.files(paste0("/Volumes/Gerbrich/asreview/results/one_seed/statistics/", m), pattern = "all.json", recursive = TRUE)
+   files = list.files(paste0("one_seed/statistics/", m), pattern = "all.json", recursive = TRUE)
   # names of the files are the data
   names(files) <- str_split(files, "/", simplify = TRUE)[,1]
   # read data
-  dat <- lapply(files, function(x) fromJSON(file = paste0("/Volumes/Gerbrich/asreview/results/one_seed/statistics/", m, "/", x)))
+  dat <- lapply(files, function(x) fromJSON(file = paste0("one_seed/statistics/", m, "/", x)))
   
   # extract wss, rrf, and loss
   dat <- map(dat, `[`, c("wss", "rrf", "loss"))
@@ -44,15 +49,14 @@ read_results <- function(m){
   return(dat)
 }
 
+# function for extracting all separate runs 
 read_trials <- function(m){
-   files <- list.files(paste0("/Volumes/Gerbrich/asreview/results/one_seed/statistics/", m), pattern = "results_", recursive = TRUE, full.names=TRUE)
+   files <- list.files(paste0("one_seed/statistics/", m), pattern = "results_", recursive = TRUE, full.names=TRUE)
   # names of the files are the data
   names(files) <- str_split(files, "/", simplify = TRUE)[,9]
-  # read data
   
+  # read data
   dat <- lapply(files, function(x) fromJSON(file = x))
-  # dat <- lapply(models, list)
-  # dat <- lapply(files, function(x) fromJSON(file = paste0("/Volumes/Gerbrich/asreview/results/one_seed/statistics/", m, "/", x)))
   
   # extract wss, rrf, and loss
   dat <- map(dat, `[`, c("wss", "rrf", "loss"))
@@ -67,21 +71,23 @@ read_trials <- function(m){
   return(dat)
 }
 
+
+# ATD needs to be adjusted for 1 prior inclusion and 1 prior exclusion! 
+# compute adjusted ATD to make it equal to the area above the curve
 datastats <- readRDS("datastats.RDS") %>%
   select(Dataset, candidates_test, incl_test) %>%
+  # account for 1 prior exclusion and 1 prior inclusion
   mutate(n_1 = incl_test, n_excl = candidates_test-n_1, n_1_noprior = incl_test-1, candidates_noprior = candidates_test -1) %>%
   mutate(ratio = (n_1_noprior/n_1)/(candidates_noprior/candidates_test))
-# account for 1 prior exclusion 
 
 datastats$dataset <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
 atdratio <- datastats %>%
   select(dataset, ratio)
-
-
 ```
 
-
+## Load results for 15 separate trials
 ```{r}
+# read all 15 trials separately
 runs <- lapply(models, FUN = read_trials)
 
 # all in one dataframe
@@ -89,9 +95,8 @@ runs <- do.call("rbind", runs)
 
 # convert loss (ttd) to percentage 
 runs$loss <- runs$loss*100
-# adjust loss to N_1 : N_1-1
+# adjust loss to N_1 : N_1-1 (to the prior inclusions)
 runs <- left_join(runs, atdratio, by = "dataset")
-
 runs <- runs %>%
   mutate(loss = loss/ratio) %>%
   select(-ratio)
@@ -100,36 +105,10 @@ runs <- runs %>%
 saveRDS(runs, "output/runs.RDS")
 ```
 
+Compute standarad deviation from the 15 separate trials.
 ```{r}
-# compute standard devaition (bootstrapped)
-test <- 
-  runs %>%
-  select(dataset, model, wss.95, rrf.10, loss)
-
-# compute bootstrap statistics 
-library(boot)
-
-
-bootmeans <- function(d,i){
-  d2 <- d[i,]
-  
-  # result <- d2 %>%
-  #   group_by(model, dataset) %>%
-  #   summarise(meanwss = mean(wss.95),
-  #             meanrrf = mean(rrf.10), 
-  #             meanloss = mean(loss))
-  wss <- mean(d2[, "wss.95"])
-  rrf <- mean(d2[, "rrf.10"])
-  loss <- mean(d2[, "loss"])
-
-  return(c(wss,rrf,loss))
-}
-res <- boot(test, bootmeans, 1000)
-
-
-
-
-test <- 
+# compute standard deviation (bootstrapped)
+sdruns <- 
   runs %>%
   select(dataset, model, wss.95, rrf.10, loss) %>% 
   group_by(model, dataset) %>%
@@ -137,44 +116,10 @@ test <-
             sdrrf.10 = sd(rrf.10),
             sdloss = sd(loss))
 
-saveRDS(test, "output/sdruns.RDS")
+saveRDS(sdruns, "output/sdruns.RDS")
 ```
 
-
-```{r}
-# sumruns <- runs %>%
-#   group_by(dataset, model) %>%
-#   summarise(mean_wss95 = mean(wss.95),
-#             sd_wss95 = sd(wss.95), 
-#             mean_wss99 = mean(wss.99),
-#             sd_wss99= sd(wss.99),
-#             mean_wss100 = mean(wss.100),
-#             sd_wss100 = sd(wss.100), 
-#             mean_rrf5 = mean(rrf.5),
-#             sd_rrf5 = sd(rrf.5),
-#             mean_rrf10 = mean(rrf.10),
-#             sd_rrf10 = sd(rrf.10), 
-#             mean_rrf20 = mean(rrf.20),
-#             sd_rrf20 = sd(rrf.20),
-#             mean_loss = mean(loss),
-#             sd_loss = sd(loss)) %>%
-#   arrange(mean_loss) 
-
-# saveRDS(sumruns, "output/sumruns.RDS")
-```
-
-Parse 
-```{r, eval = FALSE}
-dat$virus
-# extract only wss, rrf, and loss values from list
-test <- map(dat, `[`, c("wss", "rrf", "loss"))
-# transorm into dataframe
-test <- map_dfr(test, ~ as.data.frame(.x), .id = "dataset")
-# add model name
-test <- test %>% mutate(model = "NB + TF-IDF")
-```
-
-Apply over all datasets and models 
+## Load results as means over all 15 trials  
 ```{r}
 # extract results for all models
 # list for models separately
@@ -182,7 +127,6 @@ results <- lapply(models, read_results)
 
 # all in one dataframe
 results <- do.call("rbind", results)
-
 
 # convert loss (ttd) to percentage 
 results$loss <- results$loss*100
@@ -195,114 +139,23 @@ results <- results %>%
 
 # save results file 
 saveRDS(results, "output/results.RDS")
-
-
-results %>%
-  group_by(dataset) %>%
-  arrange(loss)
 ```
 
-Create table
+Create table for manuscript (all means over 15 runs)
 ```{r}
-
 tabres <- 
   results %>%
   pivot_wider(names_from = dataset, values_from = c("wss.95", "wss.99", "wss.100", "rrf.5", "rrf.10", "rrf.20", "loss"))
 
-
-```
-
-```{r}
-
-test <- results %>% pivot_longer(cols = c(starts_with("wss"), starts_with("rrf"), "loss"), names_to = "stats", values_to = "value")
-
-library(expss)
-tab <- 
-  test %>%
-  tab_rows(model) %>%
-  tab_cells(value) %>%
-  tab_cols(dataset %nest% stats) %>%
-  tab_stat_mean() %>%
-  tab_pivot()
-
-```
-
-```{r}
-tabres %>%
-  select(model, starts_with("wss.95"), starts_with("loss"))
-
-gtest <- tabres %>%
-  gt()
-
-gtest <- results %>%
-  gt() 
-  
-  
-```
-```{r}
-
-metricsat <- c("WSS@95", "WSS@99", "WSS@100", "RRF@5", "RRF@10", "RRF@20", "ATD")
-metrics <- c("WSS", "RRF", "TTD")
-at <- c("95", "99", "100", "5", "10", "20", "0")
-
-typology <- data.frame(
-  col_keys = names(tabres)[2:43],
-  what = rep(data,7),
-  measure = rep(metricsat, each = 6),
-  what = c(rep("WSS", 18), rep("RRF", 18), rep("ttd", 6)),
-  measure = c(rep(c("@95", "@99", "@100"), each = 6), rep(c("@5", "@10", "@20"), each = 6), rep("", 6)),
-  stringsAsFactors = FALSE
-)
-
-
-test <- flextable(tabres)
-test <- set_header_df(test, mapping = typology, key = "col_keys")
-test <- merge_h(test, part = "header")
-
-test <- merge_v(test, part = "header")
-
-test <- theme_booktabs(test)
-test <- autofit(test)
-test <- fix_border_issues(test)
-```
-
-```{r}
-# reorder columns in tabres
-# which of the vars do we need? 
-
-# select_and_shuffle <- function(metrics, tab){
-#   # metrics we got 
-#   metricsat <- c("WSS@95", "WSS@99", "WSS@100", "RRF@5", "RRF@10", "RRF@20", "ATD")
-#   # which metrics we want 
-#   selector <- which(metricsat %in% metrics)
-#   selector <- selector + 1
-#   # sequence to reorder 
-#   print(selector)
-#   selector <- matrix(selector)
-#   seqq <- apply(selector, 1, function(x) seq(x, 43, 6))
-#   
-#   seqq <- do.call("c", seqq)
-#   print(seqq)
-#   # reorder the selected columns
-#   tab <- tab[, c(1, seqq)]
-#   
-#   return(tab)
-#   
-# }
-# 
-# tabres[, c(1, c(apply(matrix(2:7), 1, function(x) seq(x, 43, 6))))]
-# 
-# metri <- metricsat[c(1,5,7)]
-```
-
-
-```{r}
+# table of mean statistics over all runs 
 stabres <- 
 tabres %>%
+  # select statistics
   select(model,
          starts_with("wss.95"),
          starts_with("rrf.10"), 
          starts_with("loss")) %>%
+  # reorder datasets
   select(model,
          ends_with("nudging"),
          ends_with("ptsd"),
@@ -313,60 +166,7 @@ tabres %>%
          )
 
 saveRDS(stabres, "output/tabresults.RDS")
-```
 
-
-```{r}
-metricsat <- c("WSS@95", "RRF@10", "TTD")
-metrics <- c("WSS", "RRF", "TTD")
-at <- c("@95", "@10", "")
-
-
-Data <- c("Ace", "Nudging", "PTSD", "Software", "Virus", "Wilson")
-
-typology <- data.frame(
-  col_keys = names(stabres)[2:19],
-  what = rep(Data, each = length(metrics)),
-  #measure = rep(metricsat, each = 6),
-  what = rep(c(rep("WSS@95"), rep("RRF@10"), rep("TTD")), 6),
-  #measure = c(rep(c("@95", "@10", ""), each = 6)),
-  stringsAsFactors = FALSE
-)
-num_keys <- names(stabres)[2:19]
-test <- flextable(stabres)
-# format numbers
-test <- colformat_num(x = test, j = num_keys, big.mark = ",", digits = 2, na_str = "missing")
-test <- colformat_char(x=test, j = "model")
-# set all columns 
-test <- set_header_df(test, mapping = typology, key = "col_keys")
-
-
-test <- merge_h(test, part = "header")
-
-#border_v = fp_border(color="purple")
-#test <- border_inner_v(test, part="all", border = border_v )
-test <- merge_v(test, part = "header")
-test <- theme_booktabs(test)
-test <- autofit(test, add_w = 0.2)
-test <- fix_border_issues(test)
-
-
-test <- align(test, align = "left", part = "all" )
-
-```
-
-```{r}
-# make table for only ace
-
-# add ptsd logistic + tf-idf 
-ptsd_lctd <- fromJSON(file = paste0("/Volumes/Gerbrich/asreview/results/one_seed/statistics/LCTD/ptsd/seed_lctd_ptsd_.json"))
-ptsd_lctd <- ptsd_lctd$.
-ptsd_lctd$wss
-```
-
-Now again for with seed 
-```{r}
-#files = list.files("/Volumes/Gerbrich/asreview/results/one/statistics/", recursive = TRUE)
-
+knitr::kable(stabres, format = "markdown", digits = 1)
 ```
 
