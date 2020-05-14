@@ -24,7 +24,7 @@ The current readme file analyzes the hyperparameter optimization process (stored
 If you have no access to Cartesius, you can still run optimization trials on your own device. For example, for optimizing the NB + TF-IDF model on the ace dataset for 12 hours, run the following command in your bash terminal: 
 
 ```{bash, eval = FALSE}
-asreview hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d ace
+asreview hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d ../../datasets/test_datasets/ace
 ```
 
 This will create a file structure `output/active/nb_max_double_tfidf/ace`. To create a configuration file from your optimized trials, run:

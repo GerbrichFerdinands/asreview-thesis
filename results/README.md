@@ -15,7 +15,10 @@ from the simulation study output. The directory contains the following:
     tables before they are manuscript-ready.
   - `README.Rmd` containing R-code to transform the `.json` files into
     readable tables for the manuscript.
-  - `output` contains the abovementioned tables, stored as `.RDS` files.
+  - `output` contains the abovementioned tables, stored as `.RDS`
+    files.  
+  - the `datastats.RDS` is used in the analyses to compute adjusted ATD
+    values (see code below)
 
 # Requirements
 
@@ -32,7 +35,35 @@ package. Run the following in your terminal:
 
 And then, within the newly created directory, the following:
 
+# Reproduce data extraction
+
+To reproduce the results, follow the steps below. If you do not want to
+download the raw simulation output, start at step 3:
+
+1.  Run all code in the `extract_plots.ipynb` notebook to create all
+    plots. This requires having the raw simulation data, to be found on
+    the OSF (<https://osf.io/7mr2g/> and <https://osf.io/ag2xp/>). Note
+    that you will need to adjust the paths to where you’ve stored the
+    simulation output on your local computer. Also, note that creating
+    figures can take quite some time, depending on your computer. Mine
+    took from 30 minutes to 5 hours per figure The final figures can be
+    found in the `one_seed/plots` directory.
+2.  Run all code in the `extract_results.ipynb` to extract the metrics
+    WSS, RRF and ATD from the raw simulation data. Note that you will
+    need to adjust the paths to where you’ve stored the simulation
+    output on your local computer. Also, note that extracting all
+    results will take quite some time, depending on your computer. Mine
+    took 48 hours. The results are stored in the `one_seed/plots`
+    directory.
+3.  Follow the preprocessing steps in the `README.Rmd` files to create
+    tables for in the manuscript, stored in the `output` directory.
+
 ## Define functions for reading simulation output
+
+The ATD values need to be adjusted for prior inclusions and exclusions
+as the computation does not take into account that prior to the active
+learning cycle, already 1 inclusion and 1 exclusion have been labelled
+‘for free’.
 
 ## Load results for 15 separate trials
 

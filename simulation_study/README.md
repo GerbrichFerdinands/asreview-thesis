@@ -4,20 +4,26 @@ Simulation study scripts
 This directory contains all steps taken in hyperparameter optimization
 and simulating automated systematic reviews.
 
+# Content
+
+This repository contains:
+
+  - `hpoptimization` documentation on how hyperparameters were optimized
+    plus the resulting parameters.
+  - `simulation` documentation on how the models were simulated on the
+    systematic review datasets.
+  - `R` containing R-scripts called upon in the current readme, to
+    structure the whole simulation process.
+
+To reproduce the research, first follow the steps in `hpoptimization`,
+then those in `simulation`. If you wish to skip the hyperparameter
+optimization step, this is possible since the results of the
+hyperparameter optimization are available in this repository.
+
 # Models
 
 We are simulating 7 models on 6 systematic review datasets. Each model
 has an abbreviation to ease the programming process:
-
-``` r
-conditiongrid <- readRDS("R/00_conditiongrid.RDS")
-conditiongrid <- conditiongrid[c(1:4,7:9),]
-conditiongrid %>%
-  mutate(Model = c("NB + TF-IDF", "LR + D2V", "LR + TF-IDF", "RF + D2V", "RF + TF-IDF", "SVM + D2V", "SVM + TF-IDF" )) %>%
-  mutate(Abbreviation = condition) %>%
-  select(Model, Abbreviation) %>%
-  kable(format = "markdown")
-```
 
 | Model        | Abbreviation |
 | :----------- | :----------- |
@@ -63,7 +69,6 @@ git clone https://github.com/GerbrichFerdinands/asreview-thesis-simulation.git
 And then, within the newly created directory, the following:
 
 ``` bash
-# install visualization package 
 pip install . 
 ```
 

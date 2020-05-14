@@ -247,7 +247,6 @@ names(sctd) <- c("8025808", "8025809", "8025810")
 createLines("SCTD", "ptsd", "one") # 8066095
 createLines("SCTD", "software", "one")
 ```
-
 ---
 
 23.04.2020

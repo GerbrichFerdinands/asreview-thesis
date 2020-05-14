@@ -1,5 +1,5 @@
-Optimizing Hyperparameters
-==========================
+Hyperparameter Optimization
+===========================
 
 To every model belongs a unique set of hyperparameters. To maximize
 model performance, we need to find optimal values for the
@@ -9,9 +9,57 @@ by running several hundreds of optimization trials, in which
 hyperparameter values are sampled from their possible parameter space.
 
 Maximum model performance is defined as the average time it takes to
-find an inclusion in the data, or more specific: the loss function
+find an inclusion in the data, ATD, or more specific: the loss function
 minimizes the average number of papers needed to screen to find an
-inclusion (eg the area above the curve in the inclusion plot).
+inclusion (the area above the curve in the inclusion plot).
+
+### Content
+
+The `scripts` folder contains all scripts run on the Cartesius
+supercomputer. The `log.Rmd` file tracks when all these scripts were
+executed and connects them to a jobID on Cartesius (just for
+documentation).
+
+The `trials` folder transforms the raw data into smaller datafiles,
+containing the results of the hyperparameter optimization. As mentioned
+in the readme of the root directory, the raw files cannot be published
+on the OSF yet, however these raw datafiles should yield enough
+information for the time being.
+
+The `config` folder contains configuration files containing all sets of
+optimal hyperparameters. This file format is necessary for running
+simulations later on.
+
+The current readme file analyzes the hyperparameter optimization process
+(stored in `trials`), and creates the visual inspection of the
+hyperparameters given below.
+
+`README_files` stores the figures displayed in the current readme.
+
+### Running optimization trials
+
+If you have no access to Cartesius, you can still run optimization
+trials on your own device. For example, for optimizing the NB + TF-IDF
+model on the ace dataset for 12 hours, run the following command in your
+bash terminal:
+
+``` bash
+asreview hyper-active -t 12:00:00 -m nb -b double -e tfidf -q max -d ../../datasets/test_datasets/ace
+```
+
+This will create a file structure
+`output/active/nb_max_double_tfidf/ace`. To create a configuration file
+from your optimized trials, run:
+
+``` bash
+asreview create-config output/active/nb_max_double_tfidf/ace/trials.pkl
+```
+
+For more information, check out
+<a href="https://github.com/asreview/asreview-hyperopt" class="uri">https://github.com/asreview/asreview-hyperopt</a>.
+
+Optimizing Hyperparameters
+==========================
 
 The optimization data d consists of (a subset from) the six systematic
 review datasets D mentioned above. Three different approaches in
@@ -24,8 +72,8 @@ composing d are explored:
     This optimization approach intends to serve in producing the most
     optimal hyperparameters overall.
 -   **n-1**, where hyperparameters are optimized on all six datasets but
-    one. Serving as a sensitivity analysis for the former condition, eg
-    how sensitive are the hyperparamters to different data sets.
+    one. Serving as a sensitivity analysis for the former condition,
+    e.g. how sensitive are the hyperparamters to different data sets.
 
 This results in 6+6+1=13 sets of hyperparameters for every model.
 Optimization trials were visually inspected to check if an optimum
@@ -38,20 +86,14 @@ thesis. The remaining sets of hyperparameters will be used in a future
 project. The `config` folder contains stores all sets of
 hyperparameters.
 
-The current readme file preprocesses the hyperparameters into an `.RDS`
-file for a visual inspection of the hyperparameters given below.
-
-Results
--------
-
-Loss plots: Two times the same data, first plot is over trials, second
-sorted from highest to lowest loss.
-
-Hyperparameters on a continuous scale are plotted as dots in a
-scatterplot. Discrete hyperparameters are displayed in a barplot
-
-Conclusions: - loss is going down over trials - some datasets go down
-faster - some datasets go down more
+<!-- ## Results -->
+<!-- Loss plots: Two times the same data, first plot is over trials, second sorted from highest to lowest loss. -->
+<!-- Hyperparameters on a continuous scale are plotted as dots in a scatterplot.  -->
+<!-- Discrete hyperparameters are displayed in a barplot -->
+<!-- Conclusions:  -->
+<!-- - loss is going down over trials  -->
+<!-- - some datasets go down faster -->
+<!-- - some datasets go down more  -->
 
 Naive Bayes + TF-IDF
 ====================
@@ -59,7 +101,7 @@ Naive Bayes + TF-IDF
 Loss plots
 ----------
 
-![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)![](README_files/figure-markdown_github/unnamed-chunk-2-2.png)
+![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)![](README_files/figure-markdown_github/unnamed-chunk-4-2.png)
 
 Hyperparameter values
 ---------------------

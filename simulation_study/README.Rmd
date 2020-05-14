@@ -13,10 +13,18 @@ library(kableExtra)
 source("R/functions.R")
 #source("R/00_condition_grid.R")
 ```
+# Content 
+This repository contains:
+
+- `hpoptimization` documentation on how hyperparameters were optimized plus the resulting parameters.
+- `simulation` documentation on how the models were simulated on the systematic review datasets. 
+- `R` containing R-scripts called upon in the current readme, to structure the whole simulation process. 
+
+To reproduce the research, first follow the steps in `hpoptimization`, then those in `simulation`. If you wish to skip the hyperparameter optimization step, this is possible since the results of the hyperparameter optimization are available in this repository.  
 
 # Models 
 We are simulating 7 models on 6 systematic review datasets. Each model has an abbreviation to ease the programming process: 
-```{r, eval = TRUE}
+```{r, eval = TRUE, echo = FALSE}
 conditiongrid <- readRDS("R/00_conditiongrid.RDS")
 conditiongrid <- conditiongrid[c(1:4,7:9),]
 conditiongrid %>%
@@ -44,7 +52,6 @@ git clone https://github.com/GerbrichFerdinands/asreview-thesis-simulation.git
 
 And then, within the newly created directory, the following:
 ```{bash, eval = FALSE}
-# install visualization package 
 pip install . 
 ```
 
