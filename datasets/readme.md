@@ -4,13 +4,13 @@ Preprocessing datasets
 This notebook processes six systematic review datasets into datasets
 suitable for simulating the screening process.
 
-  - **Wilson** - (Appenzeller-Herzog 2020) is on a review on
-    effectiveness and safety of treatments of Wilson Disease, a rare
-    genetic disorder of copper metabolism (Appenzeller‐Herzog et al.
-    2019).
+  - **Wilson** - is on a review on effectiveness and safety of
+    treatments of Wilson Disease, a rare genetic disorder of copper
+    metabolism. Dataset: (Appenzeller-Herzog 2020). Paper:
+    (Appenzeller‐Herzog et al. 2019).
   - **Ace** - contains publications on the efficacy of
     Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for
-    heart disease (Cohen et al. 2006).
+    heart disease Paper and dataset: (Cohen et al. 2006).
   - **Virus** - is from a systematic review on studies that performed
     viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals
     (Kwok et al. 2020).
@@ -42,13 +42,23 @@ was the only information that was available. For hyperparameter
 optimization I used all information accessible to arrive at better
 hyperparameters, with future projects in mind.
 
-### Set-up
+### Preprocessing datasets
 
-## ACE
+For every datasets, 3 numbers are given: total number of publications,
+abstract inclusions and final inclusions. For some datasets there are
+discrepancies between how these numbers are reported in the publication
+and how they actually are in the raw dataset. Therefore, these numbers
+are given for how they are reported in the manuscript, how they are
+found in the raw data, and how they are found in the test dataset,
+e.g. after removing duplicates and missing abstracts. Moreover,
+statistics on missingness and duplicates are given.
+
+## Ace dataset
 
 ``` r
 ace <- template
-# paper ------------------------------------------------------------------------
+
+# information given in the paper -----------------------------------------------
 ace["paper", ] <- c(2544, NA, round(2544*0.0160)) 
 
 # raw --------------------------------------------------------------------------
@@ -57,11 +67,15 @@ ace["paper", ] <- c(2544, NA, round(2544*0.0160))
 #https://dmice.ohsu.edu/cohenaa/systematic-drug-class-review-data.html
 ace["raw", ] <- c(2544, NA, 41)
 
-# asreview ---------------------------------------------------------------------
+# asreview dataset -------------------------------------------------------------
 ace_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Cohen_EBM/output/ACEInhibitors.csv",
                      header=T)
-# replace empty abstracts by NA values. 
+```
 
+### Create test dataset
+
+``` r
+# replace empty abstracts by NA values. 
 ace_asr[ace_asr$abstract == "", "abstract"] <- NA
 # stats on missingness in this data
 drops["ace",] <- ace_asr %>%
@@ -74,11 +88,7 @@ drops["ace",] <- ace_asr %>%
 ace["asreview", ] <- c(nrow(ace_asr),
                        NA,
                        sum(ace_asr$label_included))
-```
 
-### Create test dataset
-
-``` r
 # drop missings and duplicates. 
 ace_test <- ace_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
@@ -92,25 +102,23 @@ ace["test", ] <- c(nrow(ace_test),
 
 ### Some statistics
 
-``` r
-# missingness and duplicates in raw data on ASReview
-drops["ace",]
-```
+On missingness (\# and %) and duplicates (\# and %):
 
-    ##        n  na   narate dup duprate
-    ## ace 2544 309 12.14623   0       0
+|     |    n |  na | narate | dup | duprate |
+| :-- | ---: | --: | -----: | --: | ------: |
+| ace | 2544 | 309 |  12.15 |   0 |       0 |
 
-``` r
-ace
-```
+On total number of publications, abstract inclusions (this information
+was not available for this dataset) and final inclusions.
 
-    ##          search ftext incl
-    ## paper      2544    NA   41
-    ## raw        2544    NA   41
-    ## asreview   2544    NA   41
-    ## test       2235    NA   41
+|          | search | ftext | incl |
+| :------- | -----: | ----: | ---: |
+| paper    |   2544 |    NA |   41 |
+| raw      |   2544 |    NA |   41 |
+| asreview |   2544 |    NA |   41 |
+| test     |   2235 |    NA |   41 |
 
-## nudging dataset
+## Nudging dataset
 
 ``` r
 # by Rosanna Nagtegaal
@@ -147,26 +155,23 @@ nudging_test <- n_raw %>%
 nudging["test", ] <- data_descr(nudging_test)
 ```
 
-### Create test dataset
-
 ### Some statistics
 
-``` r
-drops["nudging",]
-```
+On missingness (\# and %) and duplicates (\# and %):
 
-    ##            n  na  narate dup   duprate
-    ## nudging 2019 169 8.37048   3 0.1485884
+|         |    n |  na |  narate | dup |   duprate |
+| :------ | ---: | --: | ------: | --: | --------: |
+| nudging | 2019 | 169 | 8.37048 |   3 | 0.1485884 |
 
-``` r
-nudging
-```
+On total number of publications, abstract inclusions (this information
+was not available for this dataset) and final inclusions.
 
-    ##          search ftext incl
-    ## paper      2006   377  100
-    ## raw           0     0    0
-    ## asreview      0     0    0
-    ## test       1847   382  100
+|          | search | ftext | incl |
+| :------- | -----: | ----: | ---: |
+| paper    |   2006 |   377 |  100 |
+| raw      |      0 |     0 |    0 |
+| asreview |      0 |     0 |    0 |
+| test     |   1847 |   382 |  100 |
 
 ## PTSD dataset
 
@@ -235,24 +240,23 @@ ptsd_test <- ptsd_test %>%
 ptsd["test", ] <- data_descr(ptsd_test)
 ```
 
-Derive statistics in final test set.
+### Some statistics
 
-``` r
-drops["ptsd", ]
-```
+On missingness (\# and %) and duplicates (\# and %):
 
-    ##         n na narate dup  duprate
-    ## ptsd 5782  0      0 750 12.97129
+|      |    n | na | narate | dup |  duprate |
+| :--- | ---: | -: | -----: | --: | -------: |
+| ptsd | 5782 |  0 |      0 | 750 | 12.97129 |
 
-``` r
-ptsd
-```
+On total number of publications, abstract inclusions (this information
+was not available for this dataset) and final inclusions.
 
-    ##          search ftext incl
-    ## paper      6185   363   38
-    ## raw           0     0    0
-    ## asreview   5782   356   38
-    ## test       5031   328   38
+|          | search | ftext | incl |
+| :------- | -----: | ----: | ---: |
+| paper    |   6185 |   363 |   38 |
+| raw      |      0 |     0 |    0 |
+| asreview |   5782 |   356 |   38 |
+| test     |   5031 |   328 |   38 |
 
 ## software dataset
 
@@ -291,8 +295,6 @@ hall_test <- hall_test %>% # add id
 hall["test", ] <- data_descr(hall_test)
 ```
 
-### Statistics
-
 ``` r
 drops["software", ] <- 
   hall_asr %>%
@@ -301,15 +303,25 @@ drops["software", ] <-
                     narate = sum(is.na(abstract))/length(abstract)*100,
                     dup = sum(duplicated(abstract, incomparables = NA)),
                     duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
-
-hall
 ```
 
-    ##          search ftext incl
-    ## paper      8911    NA  104
-    ## raw        8911    NA  104
-    ## asreview   8911    NA  104
-    ## test       8896    NA  104
+### Some statistics
+
+On missingness (\# and %) and duplicates (\# and %):
+
+|    |  n | na | narate | dup | duprate |
+| :- | -: | -: | -----: | --: | ------: |
+| NA | NA | NA |     NA |  NA |      NA |
+
+On total number of publications, abstract inclusions (this information
+was not available for this dataset) and final inclusions.
+
+|          | search | ftext | incl |
+| :------- | -----: | ----: | ---: |
+| paper    |   8911 |    NA |  104 |
+| raw      |   8911 |    NA |  104 |
+| asreview |   8911 |    NA |  104 |
+| test     |   8896 |    NA |  104 |
 
 ## Virus dataset
 
@@ -336,6 +348,24 @@ v_test <- v_raw %>%
 
 virus["test",] <- data_descr(v_test)
 ```
+
+### Some statistics
+
+On missingness (\# and %) and duplicates (\# and %):
+
+|       |    n |  na |   narate | dup |   duprate |
+| :---- | ---: | --: | -------: | --: | --------: |
+| virus | 2481 | 176 | 7.093914 |   1 | 0.0403063 |
+
+On total number of publications, abstract inclusions (this information
+was not available for this dataset) and final inclusions.
+
+|          | search | ftext | incl |
+| :------- | -----: | ----: | ---: |
+| paper    |   2481 |   132 |  120 |
+| raw      |   2481 |    NA |  120 |
+| asreview |      0 |     0 |    0 |
+| test     |   2304 |    NA |  114 |
 
 ## Wilson dataset
 
@@ -376,24 +406,23 @@ w_test <- w_asr %>%
 wilson["test",] <- data_descr(w_test)
 ```
 
-Statistics
+### Some statistics
 
-``` r
-drops["wilson",]
-```
+On missingness (\# and %) and duplicates (\# and %):
 
-    ##           n   na  narate dup  duprate
-    ## wilson 3437 1090 31.7137  14 0.407332
+|        |    n |   na |  narate | dup |  duprate |
+| :----- | ---: | ---: | ------: | --: | -------: |
+| wilson | 3437 | 1090 | 31.7137 |  14 | 0.407332 |
 
-``` r
-wilson
-```
+On total number of publications, abstract inclusions (this information
+was not available for this dataset) and final inclusions.
 
-    ##          search ftext incl
-    ## paper      3453   174   26
-    ## raw        3453   174   26
-    ## asreview   3437   174   26
-    ## test       2333   155   23
+|          | search | ftext | incl |
+| :------- | -----: | ----: | ---: |
+| paper    |   3453 |   174 |   26 |
+| raw      |   3453 |   174 |   26 |
+| asreview |   3437 |   174 |   26 |
+| test     |   2333 |   155 |   23 |
 
 # Save descriptive statistics on all datasets
 
@@ -408,7 +437,6 @@ all <- list(Ace = ace,
 
 # save datafile, to serve as data for descriptive table in manuscript
 saveRDS(all, file = "data_statistics/all.RDS")
-
 saveRDS(drops, file = "data_statistics/drops.RDS")
 ```
 

@@ -113,7 +113,7 @@ ace["test", ] <- c(nrow(ace_test),
 
 ### Some statistics 
 On missingness (# and %) and duplicates (# and %): 
-```{r, echo = false}
+```{r, echo = FALSE}
 # missingness and duplicates in raw data on ASReview
 drops["ace",] %>% knitr::kable(format = "markdown", digits = 2)
 ```
@@ -391,8 +391,6 @@ On total number of publications, abstract inclusions (this information was not a
 ```{r, echo = FALSE}
 wilson %>% knitr::kable(format = "markdown")
 ```
-
-
 
 # Save descriptive statistics on all datasets
 
