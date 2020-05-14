@@ -7,16 +7,38 @@ from the simulation study output. The directory contains the following:
   - `extract_plots.ipynb`, a jupyter notebook producing recall curves
     from the simulation output (Figure 1 and 2 in the manuscript)
   - `extract_results.ipynb`, a jupyter notebook extracting `.json` files
-    containing statistics from the simulation output (WSS, RRF, ATD)
-  - `one_seed`, containing all plots and statistics produced by the two
-    jupyter notebooks above.
-  - `README.Rmd` containing R-code to transform the .json files into
+    containing statistics from the `.h5` simulation output (WSS, RRF,
+    ATD in table 2, 3, and 4 in the manuscript)
+  - `one_seed`, containing all plots and `.json` statistics files
+    produced by the two jupyter notebooks above. The plots are used in
+    the manuscript, the data are further processed by this readme into
+    tables before they are manuscript-ready.
+  - `README.Rmd` containing R-code to transform the `.json` files into
     readable tables for the manuscript.
-  - `output` contains the abovementioned tables, stored as .RDS files.
+  - `output` contains the abovementioned tables, stored as `.RDS` files.
 
-Script for reading results
+# Requirements
 
-Apply over all datasets and models
+Extracing data from the simulation output requires having several
+packages installed, like ASReview version 0.9.3 \[@ASReview2020\]. All
+these requirements are listed in the `requirements.txt` file. If you’ve
+already installed this file in the `simulation_study` step, please skip
+this. If not, you can run the following in your terminal to install all
+requirements:
+
+Additionally, to create the plots and statistics in the manuscript you
+will need to install a specific branch of the asreview visualization
+package. Run the following in your terminal:
+
+And then, within the newly created directory, the following:
+
+## Define functions for reading simulation output
+
+## Load results for 15 separate trials
+
+Compute standarad deviation from the 15 separate trials.
+
+## Load results as means over all 15 trials
 
 Create table for manuscript (all means over 15 runs)
 
