@@ -23,11 +23,11 @@ from the simulation study output. The directory contains the following:
 # Requirements
 
 Extracing data from the simulation output requires having several
-packages installed, like ASReview version 0.9.3 \[@ASReview2020\]. All
-these requirements are listed in the `requirements.txt` file. If you’ve
-already installed this file in the `simulation_study` step, please skip
-this. If not, you can run the following in your terminal to install all
-requirements:
+packages installed, like ASReview version 0.9.3 (van de Schoot et al.
+2020). All these requirements are listed in the `requirements.txt` file.
+If you’ve already installed this file in the `simulation_study` step,
+please skip this. If not, you can run the following in your terminal to
+install all requirements:
 
 Additionally, to create the plots and statistics in the manuscript you
 will need to install a specific branch of the asreview visualization
@@ -82,3 +82,18 @@ Create table for manuscript (all means over 15 runs)
 | RF + TF-IDF  |            64.9 |            53.6 |          11.8 |         84.5 |         94.8 |        3.4 |             90.5 |             99.0 |            2.0 |        71.3 |        82.3 |       7.0 |          63.9 |          62.1 |        10.6 |           81.6 |           86.7 |          5.9 |
 | SVM + D2V    |            70.9 |            67.3 |           8.9 |         90.6 |         97.8 |        2.1 |             92.0 |             99.3 |            1.4 |        78.3 |        84.2 |       6.2 |          70.7 |          73.6 |         8.5 |           82.7 |           91.5 |          4.7 |
 | SVM + TF-IDF |            66.2 |            60.2 |          10.2 |         91.0 |         98.6 |        2.1 |             92.0 |             99.0 |            1.9 |        75.8 |        86.2 |       7.3 |          69.7 |          73.4 |         8.5 |           79.9 |           90.6 |          4.2 |
+
+# References
+
+<div id="refs" class="references hanging-indent">
+
+<div id="ref-ASReview2020">
+
+Schoot, Rens van de, Jonathan de Bruin, Raoul Schram, Parisa Zahedi,
+Bianca Kramer, Gerbrich Ferdinands, Albert Harkema, Qixiang Fang, and
+Daniel Oberski. 2020. “ASReview: Active Learning for Systematic
+Reviews,” April. <https://doi.org/10/ggssnj>.
+
+</div>
+
+</div>

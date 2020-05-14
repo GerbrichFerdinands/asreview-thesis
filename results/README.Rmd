@@ -1,6 +1,7 @@
 ---
 title: "Processing simulation output"
 output: github_document
+bibliography: ../manuscript/manuscript/asreview.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -172,7 +173,7 @@ saveRDS(results, "output/results.RDS")
 ```
 
 Create table for manuscript (all means over 15 runs)
-```{r}
+```{r, results = "asis"}
 tabres <- 
   results %>%
   pivot_wider(names_from = dataset, values_from = c("wss.95", "wss.99", "wss.100", "rrf.5", "rrf.10", "rrf.20", "loss"))
@@ -200,3 +201,4 @@ saveRDS(stabres, "output/tabresults.RDS")
 knitr::kable(stabres, format = "markdown", digits = 1)
 ```
 
+# References

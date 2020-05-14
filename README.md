@@ -1,9 +1,10 @@
 # Archive "Active learning for efficient systematic reviews"
-Gerbrich Ferdinands, 14-05-2020, Version 1.0.0
-Data collection and simulation period: January - May 2020
-Manuscript handed in on 11-05-2020
-
 This repository contains the research archive accompanying my Master's thesis project, "_Active learning for efficient systematic reviews: Evaluating models across research areas_". 
+
+- Author: Gerbrich Ferdinands, 14-05-2020
+- Version 1.0.0
+- Data collection and simulation period: January - May 2020
+- Manuscript handed in on 11-05-2020
 
 # Content
 This archive is organized as such that it follows the steps needed to reproduce the study that was carried out:
