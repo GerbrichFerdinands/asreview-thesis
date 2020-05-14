@@ -4,7 +4,7 @@ output: github_document
 bibliography: ../manuscript/manuscript/asreview.bib
 ---
 
-This notebook processes six systematic review datasets into datasets suitable for simulating the screening process. 
+This notebook processes six systematic review datasets into datasets suitable for simulating the screening process. The source code for this notebook can be found in the `readme.Rmd` file. 
 
 - __Wilson__ - is on a review on effectiveness and safety of treatments of Wilson Disease, a rare genetic disorder of copper metabolism. Dataset: [@Appenzeller-Herzog2020]. Paper: [@Appenzeller-Herzog2019]. 
 - __Ace__ -  contains publications on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for heart disease Paper and dataset: [@Cohen2006]. 

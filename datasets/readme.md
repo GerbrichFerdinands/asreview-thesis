@@ -2,7 +2,8 @@ Preprocessing datasets
 ================
 
 This notebook processes six systematic review datasets into datasets
-suitable for simulating the screening process.
+suitable for simulating the screening process. The source code for this
+notebook can be found in the `readme.Rmd` file.
 
   - **Wilson** - is on a review on effectiveness and safety of
     treatments of Wilson Disease, a rare genetic disorder of copper

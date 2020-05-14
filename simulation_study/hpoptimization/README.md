@@ -33,14 +33,32 @@ Optimization trials were visually inspected to check if an optimum
 seemed to go down at a quick pace. The hyperparameter sets that were
 found to lead to a minimum loss value were visually inspected.
 
+The **one** hyperparameters are used in the simulations of the current
+thesis. The remaining sets of hyperparameters will be used in a future
+project. The `config` folder contains stores all sets of
+hyperparameters.
+
+The current readme file preprocesses the hyperparameters into an `.RDS`
+file for a visual inspection of the hyperparameters given below.
+
+Results
+-------
+
+Loss plots: Two times the same data, first plot is over trials, second
+sorted from highest to lowest loss.
+
+Hyperparameters on a continuous scale are plotted as dots in a
+scatterplot. Discrete hyperparameters are displayed in a barplot
+
+Conclusions: - loss is going down over trials - some datasets go down
+faster - some datasets go down more
+
 Naive Bayes + TF-IDF
 ====================
 
 Loss plots
 ----------
 
-Two times the same data, first plot is over trials, second sorted from
-highest to lowest loss.
 ![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)![](README_files/figure-markdown_github/unnamed-chunk-2-2.png)
 
 Hyperparameter values

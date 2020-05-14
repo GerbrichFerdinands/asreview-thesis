@@ -28,6 +28,24 @@ The optimization data d consists of (a subset from) the six systematic review da
 
 This results in 6+6+1=13 sets of hyperparameters for every model. Optimization trials were visually inspected to check if an optimum (minimal loss) has been reached. More trials were run if the loss still seemed to go down at a quick pace. The hyperparameter sets that were found to lead to a minimum loss value were visually inspected.
 
+The __one__ hyperparameters are used in the simulations of the current thesis. The remaining sets of hyperparameters will be used in a future project. The `config` folder contains stores all sets of hyperparameters. 
+
+
+## Content
+The `scripts` folder contains all scripts run on the Cartesius supercomputer. The `log.Rmd` file tracks when all these scripts were executed and connects them to a jobID on Cartesius (just for documentation).
+
+The `trials` folder transforms the hyperparameter output  
+
+The `config` folder contains all sets of optimal hyperparameters. 
+
+The current readme file preprocesses the optimal hyperparameters into an `.RDS` file for a visual inspection of the hyperparameters given below. 
+
+If you have no access to Cartesius you can run optimization trials on your own device by running the following type of commands: 
+
+```{bash, eval = FALSE}
+
+```
+
 ```{r functions}
 php <- function(data){
   data %>%
