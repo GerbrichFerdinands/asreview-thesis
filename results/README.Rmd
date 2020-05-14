@@ -5,7 +5,7 @@ bibliography: ../manuscript/manuscript/asreview.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 library(rjson)
 library(tidyverse)
 library(knitr)
@@ -173,7 +173,7 @@ saveRDS(results, "output/results.RDS")
 ```
 
 Create table for manuscript (all means over 15 runs)
-```{r, results = "asis"}
+```{r, echo = FALSE, results = "asis"}
 tabres <- 
   results %>%
   pivot_wider(names_from = dataset, values_from = c("wss.95", "wss.99", "wss.100", "rrf.5", "rrf.10", "rrf.20", "loss"))

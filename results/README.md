@@ -29,11 +29,25 @@ If you’ve already installed this file in the `simulation_study` step,
 please skip this. If not, you can run the following in your terminal to
 install all requirements:
 
+``` bash
+pip install -r ../simulation_study/requirements.txt
+```
+
 Additionally, to create the plots and statistics in the manuscript you
 will need to install a specific branch of the asreview visualization
 package. Run the following in your terminal:
 
+``` bash
+# clone visualization package from GitHub
+git clone https://github.com/GerbrichFerdinands/asreview-thesis-visualization.git
+```
+
 And then, within the newly created directory, the following:
+
+``` bash
+# install visualization package 
+pip install . 
+```
 
 # Reproduce data extraction
 
@@ -60,16 +74,132 @@ download the raw simulation output, start at step 3:
 
 ## Define functions for reading simulation output
 
+``` r
+data <- readRDS("../simulation_study/R/00_datasets.RDS")
+models <-c("BCTD", "LCDD", "LCTD", "RCDD", "RCTD", "SCDD", "SCTD")
+names(models) <- c("NB + TF-IDF", "LR + D2V", "LR + TF-IDF", "RF + D2V", "RF + TF-IDF", "SVM + D2V", "SVM + TF-IDF" )
+
+# function that reads results for all 15 runs
+read_results <- function(m){
+   files = list.files(paste0("one_seed/statistics/", m), pattern = "all.json", recursive = TRUE)
+  # names of the files are the data
+  names(files) <- str_split(files, "/", simplify = TRUE)[,1]
+  # read data
+  dat <- lapply(files, function(x) fromJSON(file = paste0("one_seed/statistics/", m, "/", x)))
+  
+  # extract wss, rrf, and loss
+  dat <- map(dat, `[`, c("wss", "rrf", "loss"))
+
+  # transorm into dataframe
+  dat <- map_dfr(dat, ~ as.data.frame(.x), .id = "dataset")
+  
+  # add model name
+  dat <- dat %>% 
+    mutate(model = names(models[models == m]))
+
+  return(dat)
+}
+
+# function for extracting all separate runs 
+read_trials <- function(m){
+   files <- list.files(paste0("one_seed/statistics/", m), pattern = "results_", recursive = TRUE, full.names=TRUE)
+  # names of the files are the data
+  names(files) <- str_split(files, "/", simplify = TRUE)[,4]
+  
+  # read data
+  dat <- lapply(files, function(x) fromJSON(file = x))
+  
+  # extract wss, rrf, and loss
+  dat <- map(dat, `[`, c("wss", "rrf", "loss"))
+
+  # transorm into dataframe
+  dat <- map_dfr(dat, ~ as.data.frame(.x), .id = "dataset")
+  
+  # add model name
+  dat <- dat %>% 
+    mutate(model = names(models[models == m]))
+
+  return(dat)
+}
+```
+
 The ATD values need to be adjusted for prior inclusions and exclusions
 as the computation does not take into account that prior to the active
 learning cycle, already 1 inclusion and 1 exclusion have been labelled
 ‘for free’.
 
+``` r
+# ATD needs to be adjusted for 1 prior inclusion and 1 prior exclusion! 
+# compute adjusted ATD to make it equal to the area above the curve
+datastats <- readRDS("datastats.RDS") %>%
+  select(Dataset, candidates_test, incl_test) %>%
+  # account for 1 prior exclusion and 1 prior inclusion
+  mutate(n_1 = incl_test, n_excl = candidates_test-n_1, n_1_noprior = incl_test-1, candidates_noprior = candidates_test -1) %>%
+  mutate(ratio = (n_1_noprior/n_1)/(candidates_noprior/candidates_test))
+
+datastats$dataset <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
+atdratio <- datastats %>%
+  select(dataset, ratio)
+```
+
 ## Load results for 15 separate trials
+
+``` r
+# read all 15 trials separately
+runs <- lapply(models, FUN = read_trials)
+
+# all in one dataframe
+runs <- do.call("rbind", runs)
+
+# convert loss (ttd) to percentage 
+runs$loss <- runs$loss*100
+# adjust loss to N_1 : N_1-1 (to the prior inclusions)
+runs <- left_join(runs, atdratio, by = "dataset")
+runs <- runs %>%
+  mutate(loss = loss/ratio) %>%
+  select(-ratio)
+
+# save results file 
+saveRDS(runs, "output/runs.RDS")
+```
 
 Compute standarad deviation from the 15 separate trials.
 
+``` r
+# compute standard deviation (bootstrapped)
+sdruns <- 
+  runs %>%
+  select(dataset, model, wss.95, rrf.10, loss) %>% 
+  group_by(model, dataset) %>%
+  summarise(sdwss.95 = sd(wss.95),
+            sdrrf.10 = sd(rrf.10),
+            sdloss = sd(loss))
+
+saveRDS(sdruns, "output/sdruns.RDS")
+```
+
 ## Load results as means over all 15 trials
+
+``` r
+# extract results for all models
+# list for models separately
+results <- lapply(models, read_results)
+
+# all in one dataframe
+results <- do.call("rbind", results)
+
+# convert loss (ttd) to percentage 
+results$loss <- results$loss*100
+# adjust loss to N_1 : N_1-1
+results <- left_join(results, atdratio, by = "dataset")
+
+results <- results %>%
+  mutate(loss = loss/ratio) %>%
+  select(-ratio)
+
+# save results file 
+saveRDS(results, "output/results.RDS")
+```
 
 Create table for manuscript (all means over 15 runs)
 
