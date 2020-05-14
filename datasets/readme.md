@@ -131,8 +131,7 @@ nudging["paper", ] <- c(2006, 377, 100)
 # data is not public yet
 
 # raw --------------------------------------------------------------------------
-n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
-n_raw <- read.csv("../../scripting/nagtegaal_preprocessing/data/output/nagtegaal.csv")
+n_raw <- read.csv("raw/nagtegaal.csv")
 #n_rr <- read.csv2("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
                  # sep = ",")
 #n_rr <- fread("https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/WMGPGZ/HY6N2S",
@@ -329,7 +328,7 @@ was not available for this dataset) and final inclusions.
 ``` r
 virus <- template
 virus["paper",] <- c(2481, 132, 120)
-v_raw <- read.csv("../../sims/data/virus.csv")
+v_raw <- read.csv("raw/virus.csv")
 v_raw$abstract[v_raw$abstract == ""] <- NA
 
 virus["raw", ] <- data_descr(v_raw)
