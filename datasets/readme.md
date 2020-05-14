@@ -258,7 +258,7 @@ was not available for this dataset) and final inclusions.
 | asreview |   5782 |   356 |   38 |
 | test     |   5031 |   328 |   38 |
 
-## software dataset
+## Software dataset
 
 ``` r
 hall <- template
@@ -443,34 +443,17 @@ saveRDS(drops, file = "data_statistics/drops.RDS")
 # Statistics
 
 All candidate papers, paper selected for full text screening, papers
-included in final review and inclusion rate, over various versions of
-the dataset.
+included in final review and inclusion rate, for the test datasets.
 
-    ## Warning in kable_markdown(x = structure(c("Dataset", "candidates_paper", : The
-    ## table should have a header (column names)
+|                  |      |         |      |          |       |        |
+| :--------------- | :--- | :------ | :--- | :------- | :---- | :----- |
+| Dataset          | Ace  | Nudging | PTSD | Software | Virus | Wilson |
+| candidates\_test | 2235 | 1847    | 5031 | 8896     | 2304  | 2333   |
+| fulltext\_test   | NA   | 382     | 328  | NA       | NA    | 155    |
+| incl\_test       | 41   | 100     | 38   | 104      | 114   | 23     |
+| inclrate\_test   | 1.83 | 5.41    | 0.76 | 1.17     | 4.95  | 0.99   |
 
-|                   |      |         |      |          |       |        |
-| :---------------- | :--- | :------ | :--- | :------- | :---- | :----- |
-| Dataset           | Ace  | Nudging | PTSD | Software | Virus | Wilson |
-| candidates\_paper | 2544 | 2006    | 6185 | 8911     | 2481  | 3453   |
-| fulltext\_paper   | NA   | 377     | 363  | NA       | 132   | 174    |
-| incl\_paper       | 41   | 100     | 38   | 104      | 120   | 26     |
-| inclrate\_paper   | 1.61 | 4.99    | 0.61 | 1.17     | 4.84  | 0.75   |
-| candidates\_raw   | 2544 | 0       | 0    | 8911     | 2481  | 3453   |
-| fulltext\_raw     | NA   | 0       | 0    | NA       | NA    | 174    |
-| incl\_raw         | 41   | 0       | 0    | 104      | 120   | 26     |
-| inclrate\_raw     | 1.61 | NA      | NA   | 1.17     | 4.84  | 0.75   |
-| candidates\_asr   | 2544 | 0       | 5782 | 8911     | 0     | 3437   |
-| fulltext\_asr     | NA   | 0       | 356  | NA       | 0     | 174    |
-| incl\_asr         | 41   | 0       | 38   | 104      | 0     | 26     |
-| inclrate\_asr     | 1.61 | NA      | 0.66 | 1.17     | NA    | 0.76   |
-| candidates\_test  | 2235 | 1847    | 5031 | 8896     | 2304  | 2333   |
-| fulltext\_test    | NA   | 382     | 328  | NA       | NA    | 155    |
-| incl\_test        | 41   | 100     | 38   | 104      | 114   | 23     |
-| inclrate\_test    | 1.83 | 5.41    | 0.76 | 1.17     | 4.95  | 0.99   |
-
-Descriptives on missingness and duplicate abstracts in the ASReview test
-data set.
+Descriptives on missingness and duplicate abstracts in the raw datasets:
 
 |          |    n |   NA | NA rate (%) | duplicates | duplicate rate (%) |
 | :------- | ---: | ---: | ----------: | ---------: | -----------------: |
@@ -520,92 +503,7 @@ write.csv(v_test %>% select(id, title, abstract, included), "sim_datasets/virus.
 write.csv(w_test %>% select(id, title, abstract, included), "sim_datasets/wilson.csv", row.names = FALSE)
 ```
 
-To check:
-
-``` bash
-asreview stat test_datasets/*
-```
-
-returns
-
-    ************  ace.csv  ************
-    
-    Number of papers:            2235
-    Number of inclusions:        41 (1.83%)
-    Number of exclusions:        2194 (98.17%)
-    Number of unlabeled:         0 (0.00%)
-    Average title length:        123
-    Average abstract length:     1623
-    Average number of keywords:  15.0
-    Number of missing titles:    0 (of which 0 included)
-    Number of missing abstracts: 0 (of which 0 included)
-    
-    
-    ************  nudging.csv  ************
-    
-    Number of papers:            1847
-    Number of inclusions:        100 (5.41%)
-    Number of exclusions:        1747 (94.59%)
-    Number of unlabeled:         0 (0.00%)
-    Average title length:        109
-    Average abstract length:     1831
-    Average number of keywords:  None
-    Number of missing titles:    0 (of which 0 included)
-    Number of missing abstracts: 0 (of which 0 included)
-    
-    
-    ************  ptsd.csv  ************
-    
-    Number of papers:            5031
-    Number of inclusions:        38 (0.76%)
-    Number of exclusions:        4993 (99.24%)
-    Number of unlabeled:         0 (0.00%)
-    Average title length:        104
-    Average abstract length:     1537
-    Average number of keywords:  9.9
-    Number of missing titles:    1 (of which 0 included)
-    Number of missing abstracts: 0 (of which 0 included)
-    
-    
-    ************  software.csv  ************
-    
-    Number of papers:            8896
-    Number of inclusions:        104 (1.17%)
-    Number of exclusions:        8792 (98.83%)
-    Number of unlabeled:         0 (0.00%)
-    Average title length:        81
-    Average abstract length:     896
-    Average number of keywords:  None
-    Number of missing titles:    0 (of which 0 included)
-    Number of missing abstracts: 0 (of which 0 included)
-    
-    
-    ************  virus.csv  ************
-    
-    Number of papers:            2304
-    Number of inclusions:        114 (4.95%)
-    Number of exclusions:        2190 (95.05%)
-    Number of unlabeled:         0 (0.00%)
-    Average title length:        103
-    Average abstract length:     1345
-    Average number of keywords:  20.3
-    Number of missing titles:    0 (of which 0 included)
-    Number of missing abstracts: 0 (of which 0 included)
-    
-    
-    ************  wilson.csv  ************
-    
-    Number of papers:            2333
-    Number of inclusions:        23 (0.99%)
-    Number of exclusions:        2310 (99.01%)
-    Number of unlabeled:         0 (0.00%)
-    Average title length:        83
-    Average abstract length:     1325
-    Average number of keywords:  31.3
-    Number of missing titles:    1 (of which 0 included)
-    Number of missing abstracts: 0 (of which 0 included)
-
-# refrences
+# References
 
 <div id="refs" class="references hanging-indent">
 
