@@ -1,26 +1,24 @@
 ---
 title: "Preprocessing datasets"
 output: github_document
+bibliography: ../manuscript/manuscript/asreview.bib
 ---
 
 This notebook processes six systematic review datasets into datasets suitable for simulating the screening process. 
 
-- Wilson - [@Appenzeller-Herzog2020] is on a review on effectiveness and safety of treatments of Wilson Disease, a rare genetic disorder of copper metabolism [@Appenzeller-Herzog2019]. 
-- Ace -  contains publications on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for heart disease [@Cohen2006]. 
-- Virus -  is from a systematic review on studies that performed viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals [@Kwok2020]. 
-- Software - from the software engineering field, contains publications on fault prediction in source code [@Hall2012].
-- Nudging dataset - [@Nagtegaal2019a] on nudging healthcare professionals [@Nagtegaal2019], stemming from the area of 
-- PTSD - on studies applying latent trajectory analyses on posttraumatic stress after exposure to traumatic events [@vandeSchoot2017].
+- __Wilson__ - is on a review on effectiveness and safety of treatments of Wilson Disease, a rare genetic disorder of copper metabolism. Dataset: [@Appenzeller-Herzog2020]. Paper: [@Appenzeller-Herzog2019]. 
+- __Ace__ -  contains publications on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for heart disease Paper and dataset: [@Cohen2006]. 
+- __Virus__ -  is from a systematic review on studies that performed viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals [@Kwok2020]. 
+- __Software__ - from the software engineering field, contains publications on fault prediction in source code [@Hall2012].
+- __Nudging__ dataset - [@Nagtegaal2019a] on nudging healthcare professionals [@Nagtegaal2019], stemming from the area of 
+- __PTSD__ - on studies applying latent trajectory analyses on posttraumatic stress after exposure to traumatic events [@vandeSchoot2017].
 
 Data were preprocessed from their original source into a test dataset, containing title and abstract of the publications obtained in the initial search. Candidate studies with missing abstracts and duplicate instances were removed from the data.
 
-Every dataset has 2 versions: one for hyperparameter optimization `test_datasets` and one for simulation `sim_datasets`. 
+Every dataset has 2 versions: one for hyperparameter optimization (`test_datasets`), and one for simulation (`sim_datasets`). 
 
-Every dataset is a .csv file with the following columns: 
-  - title
-  - abstract
-  - label_included
-  - keywords? (only for hyperparameter optimization, not for simulation). 
+Every simulation dataset is a .csv file with the columns `title`, `abstract`, `label_included`, the last one indicating whether a publication was relevant or not. This is the label that is queried by the active learning model when simulating a systematic review. The reason for this sparse datasets (no keywords are included etc) is twofold. 1) This is by PRISMA guidelines the only information that should be used to identify relevant publications from a search and 2) I wanted equal information for all datasets, and for some datasets this was the only information that was available. For hyperparameter optimization I used all information accessible to arrive at better hyperparameters, with future projects in mind. 
+
   
 ```{r, include = FALSE}
 library(tidyverse)
@@ -28,7 +26,9 @@ library(knitr)
 library(kableExtra)
 ```
 
-### Set-up
+### Preprocessing datasets
+For every datasets, 3 numbers are given: total number of publications, abstract inclusions and final inclusions. For some datasets there are discrepancies between how these numbers are reported in the publication and how they actually are in the raw dataset. Therefore, these numbers are given for how they are reported in the manuscript, how they are found in the raw data, and how they are found in the test dataset, e.g. after removing duplicates and missing abstracts. Moreover, statistics on missingness and duplicates are given. 
+
 ```{r, echo = FALSE}
 datasets <- c("ace", "nudging", "ptsd", "software", "virus", "wilson")
 nd <- length(datasets)
@@ -66,10 +66,11 @@ inclrate <- function(all, set){ # inclusion rate
 }
 ```
 
-## ACE
+## Ace dataset
 ```{r}
 ace <- template
-# paper ------------------------------------------------------------------------
+
+# information given in the paper -----------------------------------------------
 ace["paper", ] <- c(2544, NA, round(2544*0.0160)) 
 
 # raw --------------------------------------------------------------------------
@@ -78,11 +79,14 @@ ace["paper", ] <- c(2544, NA, round(2544*0.0160))
 #https://dmice.ohsu.edu/cohenaa/systematic-drug-class-review-data.html
 ace["raw", ] <- c(2544, NA, 41)
 
-# asreview ---------------------------------------------------------------------
+# asreview dataset -------------------------------------------------------------
 ace_asr <- read.csv("https://raw.github.com/asreview/systematic-review-datasets/master/datasets/Cohen_EBM/output/ACEInhibitors.csv",
                      header=T)
-# replace empty abstracts by NA values. 
+```
 
+### Create test dataset
+```{r}
+# replace empty abstracts by NA values. 
 ace_asr[ace_asr$abstract == "", "abstract"] <- NA
 # stats on missingness in this data
 drops["ace",] <- ace_asr %>%
@@ -95,10 +99,7 @@ drops["ace",] <- ace_asr %>%
 ace["asreview", ] <- c(nrow(ace_asr),
                        NA,
                        sum(ace_asr$label_included))
-```
 
-### Create test dataset
-```{r}
 # drop missings and duplicates. 
 ace_test <- ace_asr %>%
   drop_na(abstract) %>% # drop entries with missing abstracts
@@ -111,13 +112,18 @@ ace["test", ] <- c(nrow(ace_test),
 ```
 
 ### Some statistics 
-```{r}
+On missingness (# and %) and duplicates (# and %): 
+```{r, echo = false}
 # missingness and duplicates in raw data on ASReview
-drops["ace",]
-ace
+drops["ace",] %>% knitr::kable(format = "markdown", digits = 2)
 ```
 
-## nudging dataset 
+On total number of publications, abstract inclusions (this information was not available for this dataset) and final inclusions. 
+```{r, echo = FALSE}
+ace %>% knitr::kable(format = "markdown")
+```
+
+## Nudging dataset 
 ```{r}
 # by Rosanna Nagtegaal
 nudging <- template
@@ -155,13 +161,15 @@ nudging["test", ] <- data_descr(nudging_test)
 
 ```
 
-### Create test dataset
-
 ### Some statistics
-```{r}
+On missingness (# and %) and duplicates (# and %): 
 
-drops["nudging",]
-nudging
+```{r, echo = FALSE}
+drops["nudging",]%>% knitr::kable(format = "markdown")
+```
+On total number of publications, abstract inclusions (this information was not available for this dataset) and final inclusions. 
+```{r, echo = FALSE}
+nudging %>% knitr::kable(format = "markdown")
 ```
 
 ## PTSD dataset
@@ -224,11 +232,17 @@ ptsd_test <- ptsd_test %>%
 ptsd["test", ] <- data_descr(ptsd_test)
 ```
 
-Derive statistics in final test set.
-```{r}
-drops["ptsd", ]
-ptsd
+### Some statistics
+On missingness (# and %) and duplicates (# and %): 
+
+```{r, echo = FALSE}
+drops["ptsd",]%>% knitr::kable(format = "markdown")
 ```
+On total number of publications, abstract inclusions (this information was not available for this dataset) and final inclusions. 
+```{r, echo = FALSE}
+ptsd %>% knitr::kable(format = "markdown")
+```
+
 
 ## software dataset
 ```{r}
@@ -265,7 +279,6 @@ hall_test <- hall_test %>% # add id
 hall["test", ] <- data_descr(hall_test)
 ```
 
-### Statistics 
 ```{r}
 drops["software", ] <- 
   hall_asr %>%
@@ -275,8 +288,20 @@ drops["software", ] <-
                     dup = sum(duplicated(abstract, incomparables = NA)),
                     duprate = sum(duplicated(abstract, incomparables = NA))/length(abstract)*100)
 
-hall
 ```
+
+### Some statistics
+On missingness (# and %) and duplicates (# and %): 
+
+```{r, echo = FALSE}
+drops["hall",]%>% knitr::kable(format = "markdown")
+```
+
+On total number of publications, abstract inclusions (this information was not available for this dataset) and final inclusions. 
+```{r, echo = FALSE}
+hall %>% knitr::kable(format = "markdown")
+```
+
 
 ## Virus dataset
 ```{r}
@@ -303,6 +328,17 @@ v_test <- v_raw %>%
 virus["test",] <- data_descr(v_test)
 ```
 
+### Some statistics
+On missingness (# and %) and duplicates (# and %): 
+
+```{r, echo = FALSE}
+drops["virus",]%>% knitr::kable(format = "markdown")
+```
+
+On total number of publications, abstract inclusions (this information was not available for this dataset) and final inclusions. 
+```{r, echo = FALSE}
+virus %>% knitr::kable(format = "markdown")
+```
 
 
 ## Wilson dataset
@@ -344,12 +380,18 @@ w_test <- w_asr %>%
 wilson["test",] <- data_descr(w_test)
 ```
 
-Statistics
-```{r}
-drops["wilson",]
+### Some statistics
+On missingness (# and %) and duplicates (# and %): 
 
-wilson
+```{r, echo = FALSE}
+drops["wilson",]%>% knitr::kable(format = "markdown")
 ```
+
+On total number of publications, abstract inclusions (this information was not available for this dataset) and final inclusions. 
+```{r, echo = FALSE}
+wilson %>% knitr::kable(format = "markdown")
+```
+
 
 
 # Save descriptive statistics on all datasets
@@ -365,7 +407,6 @@ all <- list(Ace = ace,
 
 # save datafile, to serve as data for descriptive table in manuscript
 saveRDS(all, file = "data_statistics/all.RDS")
-
 saveRDS(drops, file = "data_statistics/drops.RDS")
 ```
 
@@ -397,7 +438,7 @@ tibble(Dataset = names(all),
        `incl_test` =  nostudies(all, "test", "incl"), 
        `inclrate_test` = inclrate(all, "test")) %>% 
   t() %>% 
-  kable("markdown") 
+  kable("markdown", digits = 2) 
 # %>%
 #   kable_styling(full_width = TRUE) %>%
 #   #scroll_box(width = "100%", height = "200px") %>%
@@ -413,9 +454,6 @@ drops %>%
   kable("markdown",
         col.names = c("n", "NA", "NA rate (%)", "duplicates", "duplicate rate (%)"),
         digits = 2) 
-# %>%
-#   kable_styling(full_width = TRUE)
-
 
 ```
 
@@ -542,3 +580,4 @@ Number of missing titles:    1 (of which 0 included)
 Number of missing abstracts: 0 (of which 0 included)
 
 ```
+# refrences

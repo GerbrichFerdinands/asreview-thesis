@@ -4,22 +4,23 @@ Preprocessing datasets
 This notebook processes six systematic review datasets into datasets
 suitable for simulating the screening process.
 
-  - Wilson - \[@Appenzeller-Herzog2020\] is on a review on effectiveness
-    and safety of treatments of Wilson Disease, a rare genetic disorder
-    of copper metabolism \[@Appenzeller-Herzog2019\].
-  - Ace - contains publications on the efficacy of
+  - **Wilson** - (Appenzeller-Herzog 2020) is on a review on
+    effectiveness and safety of treatments of Wilson Disease, a rare
+    genetic disorder of copper metabolism (Appenzeller‐Herzog et al.
+    2019).
+  - **Ace** - contains publications on the efficacy of
     Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for
-    heart disease \[@Cohen2006\].
-  - Virus - is from a systematic review on studies that performed viral
-    Metagenomic Next-Generation Sequencing (mNGS) in farm animals
-    \[@Kwok2020\].
-  - Software - from the software engineering field, contains
-    publications on fault prediction in source code \[@Hall2012\].
-  - Nudging dataset - \[@Nagtegaal2019a\] on nudging healthcare
-    professionals \[@Nagtegaal2019\], stemming from the area of
-  - PTSD - on studies applying latent trajectory analyses on
-    posttraumatic stress after exposure to traumatic events
-    \[@vandeSchoot2017\].
+    heart disease (Cohen et al. 2006).
+  - **Virus** - is from a systematic review on studies that performed
+    viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals
+    (Kwok et al. 2020).
+  - **Software** - from the software engineering field, contains
+    publications on fault prediction in source code (Hall et al. 2012).
+  - **Nudging** dataset - (Nagtegaal et al. 2019a) on nudging healthcare
+    professionals (Nagtegaal et al. 2019b), stemming from the area of
+  - **PTSD** - on studies applying latent trajectory analyses on
+    posttraumatic stress after exposure to traumatic events (van de
+    Schoot et al. 2017).
 
 Data were preprocessed from their original source into a test dataset,
 containing title and abstract of the publications obtained in the
@@ -27,11 +28,19 @@ initial search. Candidate studies with missing abstracts and duplicate
 instances were removed from the data.
 
 Every dataset has 2 versions: one for hyperparameter optimization
-`test_datasets` and one for simulation `sim_datasets`.
+(`test_datasets`), and one for simulation (`sim_datasets`).
 
-Every dataset is a .csv file with the following columns: - title -
-abstract - label\_included - keywords? (only for hyperparameter
-optimization, not for simulation).
+Every simulation dataset is a .csv file with the columns `title`,
+`abstract`, `label_included`, the last one indicating whether a
+publication was relevant or not. This is the label that is queried by
+the active learning model when simulating a systematic review. The
+reason for this sparse datasets (no keywords are included etc) is
+twofold. 1) This is by PRISMA guidelines the only information that
+should be used to identify relevant publications from a search and 2) I
+wanted equal information for all datasets, and for some datasets this
+was the only information that was available. For hyperparameter
+optimization I used all information accessible to arrive at better
+hyperparameters, with future projects in mind.
 
 ### Set-up
 
@@ -567,3 +576,80 @@ returns
     Average number of keywords:  31.3
     Number of missing titles:    1 (of which 0 included)
     Number of missing abstracts: 0 (of which 0 included)
+
+# refrences
+
+<div id="refs" class="references hanging-indent">
+
+<div id="ref-Appenzeller-Herzog2020">
+
+Appenzeller-Herzog, Christian. 2020. “Data from Comparative
+Effectiveness of Common Therapies for Wilson Disease: A Systematic
+Review and Meta‐analysis of Controlled Studies.” Zenodo.
+<https://doi.org/10.5281/zenodo.3625931>.
+
+</div>
+
+<div id="ref-Appenzeller-Herzog2019">
+
+Appenzeller‐Herzog, Christian, Tim Mathes, Marlies L. S. Heeres, Karl
+Heinz Weiss, Roderick H. J. Houwen, and Hannah Ewald. 2019. “Comparative
+Effectiveness of Common Therapies for Wilson Disease: A Systematic
+Review and Meta-Analysis of Controlled Studies.” *Liver Int.* 39 (11):
+2136–52. <https://doi.org/10.1111/liv.14179>.
+
+</div>
+
+<div id="ref-Cohen2006">
+
+Cohen, A. M., W. R. Hersh, K. Peterson, and Po-Yin Yen. 2006. “Reducing
+Workload in Systematic Review Preparation Using Automated Citation
+Classification.” *J Am Med Inform Assoc* 13 (2): 206–19.
+<https://doi.org/10.1197/jamia.M1929>.
+
+</div>
+
+<div id="ref-Hall2012">
+
+Hall, Tracy, Sarah Beecham, David Bowes, David Gray, and Steve Counsell.
+2012. “A Systematic Literature Review on Fault Prediction Performance in
+Software Engineering.” *IEEE Trans. Softw. Eng.* 38 (6): 1276–1304.
+<https://doi.org/10.1109/TSE.2011.103>.
+
+</div>
+
+<div id="ref-Kwok2020">
+
+Kwok, Kirsty T. T., David F. Nieuwenhuijse, My V. T. Phan, and Marion P.
+G. Koopmans. 2020. “Virus Metagenomics in Farm Animals: A Systematic
+Review.” *Viruses* 12 (1, 1): 107. <https://doi.org/10.3390/v12010107>.
+
+</div>
+
+<div id="ref-Nagtegaal2019a">
+
+Nagtegaal, Rosanna, Lars Tummers, Mirko Noordegraaf, and Victor Bekkers.
+2019a. “Nudging Healthcare Professionals Towards Evidence-Based
+Medicine: A Systematic Scoping Review.” Harvard Dataverse.
+<https://doi.org/10.7910/DVN/WMGPGZ>.
+
+</div>
+
+<div id="ref-Nagtegaal2019">
+
+———. 2019b. “Nudging Healthcare Professionals Towards Evidence-Based
+Medicine: A Systematic Scoping Review.” *J. Behav. Public Adm.* 2 (2).
+<https://doi.org/doi.org/10.30636/jbpa.22.71>.
+
+</div>
+
+<div id="ref-vandeSchoot2017">
+
+Schoot, Rens van de, Marit Sijbrandij, Sonja D. Winter, Sarah Depaoli,
+and Jeroen K. Vermunt. 2017. “The GRoLTS-Checklist: Guidelines for
+Reporting on Latent Trajectory Studies.” *Struct. Equ. Model.
+Multidiscip. J.* 24 (3): 451–67. <https://doi.org/10/gdpcw9>.
+
+</div>
+
+</div>
