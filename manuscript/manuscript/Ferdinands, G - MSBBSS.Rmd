@@ -770,7 +770,7 @@ The author declares that they has no competing interests.
 Computing hours on the Cartesius supercomputer were funded by SURFsara. SURFsara had no role whatsoever in the design of the current study, nor in the data collection, analysis and interpretation, nor in writing the manuscript. 
 
 ## Acknowledgements
-I am grateful for all researchers who have made great efforts to openly publish the data on their systematic reviews, special thanks go out to Rosanna Nagtegaal. I would also like to thank Caroline van Baal for supporting me in writing this thesis, and prof. dr. René Eijkemans, for being the second grader of this thesis. Finally, I would like to express my appreciation to my supervisors prof. dr. Rens van de Schoot, Jonathan de Bruin, and dr. Raoul Schram. Your door was always open and your enthusiasm was contagious.
+I am grateful for all researchers who have made great efforts to openly publish the data on their systematic reviews, special thanks go out to Rosanna Nagtegaal. I would also like to thank dr. Caroline van Baal for supporting me in writing this thesis, and prof. dr. René Eijkemans, for being the second grader of this thesis. Finally, I would like to express my appreciation to my supervisors prof. dr. Rens van de Schoot, Jonathan de Bruin, and dr. Raoul Schram. Your door was always open and your enthusiasm was contagious.
 <!-- \newpage -->
 
 
