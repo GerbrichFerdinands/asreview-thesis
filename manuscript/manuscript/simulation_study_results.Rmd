@@ -1,0 +1,88 @@
+---
+title: "Simulation studies"
+output: github_document
+bibliography: asreview.bib
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.ncol = 2, out.width = "50%", fig.align = "center", fig.pos = "H") 
+options(tinytex.verbose = TRUE)
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(captioner)
+library(glue)
+library(rbbt)
+library(officer)
+library(flextable)
+# load model parameters 
+source("asr-parameters.R")
+
+#pathRdata <- "data/"
+pathRdata <- "../../datasets/data_statistics/"
+```
+
+_This document is currently a work in progress. The results documented here originate from Gerbrich Ferdinands' master's thesis which can be found [here](https://github.com/GerbrichFerdinands/asreview-thesis/blob/master/manuscript/manuscript/Ferdinands%2C-G---MSBBSS.pdf)._
+
+To provide insight in how much screening effort ASReview could potentially save, seven ASReview models were simulated on six existing systematic review datasets. In short, for all six datasets ASReview could have saved at least 60% of screening effort (e.g. WSS95% was < 40%). For some datasets, ASReview was even able to detect 95% of relevant publiations after screening only 5% of relevant publications. 
+
+### Datasets 
+Datasets were collected from the fields of medicine [@Cohen2006; @Appenzeller-Herzog2019], virology [@Kwok2020], software engineering [@Yu2018], behavioural public administration [@Nagtegaal2019] and psychology [@vandeSchoot2017], to assess generalizability of the models across research contexts. Datasets are available in the [ASReview systematic review datasets repository](https://github.com/asreview/systematic-review-datasets). 
+
+Data were preprocessed from their original source into a test dataset, containing title and abstract of the publications obtained in the initial search. Candidate studies with missing abstracts and duplicate instances were removed from the data. All test datasets consisted of thousands of candidate studies, of which only only a fraction was deemed relevant to the systematic review. For the Virus and the Nudging dataset, the inclusion rate was about 5 percent. For the remaining six datasets, inclusion rates were centered around 1-2 percent.
+<!-- Preprocessing scripts and resulting datasets can be found on the [GitHub repository for this thesis](https://github.com/GerbrichFerdinands/asreview-thesis). Test datasets were labelled to indicate which candidate studies were included in the systematic review, thereby indicating relevant publications.  -->
+
+__Table 1 - Statistics on the systematic review datasets__
+```{r}
+tab1 <- readRDS("tables/tab1_data.RDS")
+knitr::kable(tab1, format="markdown")
+```
+
+### Models
+To assess effect of different ASReview models, seven models were evaluated differing in terms of the classification technique (Naive Bayes, Linear Regression, Support Vector Machine, and Random Forest) and the feature extraction strategy they adopt (TF-IDF and Doc2vec).  The Naive Bayes + TF-IDF model is the current default in ASReview. Note that the ASReview GUI currently only offers freedom of choice for a classification technique. However, the models presented here are not exhaustive as the ASReview backend implements various other configurations. 
+
+### Evaluation
+Model performance was assessed by two different measures, Work Saved over Sampling (WSS), and Relevant References Found (RRF). 
+
+WSS indicates the reduction in publications needed to be screened, at a given level of recall [@Cohen2006]. Typically measured at a recall level of 0.95 [@Cohen2006], WSS95 yields an estimate of the amount of work that can be saved at the cost of failing to identify 5% of relevant publications. In the current study, WSS is computed at 0.95 recall. RRF statistics are computed at 10%, representing the proportion of relevant publications that are found after screening 10% of all publications.  
+
+Furthermore, model performance was visualized by plotting recall curves. Plotting recall as a function of the proportion of screened publications offers insight in model performance throughout the entire screening process [@Cormack2014; @Yu2018]. The curves give information in two directions. On the one hand they display the number of publications that need to be screened to achieve a certain level of recall (1-WSS), but on the other hand they present how many relevant publications are identified after screening a certain proportion of all publications (RRF).
+
+For every simulation, the RRF10 and WSS95, are reported as means over 15 trials. To indicate the spread of performance within simulations, the means are accompanied by an estimated standard error of the mean $\hat s$. To compare overall performance across datasets, median performance is reported for every dataset, accompanied by the Median Absolute Deviation (MAD), indicating variability between models within a certain dataset. Recall curves are plot for every simulation, representing the average recall over 15 trials $\pm$ the standard error of the mean. 
+
+## Results
+First of all, models showed much higher performance for some datasets than for others. While performance on the PTSD (Figure 2a) and the Software dataset (Figure 2b) was quite high, performance was much lower across models for the Nudging (Figure 1a) and Virus (Figure 2d) datasets. 
+
+#### Recall curves 
+__Nudging dataset__
+```{r}
+include_graphics("../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf")
+```
+<embed src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf" width="50%" style="display: block; margin: auto;" type="application/pdf" />
+
+<img src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf"
+     style="float: left; margin-right: 10px;" />
+__PTSD dataset__
+
+__Software dataset__
+
+__Ace dataset__
+
+__Virus dataset__
+
+__Wilson dataset__
+
+__Table 2 - WSS95 values (mean, standard error) for all model-dataset combinations, and median (MAD) for all datasets__
+```{r}
+tabwss <- readRDS("tables/tab3_WSS95.RDS")
+knitr::kable(tabwss, format = "markdown", caption="WSS95 values ($\\bar x (\\hat s)$) for all model-dataset combinations, and median (MAD) for all datasets.")
+```
+
+__Table 3 - RRF10 values (mean, standard error) for all model-dataset combinations, and median (MAD) for all datasets__
+```{r}
+tabrrf <- readRDS("tables/tab4_RRF10.RDS")
+knitr::kable(tabrrf, format = "markdown", caption="RRF10 values ($\\bar x, (\\hat s)$) for all model-dataset combinations, and median (MAD) for all datasets.")
+```
+
+
+# References

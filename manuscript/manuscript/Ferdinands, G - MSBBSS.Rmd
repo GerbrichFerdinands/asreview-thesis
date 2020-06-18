@@ -234,7 +234,7 @@ This study has been approved by the Ethics Committee of the Faculty of Social an
 ## Datasets 
 The models were simulated on a convenience sample of six systematic review datasets. The data selection process was driven by three factors. Firstly, datasets were selected based on their background, given the need for datasets from diverse research areas. Secondly, datasets were selected by their availability, given the limited timespan of the current project. Thirdly, all original data files should be openly published with a CC-BY license, and are available through the [$\texttt{ASReview}$ GitHub page](https://github.com/asreview/systematic-review-datasets).
 
-datasets were collected from the fields of medicine, virology, software engineering, behavioural public administration, and pyschology to assess generalizability of the models across research contexts. The Wilson dataset [@Appenzeller-Herzog2020] - from the field of _medicine_ - is on a review on the effectiveness and safety of treatments of Wilson Disease, a rare genetic disorder of copper metabolism [@Appenzeller-Herzog2019]. From the same scientific field, the Ace dataset contains publications on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for heart disease [@Cohen2006]. From _virology_, the Virus dataset is from a systematic review on studies that performed viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals [@Kwok2020]. From the field of _software engineering_, the Software dataset contains publications from a review on fault prediction in source code [@Hall2012]. The Nudging dataset [@Nagtegaal2019a] belongs to a systematic review on nudging healthcare professionals [@Nagtegaal2019], stemming from the area of _behavioural public administration_. The PTSD dataset contains publications from the field of _psychology_. The corresponding systematic review is on studies applying latent trajectory analyses on posttraumatic stress after exposure to traumatic events [@vandeSchoot2017]. Of these six datasets, Ace, and Software have been used for model simulations in previous studies on ML-aided title and abstract screening, respectively [@Cohen2006] and [@Yu2018]. 
+Datasets were collected from the fields of medicine, virology, software engineering, behavioural public administration, and pyschology to assess generalizability of the models across research contexts. The Wilson dataset [@Appenzeller-Herzog2020] - from the field of _medicine_ - is on a review on the effectiveness and safety of treatments of Wilson Disease, a rare genetic disorder of copper metabolism [@Appenzeller-Herzog2019]. From the same scientific field, the Ace dataset contains publications on the efficacy of Angiotensin-converting enzyme (ACE) inhibitors, a drug treatment for heart disease [@Cohen2006]. From _virology_, the Virus dataset is from a systematic review on studies that performed viral Metagenomic Next-Generation Sequencing (mNGS) in farm animals [@Kwok2020]. From the field of _software engineering_, the Software dataset contains publications from a review on fault prediction in source code [@Hall2012]. The Nudging dataset [@Nagtegaal2019a] belongs to a systematic review on nudging healthcare professionals [@Nagtegaal2019], stemming from the area of _behavioural public administration_. The PTSD dataset contains publications from the field of _psychology_. The corresponding systematic review is on studies applying latent trajectory analyses on posttraumatic stress after exposure to traumatic events [@vandeSchoot2017]. Of these six datasets, Ace, and Software have been used for model simulations in previous studies on ML-aided title and abstract screening, respectively [@Cohen2006] and [@Yu2018]. 
 
 Data were preprocessed from their original source into a test dataset, containing title and abstract of the publications obtained in the initial search. Candidate studies with missing abstracts and duplicate instances were removed from the data. Preprocessing scripts and resulting datasets can be found on the GitHub repository for this thesis. Test datasets were labelled to indicate which candidate studies were included in the systematic review, thereby indicating relevant publications. All test datasets consisted of thousands of candidate studies, of which only only a fraction was deemed relevant to the systematic review. For the Virus and the Nudging dataset, the inclusion rate was about 5 percent. For the remaining six datasets, inclusion rates were centered around 1-2 percent. (`r table_nums("datasets", display = "cite")`). 
 <!-- The data preprocessing scripts can be found on the GitHub^[https://github.com/GerbrichFerdinands/asreview-thesis] -->
@@ -280,6 +280,8 @@ colnames(datastats) <- c("dataset", rep(c("Candidate publications",
                                        "Relevant publications", 
                                        "Inclusion rate (%)"),1))
 datastats <- datastats[c(2,3,4,1,5,6), ]
+saveRDS(datastats, "tables/tab1_data.RDS")
+
 print(xtable(datastats, digits = c(0,0,0,0,1)),
       include.rownames=FALSE, comment = FALSE, booktabs = TRUE,
       format.args = list(big.mark = ",", decimal.mark = "."))
@@ -382,8 +384,12 @@ mad <- with(mad, paste0(median, " (", mad, ")"))
 
 tabatd <- rbind(tabatd, (c("median (MAD)", mad[c(2:4, 1, 5,6)])))
 
+saveRDS(tabatd, file = "tables/tab2_atd.RDS")
+
 print(xtable(tabatd, align = c("r", "r", rep("c", 6))), 
       include.rownames=FALSE, comment = FALSE, booktabs = TRUE, hline.after = c(0,7))
+
+
 
 ```
 
@@ -404,6 +410,7 @@ mad <- with(mad, paste0(median, " (", mad, ")"))
 
 tabwss95 <- rbind(tabwss95, (c("median (MAD)", mad[c(2:4, 1, 5,6)])))
 # insert N per dataset 
+saveRDS(tabwss95, file = "tables/tab3_wss95.RDS")
 
 print(xtable(tabwss95, align = c("r", "r", rep("c", 6))), 
       include.rownames=FALSE, comment = FALSE, booktabs = TRUE, hline.after = c(0,7))
@@ -429,6 +436,7 @@ mad <- with(mad, paste0(median, " (", mad, ")"))
 
 
 tabrrf10 <- rbind(tabrrf10, (c("median (MAD)", mad[c(2:4, 1, 5,6)])))
+saveRDS(tabrrf10, file = "tables/tab4_rrf10.RDS")
 
 print(xtable(tabrrf10, align = c("r", "r", rep("c", 6))), 
       include.rownames=FALSE, comment = FALSE, booktabs = TRUE, hline.after = c(0,7))
