@@ -1,5 +1,5 @@
 Simulation studies
-==================
+================
 
 *This document is currently a work in progress. The results documented
 here originate from Gerbrich Ferdinands’ master’s thesis which can be
@@ -102,11 +102,8 @@ datasets.
 #### Recall curves
 
 **Nudging dataset**
-<embed src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf" width="50%" style="display: block; margin: auto;" type="application/pdf" />
-<embed src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf" width="50%" style="display: block; margin: auto;" type="application/pdf" />
 
-<img src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf"
-     style="float: left; margin-right: 10px;" /> **PTSD dataset**
+**PTSD dataset**
 
 **Software dataset**
 

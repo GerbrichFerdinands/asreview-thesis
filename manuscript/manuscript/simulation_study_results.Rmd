@@ -22,7 +22,7 @@ source("asr-parameters.R")
 pathRdata <- "../../datasets/data_statistics/"
 ```
 
-_This document is currently a work in progress. The results documented here originate from Gerbrich Ferdinands' master's thesis which can be found [here](https://github.com/GerbrichFerdinands/asreview-thesis/blob/master/manuscript/manuscript/Ferdinands%2C-G---MSBBSS.pdf)._
+_This document is currently a work in progress. The results documented here originate from Gerbrich Ferdinands' master's thesis which can be found  [here](https://github.com/GerbrichFerdinands/asreview-thesis/blob/master/manuscript/manuscript/Ferdinands%2C-G---MSBBSS.pdf)._
 
 To provide insight in how much screening effort ASReview could potentially save, seven ASReview models were simulated on six existing systematic review datasets. In short, for all six datasets ASReview could have saved at least 60% of screening effort (e.g. WSS95% was < 40%). For some datasets, ASReview was even able to detect 95% of relevant publiations after screening only 5% of relevant publications. 
 
@@ -55,13 +55,7 @@ First of all, models showed much higher performance for some datasets than for o
 
 #### Recall curves 
 __Nudging dataset__
-```{r}
-include_graphics("../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf")
-```
-<embed src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf" width="50%" style="display: block; margin: auto;" type="application/pdf" />
 
-<img src="../../results/one_seed/plots/nudging/inclusion_all_nudging.pdf"
-     style="float: left; margin-right: 10px;" />
 __PTSD dataset__
 
 __Software dataset__

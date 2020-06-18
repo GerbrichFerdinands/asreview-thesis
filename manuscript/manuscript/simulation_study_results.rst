@@ -116,7 +116,7 @@ Recall curves
 
 **Nudging dataset**
 
- **PTSD dataset**
+**PTSD dataset**
 
 **Software dataset**
 
