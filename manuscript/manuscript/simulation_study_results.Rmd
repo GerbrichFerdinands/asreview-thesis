@@ -2,6 +2,7 @@
 title: "Simulation studies"
 output: github_document
 bibliography: asreview.bib
+csl: elsevier-vancouver.csl
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, fig.ncol = 2, out.width = "50%", fig.align = "center", fig.pos = "H") 
@@ -51,6 +52,8 @@ Furthermore, model performance was visualized by plotting recall curves. Plottin
 For every simulation, the RRF10 and WSS95, are reported as means over 15 trials. To indicate the spread of performance within simulations, the means are accompanied by an estimated standard error of the mean $\hat s$. To compare overall performance across datasets, median performance is reported for every dataset, accompanied by the Median Absolute Deviation (MAD), indicating variability between models within a certain dataset. Recall curves are plot for every simulation, representing the average recall over 15 trials $\pm$ the standard error of the mean. 
 
 ## Results
+The figures below shows the recall curves of simulations for all model-dataset combinations. These curves plot recall as a function of the proportion of publications screened. The curves represent the average recall over 15 trials $\pm$ the standard error of the mean in the direction of the y-axis. The x-axis is cut off at 40% since all for simulations, the models reached 95% recall after screening 40% of the publications. The dashed horizontal lines indicate the RRF@10 values, the dashed vertical lines the WSS@95 values. The dashed grey diagonal line corresponds to the expected recall curve when publications are screened in a random order. 
+
 First of all, models showed much higher performance for some datasets than for others. While performance on the PTSD (Figure 2a) and the Software dataset (Figure 2b) was quite high, performance was much lower across models for the Nudging (Figure 1a) and Virus (Figure 2d) datasets. 
 
 #### Recall curves 

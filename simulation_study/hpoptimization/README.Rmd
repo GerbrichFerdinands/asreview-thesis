@@ -97,7 +97,9 @@ loss_i <- function(trials){
   geom_line(aes(group = datasets, colour = group), lineend = "round") + 
   geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
   labs(title = "Loss plot", x = "Trials sorted from high to low loss") +
-    theme_minimal()
+    theme_bw() + 
+    theme(legend.position = 'none')
+
 }
 
 # loss t where x is trials, loss plot is sorted over time
@@ -107,7 +109,9 @@ loss_t <- function(trials){
     geom_line(aes(group = datasets, colour = group), lineend = "round") + 
     geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
     labs(title = "Loss plot", x = "Over trials") +
-    theme_minimal()
+    theme_bw() +
+    theme(legend.position = 'none')
+
 }
 ```
 
@@ -135,11 +139,64 @@ nbtfidftrials <- nbtfidftrials %>%
 
 # loss plot by index 
 nbtfidftrials %>% 
-  loss_i()
+  loss_i() 
 
 # loss plot sorted by trial numbers 
 nbtfidftrials %>%
   loss_t()
+```
+
+```{r}
+
+nbtfidftrials$group <-  relevel(nbtfidftrials$group , "one")
+
+
+nbtfidftrials %>%
+  filter(group == "one") %>%
+    ggplot(aes(x = trial, y = loss)) +
+    geom_line(aes(group = datasets, colour = datasets), lineend = "round", alpha = 0.8) + 
+    geom_dl(aes(label = datasets, size = 2), colour = "black", method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
+  #geom_label(aes(label = datasets, colour = datasets)) +
+  scale_colour_viridis_d() +
+    labs(title = "Optimizing hyperparameters through a random search", x = "Over trials") +
+  scale_x_continuous(limits = c(0,6000)) +
+    theme_bw() +
+    theme(legend.position = 'none')
+
+
+nbtfidftrials %>%
+  filter(group == "one") %>%
+  ggplot(aes(x = index, y = loss)) +
+  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
+ scale_fill_manual(values= c("#CC6666","#66CC99"))+
+  labs(title = "Optimizing hyperparameters through a random search", x = "Trials sorted from high to low loss") +
+    theme_bw() + 
+    theme(legend.position = 'none')
+
+nbtfidftrials %>%
+   filter(group != "n") %>%
+  ggplot(aes(x = index, y = loss)) +
+  geom_line(aes(group = datasets, colour = group), lineend = "round") + 
+  geom_dl(aes(label = datasets, colour = group), method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) + 
+ scale_fill_manual(values= c("#CC6666","#66CC99"))+
+  labs(title = "Optimizing hyperparameters through a random search", x = "Trials sorted from high to low loss") +
+  theme_bw() + 
+  theme(legend.position = 'none')
+
+
+nbtfidftrials %>%
+  filter(group == "n-1") %>%
+    ggplot(aes(x = trial, y = loss)) +
+    geom_line(aes(group = datasets, colour = datasets), lineend = "round", alpha = 0.8) + 
+    geom_dl(aes(label = datasets, size = 2), colour = "black", method = list(dl.trans(x = x + 0.2), dl.combine("last.points"), cex = 0.8)) +
+  #geom_label(aes(label = datasets, colour = datasets)) +
+  scale_colour_viridis_d() +
+    labs(title = "Optimizing hyperparameters through a random search", x = "Over trials") +
+  scale_x_continuous(limits = c(0,2000)) +
+    theme_bw() +
+    theme(legend.position = 'none')
+
 ```
 
 
