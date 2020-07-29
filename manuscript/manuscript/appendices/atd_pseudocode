@@ -1,0 +1,32 @@
+Input:
+- labels - Record IDs of all papers in the data
+- label_order - Record IDs by the order in which papers were labeled
+- proba_order - Record IDs ordered by relevance after last query
+- n_prior - Number of starting papers
+
+Output:
+- ATD - Average Time to Discovery over all inclusions (% of all labeled publications)
+
+inclusions = where(labels == 1)[0]
+time_results = {label: [] for label in inclusions}
+
+# factor to account for total number of publications to label
+time_mult = 100 / (len(labels) - n_prior)
+
+# compute discovery time for every inclusion that has been labeled
+for i_time, record_id in label_order[n_prior:]:
+    # for all inclusions
+    if label_order[record_id] == 1:
+        # get point of detection relative to dataset size
+        time_results[record_id] = time_mult * (i_time + 1)
+
+# compute discovery time for every inclusion that hasn't been labeled (prior inclusions)
+for i_time, record_id in proba_order:
+    if labels[record_id] == 1 and record_id not in label_order[:n_prior]:
+        # @Raoul: vraagje, waarom hier + len(label_order en niet + 1?)
+        time_results[record_id] = time_mult * (i_time + len(label_order))
+
+# average over all inclusions
+ATD = average(time_results)
+
+return ATD

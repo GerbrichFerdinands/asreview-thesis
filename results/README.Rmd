@@ -11,6 +11,8 @@ library(tidyverse)
 library(knitr)
 library(flextable)
 library(officer)
+
+set.seed(42)
 ```
 
 This directory stores all files used to extract figures and statistics from the simulation study output.
@@ -146,6 +148,28 @@ sdruns <-
   summarise(sdwss.95 = sd(wss.95),
             sdrrf.10 = sd(rrf.10),
             sdloss = sd(loss))
+library(boot)
+# but now boostrap
+sdruns <- 
+  runs %>%
+  select(dataset, model, wss.95, rrf.10, loss) %>% 
+  group_by(model, dataset) 
+
+test <- sdruns %>% 
+  ungroup()%>%
+  filter(dataset == "ace", model == "NB + TF-IDF") 
+
+samplemean <- function(x, d) {
+  result <- c(mean(x[1,d]), mean(x[2,d]), mean(x[3,d]))
+  return(result)
+}
+
+test <- tibble(test %>% select(wss.95, rrf.10, loss))
+         
+bs <- boot(t(test),statistic = samplemean, R = 1000)
+
+bs# standard deviation 
+sd(bs$t[,1])
 
 saveRDS(sdruns, "output/sdruns.RDS")
 ```

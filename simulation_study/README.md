@@ -69,7 +69,7 @@ git clone https://github.com/GerbrichFerdinands/asreview-thesis-simulation.git
 And then, within the newly created directory, the following:
 
 ``` bash
-pip install . 
+pip install .
 ```
 
 # References
